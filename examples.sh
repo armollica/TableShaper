@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
 
-tt read 'cars.csv' \
+tt input 'cars.csv' \
     choose 'name, mpg, hp' \
     arrange 'mpg, hp:desc' \
     filter 'mpg > 25 | mpg < 15' \
-    write \
+    output \
     | csvlook
 
 # Above equivalent to this
 cat cars.csv \
-    | tt read - \
+    | tt input - \
         choose 'name, mpg, hp' \
         arrange 'mpg, hp:desc' \
         filter 'mpg > 25 | mpg < 15' \
-        write \
+        output \
+    | csvlook
+
+csv2json cars.csv \
+    | tt input --json - \
+        choose 'name, mpg, hp' \
+        arrange 'mpg, hp:desc' \
+        filter 'mpg > 25 | mpg < 15' \
+        output \
     | csvlook

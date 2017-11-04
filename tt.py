@@ -56,19 +56,31 @@ def generator(f):
     return update_wrapper(new_func, f)
 
 @cli.command('input')
-@click.option('-f', '--filename', default = '-', type = click.Path(),
-              help = 'Filename for input CSV.',
-              show_default = True)
+@click.option('-j', '--json', is_flag = True,
+              help = 'Read as JSON instead of CSV')
+@click.option('--json-format', default = 'records',
+              type = click.Choice(['records', 'split', 'index', 'columns', 'values']),
+              help = 'JSON string format. Defaults to records.')
+@click.argument('path', type = click.Path())
 @generator
-def input_cmd(filename):
+def input_cmd(path, json, json_format):
     '''
-    Loads the CSV in as a dataframe
+    Read in table.
     '''
-    try:
-        if filename == '-':
-            df = pd.read_csv(click.get_text_stream('stdin'))
+
+    if path == '-':
+        path_or_stream = click.get_text_stream('stdin')
+    else:
+        path_or_stream = path
+
+    def read_df(path):
+        if json:
+            return pd.read_json(path_or_stream, orient = json_format)
         else:
-            df = pd.read_csv(filename)
+            return pd.read_csv(path_or_stream)
+    
+    try:
+        df = read_df(path)
         yield df
     except Exception as e:
         click.echo('Could not read CSV "%s": %s' % (filename, e), err = True)
@@ -79,7 +91,9 @@ def input_cmd(filename):
               show_default = True)
 @processor
 def output_cmd(dfs, output):
-    """Write CSV to file."""
+    '''
+    Write out table.
+    '''
     try:
         for df in dfs:
             df.to_csv(output, index = False)
