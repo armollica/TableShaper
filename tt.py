@@ -2,7 +2,9 @@ import click
 import pandas as pd
 from functools import update_wrapper
 
-@click.group(chain=True)
+CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
+
+@click.group(chain=True, context_settings = CONTEXT_SETTINGS)
 def cli():
     '''
     Tidy tables stored as CSV. Operations can be chained together.
@@ -55,6 +57,11 @@ def generator(f):
             yield item
     return update_wrapper(new_func, f)
 
+
+
+# -- 
+# Input command
+
 @cli.command('input')
 @click.option('-j', '--json', is_flag = True,
               help = 'Read as JSON instead of CSV')
@@ -65,7 +72,7 @@ def generator(f):
 @generator
 def input_cmd(path, json, json_format):
     '''
-    Read in table.
+    Read table.
     '''
 
     if path == '-':
@@ -85,6 +92,11 @@ def input_cmd(path, json, json_format):
     except Exception as e:
         click.echo('Could not read CSV "%s": %s' % (filename, e), err = True)
 
+
+
+# -- 
+# Output command
+
 @cli.command('output')
 @click.option('-o', '--output', default='-', type=click.File('wb'),
               help = 'Filename for output CSV.',
@@ -92,7 +104,7 @@ def input_cmd(path, json, json_format):
 @processor
 def output_cmd(dfs, output):
     '''
-    Write out table.
+    Write table.
     '''
     try:
         for df in dfs:
@@ -102,17 +114,27 @@ def output_cmd(dfs, output):
         click.echo('Could not write csv "%s": %s' %
                     (output, e), err = True)
 
+
+
+# -- 
+# Choose command
+
 @cli.command('choose')
 @click.argument('columns', type = click.STRING)
 @processor
 def choose_cmd(dfs, columns):
     '''
-    Choose which columns to keep.
+    Subset columns. Provide a comma-separated list of column names.
     '''
     column_list = map(lambda x: x.strip(), columns.split(','))
     for df in dfs:
         df = df[column_list]
         yield df
+
+
+
+# -- 
+# Filter command
 
 @cli.command('filter')
 @click.argument('expression', type = click.STRING)
@@ -126,12 +148,17 @@ def filter_cmd(dfs, expression):
         df.query(expression, inplace = True)
         yield df
 
+
+
+# -- 
+# Arrange command
+
 @cli.command('arrange')
 @click.argument('columns', type = click.STRING)
 @processor
 def arrange_cmd(dfs, columns):
     '''
-    Sort rows. Order is determined by values in a column or columns.
+    Sort rows. Order is determined by values in a column (or columns).
     '''
     column_list = []
     ascending_list = []
@@ -145,4 +172,21 @@ def arrange_cmd(dfs, columns):
         ascending_list.append(ascending)
     for df in dfs:
         df = df.sort_values(by = column_list, ascending = ascending_list)
+        yield df
+
+# -- 
+# Mutate command
+
+@cli.command('mutate')
+@click.argument('expressions', type = click.STRING)
+@processor
+def mutate_cmd(dfs, expressions):
+    '''
+    Create new columns. New columns are created by assigning a new variable in
+    a python expression.
+    '''
+    expressions_list = expressions.split(',')
+    for df in dfs:
+        for expression in expressions_list:
+            df = df.eval(expression)
         yield df
