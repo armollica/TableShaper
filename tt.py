@@ -67,7 +67,8 @@ def generator(f):
               help = 'Read as JSON instead of CSV')
 @click.option('--json-format', default = 'records',
               type = click.Choice(['records', 'split', 'index', 'columns', 'values']),
-              help = 'JSON string format. Defaults to records.')
+              help = 'JSON string format.',
+              show_default = True)
 @click.argument('path', type = click.Path())
 @generator
 def input_cmd(path, json, json_format):
@@ -98,21 +99,21 @@ def input_cmd(path, json, json_format):
 # Output command
 
 @cli.command('output')
-@click.option('-o', '--output', default='-', type=click.File('wb'),
+@click.option('-f', '--file', default='-', type=click.File('wb'),
               help = 'Filename for output CSV.',
               show_default = True)
 @processor
-def output_cmd(dfs, output):
+def output_cmd(dfs, file):
     '''
     Write table.
     '''
     try:
         for df in dfs:
-            df.to_csv(output, index = False)
+            df.to_csv(file, index = False)
             yield df
     except Exception as e:
         click.echo('Could not write csv "%s": %s' %
-                    (output, e), err = True)
+                    (file, e), err = True)
 
 
 
@@ -174,6 +175,8 @@ def arrange_cmd(dfs, columns):
         df = df.sort_values(by = column_list, ascending = ascending_list)
         yield df
 
+
+
 # -- 
 # Mutate command
 
@@ -189,4 +192,29 @@ def mutate_cmd(dfs, expressions):
     for df in dfs:
         for expression in expressions_list:
             df = df.eval(expression)
+        yield df
+
+
+
+# -- 
+# Gather command
+@cli.command('gather')
+@click.option('-k', '--key', type = click.STRING, default = 'key',
+              help = 'Name of column that contains past names of gathered columns')
+@click.option('-v', '--value', type = click.STRING, default = 'value',
+              help = 'Name of column that contains values of gathered columns')
+@click.argument('columns', type = click.STRING)
+@processor
+def gather_cmd(dfs, key, value, columns):
+    '''
+    Gather many columns into two key-value columns.
+    '''
+    gather_column_list = map(lambda x: x.strip(), columns.split(','))
+    for df in dfs:
+        all_column_list = list(df)
+        id_column_list = filter(lambda x: x not in gather_column_list, all_column_list)
+        df = df.melt(id_vars = id_column_list,
+                     value_vars = gather_column_list,
+                     var_name = key,
+                     value_name = value)
         yield df
