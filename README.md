@@ -1,4 +1,4 @@
-# TidyTables
+# TidyTable
 
 ## Commands
 
@@ -20,11 +20,11 @@ Commands:
   input    Read table.
   mutate   Create new columns.
   output   Write table.
+  spread   Spread two key-value columns to multiple...
 ```
 
 #### tk
 * `tt rename`: Rename columns (keeps all columns)
-* `tt spread`: Convert two key-value column into multiple rows
 * `tt join`: Join two tables based on common key values
 * `tt group`: Group pandas table based on key values
 * `tt summarize`: Aggregate rows

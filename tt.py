@@ -57,7 +57,61 @@ def generator(f):
             yield item
     return update_wrapper(new_func, f)
 
+def selectify(string_list, selection_string):
+    '''
+    Perform subsetting and reordering on a list of strings
+    in the vein of dplyr's select() function.
+    '''
+    # Character that identifies a set of columns should be excluded
+    exclude_chr = '~'
 
+    # Split and trim the selection "chunks"
+    chunks = map(lambda x: x.strip(), selection_string.split(','))
+
+    # If first selection chunk is an exclusion, start with all
+    # keys included. Otherwise, state with none.
+    if chunks[0].startswith(exclude_chr):
+        selection = list(string_list)
+    else:
+        selection = []
+
+    def add(key):
+        if key not in string_list:
+            raise ValueError('Column \'{}\' not in table'.format(key))
+        if key in selection:
+            selection.remove(key)
+        selection.append(key)
+
+    def remove(key):
+        if key not in string_list:
+            raise ValueError('Column \'{}\' not in table'.format(key))
+        if key in selection:
+            selection.remove(key)
+    
+    def key_range(chunk):
+        x0, x1 = chunk.split(':')
+        i0 = string_list.index(x0)
+        i1 = string_list.index(x1)
+        r = []
+        for i in range(i0, i1 + 1):
+            r.append(string_list[i])
+        return r
+    
+    for chunk in chunks:
+        if chunk.startswith(exclude_chr):
+            if ':' in chunk:
+                for key in key_range(chunk[1:]):
+                    remove(key)
+            else:
+                remove(chunk[1:])
+        else:
+            if ':' in chunk:
+                for key in key_range(chunk):
+                    add(key)
+            else:
+                add(chunk)
+    
+    return selection
 
 # -- 
 # Input command
@@ -127,8 +181,8 @@ def choose_cmd(dfs, columns):
     '''
     Subset columns. Provide a comma-separated list of column names.
     '''
-    column_list = map(lambda x: x.strip(), columns.split(','))
     for df in dfs:
+        column_list = selectify(list(df), columns)
         df = df[column_list]
         yield df
 
@@ -200,21 +254,46 @@ def mutate_cmd(dfs, expressions):
 # Gather command
 @cli.command('gather')
 @click.option('-k', '--key', type = click.STRING, default = 'key',
-              help = 'Name of column that contains past names of gathered columns')
+              help = 'Column that will store columns names of gathered columns.')
 @click.option('-v', '--value', type = click.STRING, default = 'value',
-              help = 'Name of column that contains values of gathered columns')
+              help = 'Column that will store values of gathered column.s')
 @click.argument('columns', type = click.STRING)
 @processor
 def gather_cmd(dfs, key, value, columns):
     '''
     Gather many columns into two key-value columns.
     '''
-    gather_column_list = map(lambda x: x.strip(), columns.split(','))
     for df in dfs:
         all_column_list = list(df)
+        gather_column_list = selectify(list(df), columns)
         id_column_list = filter(lambda x: x not in gather_column_list, all_column_list)
         df = df.melt(id_vars = id_column_list,
                      value_vars = gather_column_list,
                      var_name = key,
                      value_name = value)
+        yield df
+
+
+
+# --
+# Spread command
+
+def spread(df, key, value):
+    indexes = list(df.columns.drop(value))
+    df = df.set_index(indexes).unstack(key).reset_index()
+    df.columns = [i[1] if i[0] == value else i[0] for i in df.columns]
+    return df
+
+@cli.command('spread')
+@click.option('-k', '--key', type = click.STRING, required = True,
+              help = 'Column that stores columns names to be spread.')
+@click.option('-v', '--value', type = click.STRING, required = True,
+              help = 'Column that stores values to be spread.')
+@processor
+def spread_cmd(dfs, key, value):
+    '''
+    Spread two key-value columns to multiple columns.
+    '''
+    for df in dfs:
+        df = spread(df, key, value)
         yield df
