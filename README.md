@@ -22,9 +22,3 @@ Commands:
   output   Write table.
   spread   Spread two key-value columns to multiple...
 ```
-
-#### tk
-* `tt rename`: Rename columns (keeps all columns)
-* `tt join`: Join two tables based on common key values
-* `tt group`: Group pandas table based on key values
-* `tt summarize`: Aggregate rows
