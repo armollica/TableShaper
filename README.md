@@ -1,24 +1,28 @@
-# TidyTable
+# tidytable
 
 ## Commands
 
 ```
-Usage: tt [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
+Usage: tidytable [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
 
-  Tidy tables stored as CSV. Operations can be chained together.
-
-  Example:     TODO
+  Tidy your tables
 
 Options:
-  -h, --help  Show this message and exit.
+  -i, --input FILENAME            Input file.  [default: -]
+  -o, --output FILENAME           Output file.  [default: -]
+  -j, --json                      Read as JSON instead of CSV
+  --json-format [records|split|index|columns|values]
+                                  JSON string format.  [default: records]
+  -h, --help                      Show this message and exit.
 
 Commands:
   arrange  Sort rows.
   choose   Subset columns.
+  exec     Execute python code.
   filter   Subset rows.
-  gather   Gather many columns into two key-value...
-  input    Read table.
+  gather   Reshape wide-to-long.
+  join     Join tables.
   mutate   Create new columns.
-  output   Write table.
-  spread   Spread two key-value columns to multiple...
+  rename   Rename columns.
+  spread   Reshape long-to-wide.
 ```
