@@ -27,25 +27,66 @@ class CLI(click.MultiCommand):
 
 CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
 
-@click.group(cls = CLI, chain = True, context_settings = CONTEXT_SETTINGS)
-def cli():
-    """Tidy your tables.."""
+@click.group(cls = CLI, chain = True, invoke_without_command = True, context_settings = CONTEXT_SETTINGS)
+@click.option('-i', '--input', 'infile', default='-', type=click.Path(),
+              help = 'Filename for input file.',
+              show_default = True)
+@click.option('-o', '--output', 'outfile', default='-', type=click.File('wb'),
+              help = 'Filename for output file.',
+              show_default = True)
+@click.option('-j', '--json', is_flag = True,
+              help = 'Read as JSON instead of CSV')
+@click.option('--json-format', default = 'records',
+              type = click.Choice(['records', 'split', 'index', 'columns', 'values']),
+              help = 'JSON string format.',
+              show_default = True)
+def cli(infile, outfile, json, json_format):
+    """Tidy your tables"""
     pass
 
 @cli.resultcallback()
-def process_commands(processors):
+def process_commands(processors, infile, outfile, json, json_format):
     '''
     This result callback is invoked with an iterable of all the chained
     subcommands.  As in this example each subcommand returns a function
     we can chain them together to feed one into the other, similar to how
     a pipe on unix works.
     '''
-    # Start with an empty iterable.
-    stream = ()
+
+    # Input the file
+    def read_df(path_or_stream):
+        if json:
+            return pd.read_json(path_or_stream, orient = json_format)
+        else:
+            return pd.read_csv(path_or_stream)
+    
+    if infile == '-':
+        path_or_stream = click.get_text_stream('stdin')
+    else:
+        path_or_stream = infile
+    
+    try:
+        df = read_df(path_or_stream)
+    except Exception as e:
+        click.echo('Could not read "%s": %s' % (infile, e), err = True)
+    
+    # Start with an iterable dataframe.
+    stream = (df,)
 
     # Pipe it through all stream processors.
     for processor in processors:
         stream = processor(stream)
+    
+    def output_cmd(dfs):
+        try:
+            for df in dfs:
+                df.to_csv(outfile, index = False)
+                yield df
+        except Exception as e:
+            click.echo('Could not write csv "%s": %s' %
+                        (file, e), err = True)
+    
+    stream = output_cmd(stream)
 
     # Evaluate the stream and throw away the items.
     for _ in stream:
