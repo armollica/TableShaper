@@ -28,7 +28,7 @@ class CLI(click.MultiCommand):
 CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
 
 @click.group(cls = CLI, chain = True, invoke_without_command = True, context_settings = CONTEXT_SETTINGS)
-@click.option('-i', '--input', 'infile', default='-', type=click.Path(),
+@click.option('-i', '--input', 'infile', default='-', type=click.File('rb'),
               help = 'Filename for input file.',
               show_default = True)
 @click.option('-o', '--output', 'outfile', default='-', type=click.File('wb'),
@@ -52,21 +52,15 @@ def process_commands(processors, infile, outfile, json, json_format):
     we can chain them together to feed one into the other, similar to how
     a pipe on unix works.
     '''
-
     # Input the file
-    def read_df(path_or_stream):
+    def read_df(file):
         if json:
-            return pd.read_json(path_or_stream, orient = json_format)
+            return pd.read_json(file, orient = json_format)
         else:
-            return pd.read_csv(path_or_stream)
-    
-    if infile == '-':
-        path_or_stream = click.get_text_stream('stdin')
-    else:
-        path_or_stream = infile
+            return pd.read_csv(file)
     
     try:
-        df = read_df(path_or_stream)
+        df = read_df(infile)
     except Exception as e:
         click.echo('Could not read "%s": %s' % (infile, e), err = True)
     
@@ -77,6 +71,7 @@ def process_commands(processors, infile, outfile, json, json_format):
     for processor in processors:
         stream = processor(stream)
     
+    # Output the file
     def output_cmd(dfs):
         try:
             for df in dfs:
