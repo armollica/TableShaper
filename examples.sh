@@ -1,25 +1,24 @@
 #!/usr/bin/env bash
 
-tt input cars.csv \
+tidytable -i cars.csv \
     choose 'name, mpg:hp' \
     arrange 'mpg, hp:desc' \
-    filter 'mpg > 25 | mpg < 15' \
-    output
+    filter 'mpg > 25 | mpg < 15'
 
 # equivalent to the above statement
 cat cars.csv \
-    | tt input - \
+    | tidytable \
         choose 'name, mpg:hp' \
         arrange 'mpg, hp:desc' \
         filter 'mpg > 25 | mpg < 15' \
         output
 
 csv2json cars.csv \
-    | tt input --json - \
+    | tidytable --json \
         choose 'name, mpg:hp' \
         output
 
-tt input population.csv \
+tidytable -i population.csv \
     gather -k year -v population 1995:2013 \
     filter 'population > 200000000' \
     spread -k year -v population \
