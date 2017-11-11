@@ -27,11 +27,14 @@ class CLI(click.MultiCommand):
 
 CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
 
-@click.group(cls = CLI, chain = True, invoke_without_command = True, context_settings = CONTEXT_SETTINGS)
-@click.option('-i', '--input', 'infile', default='-', type=click.File('rb'),
+@click.group(cls = CLI, chain = True, invoke_without_command = True,
+             context_settings = CONTEXT_SETTINGS)
+@click.option('-i', '--input', 'infile', default = '-',
+              type = click.File('rb'),
               help = 'Input file.',
               show_default = True)
-@click.option('-o', '--output', 'outfile', default='-', type=click.File('wb'),
+@click.option('-o', '--output', 'outfile', default = '-',
+              type = click.File('wb'),
               help = 'Output file.',
               show_default = True)
 @click.option('-j', '--json', is_flag = True,
@@ -78,9 +81,9 @@ def process_commands(processors, infile, outfile, json, json_format):
                 df.to_csv(outfile, index = False)
                 yield df
         except Exception as e:
-            click.echo('Could not write csv "%s": %s' %
+            click.echo('Could not write "%s": %s' %
                         (file, e), err = True)
-    
+
     stream = output_cmd(stream)
 
     # Evaluate the stream and throw away the items.

@@ -16,7 +16,7 @@ def spread(df, key, value):
 @processor
 def cli(dfs, key, value):
     '''
-    Spread two key-value columns to multiple columns.
+    Reshape long-to-wide. Spread two key-value columns to multiple columns.
     '''
     for df in dfs:
         df = spread(df, key, value)

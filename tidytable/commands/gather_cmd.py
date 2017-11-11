@@ -11,7 +11,7 @@ from tidytable.util import processor, selectify
 @processor
 def cli(dfs, key, value, columns):
     '''
-    Gather many columns into two key-value columns.
+    Reshape wide-to-long. Gather many columns into two key-value columns.
     '''
     for df in dfs:
         all_column_list = list(df)
