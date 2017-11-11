@@ -10,16 +10,13 @@ cat cars.csv \
     | tidytable \
         choose 'name, mpg:hp' \
         arrange 'mpg, hp:desc' \
-        filter 'mpg > 25 | mpg < 15' \
-        output
+        filter 'mpg > 25 | mpg < 15' 
 
 csv2json cars.csv \
     | tidytable --json \
-        choose 'name, mpg:hp' \
-        output
+        choose 'name, mpg:hp'
 
 tidytable -i population.csv \
     gather -k year -v population 1995:2013 \
     filter 'population > 200000000' \
-    spread -k year -v population \
-    output
+    spread -k year -v population
