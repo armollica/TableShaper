@@ -29,10 +29,10 @@ CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
 
 @click.group(cls = CLI, chain = True, invoke_without_command = True, context_settings = CONTEXT_SETTINGS)
 @click.option('-i', '--input', 'infile', default='-', type=click.File('rb'),
-              help = 'Filename for input file.',
+              help = 'Input file.',
               show_default = True)
 @click.option('-o', '--output', 'outfile', default='-', type=click.File('wb'),
-              help = 'Filename for output file.',
+              help = 'Output file.',
               show_default = True)
 @click.option('-j', '--json', is_flag = True,
               help = 'Read as JSON instead of CSV')
