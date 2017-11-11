@@ -1,15 +1,16 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
-    name = 'TidyTable',
-    version = '0.1.0',
-    py_modules = ['tt'],
-    install_requires = [
+    name='tidytable',
+    version='0.1.0',
+    packages=find_packages(),
+    include_package_data=True,
+    install_requires=[
         'Click',
         'pandas'
     ],
-    entry_points = '''
+    entry_points='''
         [console_scripts]
-        tt=tt:cli
+        tt=tt.cli:cli
     ''',
 )
