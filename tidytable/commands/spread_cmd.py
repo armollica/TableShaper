@@ -1,6 +1,6 @@
 import click
 import pandas as pd
-from tt.util import processor
+from tidytable.util import processor
 
 def spread(df, key, value):
     indexes = list(df.columns.drop(value))

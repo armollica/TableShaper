@@ -1,6 +1,6 @@
 import click
 import pandas as pd
-from tt.util import processor
+from tidytable.util import processor
 
 @click.command('mutate')
 @click.argument('expressions', type = click.STRING)

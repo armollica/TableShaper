@@ -1,6 +1,6 @@
 import click
 import pandas as pd
-from tt.util import processor
+from tidytable.util import processor
 
 @click.command('filter')
 @click.argument('expression', type = click.STRING)

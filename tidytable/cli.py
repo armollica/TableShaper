@@ -19,7 +19,7 @@ class CLI(click.MultiCommand):
         try:
             if sys.version_info[0] == 2:
                 name = name.encode('ascii', 'replace')
-            mod = __import__('tt.commands.' + name + '_cmd',
+            mod = __import__('tidytable.commands.' + name + '_cmd',
                              None, None, ['cli'])
         except ImportError:
             return

@@ -1,6 +1,6 @@
 import click
 import pandas as pd
-from tt.util import processor, selectify
+from tidytable.util import processor, selectify
 
 @click.command('gather')
 @click.option('-k', '--key', type = click.STRING, default = 'key',

@@ -11,6 +11,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        tt=tt.cli:cli
+        tidytable=tidytable.cli:cli
     ''',
 )

@@ -1,6 +1,6 @@
 import click
 import pandas as pd
-from tt.util import processor
+from tidytable.util import processor
 
 @click.command('output')
 @click.option('-f', '--file', default='-', type=click.File('wb'),

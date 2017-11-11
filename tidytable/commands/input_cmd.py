@@ -1,6 +1,6 @@
 import click
 import pandas as pd
-from tt.util import generator
+from tidytable.util import generator
 
 @click.command('input')
 @click.option('-j', '--json', is_flag = True,
