@@ -1,9 +1,9 @@
-# tidytable
+# TidyTable
 
 ## Commands
 
 ```
-Usage: tidytable [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
+Usage: tt [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
 
   Tidy your tables
 
@@ -25,4 +25,18 @@ Commands:
   mutate   Create new columns.
   rename   Rename columns.
   spread   Reshape long-to-wide.
+```
+
+## Develop
+
+Create a virtual environment and activate it.
+```bash
+virtualenv venv
+. venv/bin/activate
+```
+
+Install the package and its dependencies. Use the `--editable` flag so that
+changes to the source code will automatically affect the CLI program.
+```bash
+pip install --editable .
 ```
