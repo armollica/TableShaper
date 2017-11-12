@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-cd data
-
 tt -i cars.csv \
     choose 'name, mpg:hp' \
     arrange 'mpg, hp:desc' \
