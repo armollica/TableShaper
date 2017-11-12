@@ -2,13 +2,13 @@
 
 cd data
 
-tidytable -i cars.csv -o left.csv \
+tt -i cars.csv -o left.csv \
     choose 'name, mpg'
 
-tidytable -i cars.csv -o right.csv \
+tt -i cars.csv -o right.csv \
     choose 'name, hp'
 
-tidytable -i left.csv \
+tt -i left.csv \
     join --keys name right.csv \
     | csvlook
 

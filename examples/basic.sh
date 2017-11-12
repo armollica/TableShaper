@@ -2,20 +2,20 @@
 
 cd data
 
-tidytable -i cars.csv \
+tt -i cars.csv \
     choose 'name, mpg:hp' \
     arrange 'mpg, hp:desc' \
     filter 'mpg > 25 | mpg < 15'
 
 cat cars.csv \
-    | tidytable \
+    | tt \
         choose 'name, mpg:hp' \
         arrange 'mpg, hp:desc' \
         filter 'mpg > 25 | mpg < 15'
 
 # csv2json reorders columns
 csv2json cars.csv \
-    | tidytable --json \
+    | tt --json \
         choose 'name,mpg,cyl,disp,hp' \
         arrange 'mpg, hp:desc' \
         filter 'mpg > 25 | mpg < 15'
