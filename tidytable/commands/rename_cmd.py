@@ -1,5 +1,4 @@
 import click
-import re
 import pandas as pd
 from tidytable.util import processor
 
@@ -9,11 +8,30 @@ from tidytable.util import processor
 @processor
 def cli(dfs, assign, map_expression):
     '''
-    Rename columns. Provide a comma-separated list of column names mappings, e.g., NEW <- OLD.
+    Rename columns.
+    
+    \b
+    -a, --assign: 
+    A comma-separated list of column names assignment, i.e.: new <- old
+    
+    \b
+    Example:
+    rename -a 'id <- GEOID, fips <- state_fips'
+
+    \b
+    -m, --map:
+    A python expression evaluated on each column name.
+    The column name is loaded in as `name`.
+
+    \b
+    Example:
+    rename -m 'name.strip().lower()'
+    rename -m "'_'.join(name.split(' ')).strip().lower()"
+
     '''
     for df in dfs:
         if map_expression is not None:
-            df.columns = map(eval('lambda d: ' + map_expression), df.columns)
+            df.columns = map(eval('lambda name: ' + map_expression), df.columns)
         if assign is not None:
             columns = dict()
             for chunk in assign.split(','):
