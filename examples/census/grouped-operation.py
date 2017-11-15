@@ -2,9 +2,18 @@ import pandas as pd
 
 d = pd.read_csv('retire-age-population.csv')
 
-d['id'] = d.apply(lambda x: '%04d' % x.id, axis = 1)
-d['state'] = d.apply(lambda x: x.id[0:2], axis = 1)
+def mutate(df, column_name, expression):
+    return df.assign(**{ column_name: lambda x: eval(expression, x.to_dict('series')) })
 
-expression = "pop / pop.sum()"
+def grouped_mutate(df, groups, column_name, expression):
+    def apply_func(df):
+        return mutate(df, column_name, expression)
+    return df.groupby(groups).apply(apply_func).reset_index(drop = True)
 
-print d.groupby('state').apply(lambda df: df.assign(pop_share = lambda x: eval(expression, x.to_dict('series')))).reset_index(drop = True).head()
+d = mutate(d, 'id', 'id.apply(lambda x: "%05d" % x)')
+d = mutate(d, 'state', 'id.apply(lambda x: x[0:2])')
+d = grouped_mutate(d, ['state'], 'pop_share', 'pop / pop.sum()')
+d = grouped_mutate(d, ['state'], 'pop_shit', 'pop * pop_share / pop.mean()')
+d = mutate(d, 'pop_shoot', 'pop * pop_share')
+
+print d.head()

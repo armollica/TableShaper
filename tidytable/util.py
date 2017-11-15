@@ -79,3 +79,11 @@ def selectify(string_list, selection_string):
                 add(chunk)
     
     return selection
+
+def mutate(df, column_name, expression):
+    return df.assign(**{ column_name: lambda x: eval(expression, x.to_dict('series')) })
+
+def grouped_mutate(df, groups, column_name, expression):
+    def apply_func(df):
+        return mutate(df, column_name, expression)
+    return df.groupby(groups).apply(apply_func).reset_index(drop = True)
