@@ -11,5 +11,5 @@ def cli(dfs, expression):
     column values.
     '''
     for df in dfs:
-        df.query(expression, inplace = True)
+        df = df[eval(expression, df.to_dict('series'))]
         yield df
