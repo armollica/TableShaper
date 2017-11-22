@@ -18,12 +18,12 @@ def cli(dfs, how, keys, other):
         other_df = pd.read_csv(click.get_text_stream('stdin'))
     else:
         other_df = pd.read_csv(other)
-    keys_list = map(lambda x: x.strip(), keys.split(','))
     for df in dfs:
         if how == 'bind-rows':
-            pass
+            df = pd.concat([df, other_df])
         elif how == 'bind-columns':
-            pass
+            df = pd.concat([df, other_df], axis = 1)
         else:
+            keys_list = map(lambda x: x.strip(), keys.split(','))
             df = df.merge(other_df, on = keys_list, how = how)
         yield df
