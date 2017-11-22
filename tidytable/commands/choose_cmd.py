@@ -4,7 +4,7 @@ from tidytable.util import processor, selectify
 
 @click.command('choose')
 @click.option('-f', '--filter', 'filter_expression', type = click.STRING)
-@click.option('-s', '--select', 'select_expression', type = click.STRING)
+@click.option('-c', '--columns', 'select_expression', type = click.STRING)
 @processor
 def cli(dfs, filter_expression, select_expression):
     '''
@@ -20,7 +20,7 @@ def cli(dfs, filter_expression, select_expression):
     choose -f '"population" in name'
 
     \b
-    -s, --select
+    -c, --columns
     Provide a comma-separated list of column "selections".
     These can be single column names or sequential ranges of columns
     defined by the first and last column name of the sequence 

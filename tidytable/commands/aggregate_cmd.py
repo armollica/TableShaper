@@ -1,6 +1,12 @@
 import click
 import pandas as pd
-from tidytable.util import processor, aggregate, grouped_aggregate
+from tidytable.util import processor
+
+def aggregate(df, column_name, expression):
+    return df.apply(lambda df: eval(expression, df.to_dict('series'))).reset_index().rename(columns = { 0: column_name })
+
+def grouped_aggregate(df, groups, column_name, expression):
+    return df.groupby(groups).apply(lambda df: eval(expression, df.to_dict('series'))).reset_index().rename(columns = { 0: column_name })
 
 @click.command('aggregate')
 @click.option('-g', '--group-by', type = click.STRING)

@@ -1,6 +1,14 @@
 import click
 import pandas as pd
-from tidytable.util import processor, mutate, grouped_mutate
+from tidytable.util import processor
+
+def mutate(df, column_name, expression):
+    return df.assign(**{ column_name: lambda x: eval(expression, x.to_dict('series')) })
+
+def grouped_mutate(df, groups, column_name, expression):
+    def apply_func(df):
+        return mutate(df, column_name, expression)
+    return df.groupby(groups).apply(apply_func).reset_index(drop = True)
 
 @click.command('mutate')
 @click.option('-g', '--group-by', type = click.STRING)

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 tt -i cars.csv -o left.csv \
-    choose 'name, mpg'
+    choose -c 'name, mpg'
 
 tt -i cars.csv -o right.csv \
-    choose 'name, hp'
+    choose -c 'name, hp'
 
 tt -i left.csv \
     join --keys name right.csv \
