@@ -16,18 +16,32 @@ Options:
   -h, --help                      Show this message and exit.
 
 Commands:
-  arrange  Sort rows.
-  choose   Subset columns.
-  exec     Execute python code.
-  filter   Subset rows.
-  gather   Reshape wide-to-long.
-  join     Join tables.
-  mutate   Create new columns.
-  rename   Rename columns.
-  spread   Reshape long-to-wide.
+  aggregate  Aggregate rows.
+  arrange    Sort rows.
+  choose     Subset columns.
+  exec       Execute python code.
+  filter     Subset rows.
+  join       Join tables.
+  mutate     Create new columns.
+  rename     Rename columns.
+  reshape    Reshape table.
+```
+
+## Install
+
+Pull down this repo and install it with `pip`.
+```bash
+git pull https://github.com/armollica/TidyTable.git
+pip install TidyTable/
 ```
 
 ## Develop
+
+Pull down this repo and move into the directory.
+```bash
+git pull https://github.com/armollica/TidyTable.git
+cd TidyTable/
+```
 
 Create a virtual environment and activate it.
 ```bash
@@ -35,7 +49,7 @@ virtualenv venv
 . venv/bin/activate
 ```
 
-Install the package and its dependencies. Use the `--editable` flag so that
+Install the package and its dependencies with the `--editable` flag. That way
 changes to the source code will automatically affect the CLI program.
 ```bash
 pip install --editable .
