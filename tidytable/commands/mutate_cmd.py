@@ -15,8 +15,8 @@ def column_mutate_grouped(df, groups, column_name, expression):
 
 @click.command('mutate')
 @click.option('-w', '--way',
-              default = 'by-column',
-              type = click.Choice(['by-column', 'by-row']),
+              default = 'column',
+              type = click.Choice(['column', 'row']),
               show_default = True)
 @click.option('-g', '--group-by', type = click.STRING)
 @click.option('-n', '--name', type = click.STRING)
@@ -28,31 +28,40 @@ def cli(dfs, group_by, name, way, expression):
     a python expression. Columns with the same name will be overwritten.
 
     \b
-    --way by-row
+    -n, --name <column name>
+    Name of the new column.
+
+    \b
+    -g, --group-by <columns>
+    Comma-separated list of columns to group by. Only applies when 
+    `--way columns` is in effect.
+
+    \b
+    --way row
     Row-wise mutation. Each row is evaluated individually. Columns in the row
     are put in the namespace as an individual value. Grouped mutations are not
     possible; the --group-by option is ignored.
 
     Examples:
-    mutate --way by-row --name id '"%05d" % id'
-    mutate --way by-row -n state 'id[0:2]' \
+    mutate --way row --name id '"%05d" % id'
+    mutate --way row -n state 'id[0:2]' \
 
     \b
-    --way by-column (default)
+    --way column (default)
     Column-wise mutation. All columns of the table are put in the namespace
     as a pandas Series. Grouped mutations are possible with the --group-by
     option
 
     Examples:
-    mutate --way by-column --name real_value 'value * (price / 100)'
+    mutate --way column --name real_value 'value * (price / 100)'
     mutate -n touches_lake_mi 'state.isin(['WI', 'MI'])'
     mutate --group-by state -n population_share 'pop / pop.sum()'
 
     '''
     for df in dfs:
-        if way == 'by-row':
+        if way == 'row':
             df = row_mutate(df, name, expression)
-        if way == 'by-column':    
+        if way == 'column':    
             if group_by is not None:     
                 groups = map(lambda x: x.strip(), group_by.split(','))
                 df = column_mutate_grouped(df, groups, name, expression)

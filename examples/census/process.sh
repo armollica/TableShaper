@@ -6,7 +6,7 @@ tt -i acs-data.csv \
     > retire-age-population.csv
 
 tt -i retire-age-population.csv \
-    mutate --way by-row --name id '"%05d" % id' \
-    mutate --way by-row --name state 'id[0:2]' \
+    mutate --way row --name id '"%05d" % id' \
+    mutate --way row --name state 'id[0:2]' \
     mutate -g state --name pop_share 'pop / pop.sum()' \
     filter 'state.isin(["55", "56"])'
