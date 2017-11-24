@@ -6,8 +6,7 @@ tt -i acs-data.csv \
     > retire-age-population.csv
 
 tt -i retire-age-population.csv \
-    mutate 'id <- id.apply(lambda x: "%05d" % x)' \
-    mutate 'state <- id.apply(lambda x: x[0:2])' \
-    mutate -g state 'pop_share <- pop / pop.sum()' \
+    mutate --way by-row --name id '"%05d" % id' \
+    mutate --way by-row --name state 'id[0:2]' \
+    mutate -g state --name pop_share 'pop / pop.sum()' \
     filter 'state.isin(["55", "56"])'
-
