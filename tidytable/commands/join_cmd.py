@@ -3,14 +3,14 @@ import pandas as pd
 from tidytable.util import processor
 
 @click.command('join')
-@click.option('-h', '--how',
+@click.option('-w', '--way',
               default = 'left',
               type = click.Choice(['left', 'right', 'outer', 'inner', 'bind-rows', 'bind-columns']),
               show_default = True)
 @click.option('-k', '--keys', type = click.STRING)
 @click.argument('other', default = '-', type = click.Path())
 @processor
-def cli(dfs, how, keys, other):
+def cli(dfs, way, keys, other):
     '''
     Join tables.
     '''
@@ -19,11 +19,11 @@ def cli(dfs, how, keys, other):
     else:
         other_df = pd.read_csv(other)
     for df in dfs:
-        if how == 'bind-rows':
+        if way == 'bind-rows':
             df = pd.concat([df, other_df])
-        elif how == 'bind-columns':
+        elif way == 'bind-columns':
             df = pd.concat([df, other_df], axis = 1)
         else:
             keys_list = map(lambda x: x.strip(), keys.split(','))
-            df = df.merge(other_df, on = keys_list, how = how)
+            df = df.merge(other_df, on = keys_list, how = way)
         yield df

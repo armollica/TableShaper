@@ -19,7 +19,7 @@ tt -i cars.csv -o right.csv \
     choose -c 'mpg, hp'
 
 tt -i left.csv \
-    join --how bind-columns right.csv \
+    join --way bind-columns right.csv \
     | csvlook
 
 rm -rf left.csv right.csv
@@ -35,7 +35,7 @@ tt -i cars.csv -o bottom.csv \
     arrange 'mpg'
 
 tt -i top.csv \
-    join --how bind-rows bottom.csv \
+    join --way bind-rows bottom.csv \
     | csvlook
 
 rm -rf top.csv bottom.csv
