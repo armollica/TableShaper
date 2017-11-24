@@ -20,22 +20,24 @@ def spread(df, key, value):
     return df
 
 @click.command('reshape')
-@click.option('-g', '--gather', 'operation', flag_value='gather', default = True)
-@click.option('-s', '--spread', 'operation', flag_value='spread')
+@click.option('-w', '--way',
+              default = 'gather',
+              type = click.Choice(['gather', 'spread']),
+              show_default = True)
 @click.option('-k', '--key', type = click.STRING, default = 'key',
               help = 'Key column')
 @click.option('-v', '--value', type = click.STRING, default = 'value',
               help = 'Value column')
 @click.option('-c', '--columns', type = click.STRING, help = 'Selection of columns to be gathered')
 @processor
-def cli(dfs, operation, key, value, columns):
+def cli(dfs, way, key, value, columns):
     '''
     Reshape table. Gather many columns into two key-value columns. Or Spread
     two key-value columns to multiple columns.
     '''
     for df in dfs:    
-        if operation == 'gather':
+        if way == 'gather':
             df = gather(df, key, value, columns)
-        elif operation == 'spread':
+        elif way == 'spread':
             df = spread(df, key, value)    
         yield df
