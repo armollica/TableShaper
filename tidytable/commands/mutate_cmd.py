@@ -37,21 +37,23 @@ def cli(dfs, group_by, name, way, expression):
     `--way columns` is in effect.
 
     \b
-    --way row
+    -w row / --way row
     Row-wise mutation. Each row is evaluated individually. Columns in the row
     are put in the namespace as an individual value. Grouped mutations are not
     possible; the --group-by option is ignored.
 
+    \b
     Examples:
     mutate --way row --name id '"%05d" % id'
     mutate --way row -n state 'id[0:2]' \
 
     \b
-    --way column (default)
+    -w column / --way column (default)
     Column-wise mutation. All columns of the table are put in the namespace
     as a pandas Series. Grouped mutations are possible with the --group-by
     option
 
+    \b
     Examples:
     mutate --way column --name real_value 'value * (price / 100)'
     mutate -n touches_lake_mi 'state.isin(['WI', 'MI'])'
