@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 tt -i cars.csv -o left.csv \
-    choose -c 'name, mpg'
+    choose 'name, mpg'
 
 tt -i cars.csv -o right.csv \
-    choose -c 'name, hp'
+    choose 'name, hp'
 
 tt -i left.csv \
     join --keys name right.csv \
@@ -13,10 +13,10 @@ tt -i left.csv \
 rm -rf left.csv right.csv
 
 tt -i cars.csv -o left.csv \
-    choose -c 'name, mpg'
+    choose 'name, mpg'
 
 tt -i cars.csv -o right.csv \
-    choose -c 'mpg, hp'
+    choose 'mpg, hp'
 
 tt -i left.csv \
     join --way bind-columns right.csv \
@@ -25,12 +25,12 @@ tt -i left.csv \
 rm -rf left.csv right.csv
 
 tt -i cars.csv -o top.csv \
-    choose -c 'name, mpg' \
+    choose 'name, mpg' \
     filter 'mpg > 22' \
     arrange 'mpg:desc'
 
 tt -i cars.csv -o bottom.csv \
-    choose -c 'name, mpg' \
+    choose 'name, mpg' \
     filter 'mpg <= 22' \
     arrange 'mpg'
 

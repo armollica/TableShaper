@@ -3,10 +3,13 @@ import pandas as pd
 from tidytable.util import processor, selectify
 
 @click.command('choose')
-@click.option('-f', '--filter', 'filter_expression', type = click.STRING)
-@click.option('-c', '--columns', 'select_expression', type = click.STRING)
+@click.option('-w', '--way',
+              default = 'selection',
+              type = click.Choice(['selection', 'filter']),
+              show_default = True)
+@click.argument('expression', type = click.STRING)
 @processor
-def cli(dfs, filter_expression, select_expression):
+def cli(dfs, way, expression):
     '''
     Subset columns.
     
@@ -34,10 +37,10 @@ def cli(dfs, filter_expression, select_expression):
     choose -s '~junk_column_1:junk_column_20'
     '''
     for df in dfs:
-        if filter_expression is not None:
-            column_list = filter(eval('lambda name: ' + filter_expression), list(df))
+        if way == 'filter':
+            column_list = filter(eval('lambda name: ' + expression), list(df))
             df = df[column_list]
-        if select_expression is not None:
-            column_list = selectify(list(df), select_expression)
+        if way == 'selection':
+            column_list = selectify(list(df), expression)
             df = df[column_list]
         yield df
