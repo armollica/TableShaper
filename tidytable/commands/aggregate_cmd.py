@@ -10,17 +10,17 @@ def grouped_aggregate(df, groups, column_name, expression):
 
 @click.command('aggregate')
 @click.option('-g', '--group-by', type = click.STRING)
-@click.argument('aggregation', type = click.STRING)
+@click.option('-n', '--name', type = click.STRING)
+@click.argument('expression', type = click.STRING)
 @processor
-def cli(dfs, group_by, aggregation):
+def cli(dfs, group_by, name, expression):
     '''
     Aggregate rows.
     '''
     for df in dfs:
-        [column_name, expression] = map(lambda x: x.strip(), aggregation.split('<-'))
         if group_by is not None:     
             groups = map(lambda x: x.strip(), group_by.split(','))
-            df = grouped_aggregate(df, groups, column_name, expression)
+            df = grouped_aggregate(df, groups, name, expression)
         else:
-            df = aggregate(df, column_name, expression)
+            df = aggregate(df, name, expression)
         yield df
