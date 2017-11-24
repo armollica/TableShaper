@@ -14,16 +14,16 @@ def cli(dfs, way, expression):
     Subset columns.
     
     \b
-    -k, --keep
+    --way filter
     A python expression on each column name. If it evaluates to `True`
     then it's kept. The column name is loaded in as `name`.
 
     \b
     Examples:
-    choose -f '"population" in name'
+    choose --way filter '"population" in name'
 
     \b
-    -c, --columns
+    --way selection (default)
     Provide a comma-separated list of column "selections".
     These can be single column names or sequential ranges of columns
     defined by the first and last column name of the sequence 
@@ -31,10 +31,10 @@ def cli(dfs, way, expression):
 
     \b
     Examples:
-    choose -s 'date, country, A, B, C, D'
-    choose -s 'date, country, A:D'
-    choose -s '~junk_column'
-    choose -s '~junk_column_1:junk_column_20'
+    choose 'date, country, A, B, C, D'
+    choose 'date, country, A:D'
+    choose '~junk_column'
+    choose '~junk_column_1:junk_column_20'
     '''
     for df in dfs:
         if way == 'filter':
