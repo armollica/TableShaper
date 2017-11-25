@@ -63,7 +63,7 @@ def cli(dfs, group_by, name, way, expression):
     for df in dfs:
         if way == 'row':
             df = row_mutate(df, name, expression)
-        if way == 'column':    
+        elif way == 'column':    
             if group_by is not None:     
                 groups = map(lambda x: x.strip(), group_by.split(','))
                 df = column_mutate_grouped(df, groups, name, expression)

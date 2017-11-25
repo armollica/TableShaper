@@ -35,7 +35,7 @@ def cli(dfs, way, expression):
     for df in dfs:
         if way == 'map':
             df.columns = map(eval('lambda name: ' + expression), df.columns)
-        if way == 'assign':
+        elif way == 'assign':
             columns = dict()
             for chunk in expression.split(','):
                 names = chunk.split('<-')
