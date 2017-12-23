@@ -1,3 +1,4 @@
+import re
 from functools import update_wrapper
 
 def processor(f):
@@ -23,6 +24,17 @@ def generator(f):
         for item in f(*args, **kwargs):
             yield item
     return update_wrapper(new_func, f)
+
+def parse_key_value(string):
+    '''
+    Parse key-value pair from a string formatted: key <- value
+    '''
+    match = re.match('^(\w+)\s*<-(.+)', string)
+    if match is None:
+        raise Exception('Key-value not in correct format: key <- value')
+    key = str(match.group(1))
+    value = str(match.group(2)).strip()
+    return { 'key': key, 'value': value }
 
 def selectify(string_list, selection_string):
     '''

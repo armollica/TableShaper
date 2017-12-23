@@ -3,10 +3,8 @@ import pandas as pd
 from tidytable.util import processor, selectify
 
 @click.command('choose')
-@click.option('-w', '--way',
-              default = 'selection',
-              type = click.Choice(['selection', 'filter']),
-              show_default = True)
+@click.option('-s', '--selection', 'way', flag_value = 'selection', default = True)
+@click.option('-f', '--filter', 'way', flag_value = 'filter')
 @click.argument('expression', type = click.STRING)
 @processor
 def cli(dfs, way, expression):
@@ -14,16 +12,16 @@ def cli(dfs, way, expression):
     Subset columns.
     
     \b
-    --way filter
+    -f, --filter
     A python expression on each column name. If it evaluates to `True`
     then it's kept. The column name is loaded in as `name`.
 
     \b
     Examples:
-    choose --way filter '"population" in name'
+    choose -f '"population" in name'
 
     \b
-    --way selection (default)
+    -s, --selection (default)
     Provide a comma-separated list of column "selections".
     These can be single column names or sequential ranges of columns
     defined by the first and last column name of the sequence 

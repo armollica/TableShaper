@@ -3,10 +3,12 @@ import pandas as pd
 from tidytable.util import processor
 
 @click.command('join')
-@click.option('-w', '--way',
-              default = 'left',
-              type = click.Choice(['left', 'right', 'outer', 'inner', 'bind-rows', 'bind-columns']),
-              show_default = True)
+@click.option('-l', '--left', 'way', flag_value = 'left', default = True)
+@click.option('-r', '--right', 'way', flag_value = 'right')
+@click.option('-o', '--outer', 'way', flag_value = 'outer')
+@click.option('-i', '--inner', 'way', flag_value = 'inner')
+@click.option('-r', '--bind-rows', 'way', flag_value = 'bind-rows')
+@click.option('-c', '--bind-columns', 'way', flag_value = 'bind-columns')
 @click.option('-k', '--keys', type = click.STRING)
 @click.argument('other', default = '-', type = click.Path())
 @processor

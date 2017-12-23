@@ -20,10 +20,8 @@ def spread(df, key, value):
     return df
 
 @click.command('reshape')
-@click.option('-w', '--way',
-              default = 'gather',
-              type = click.Choice(['gather', 'spread']),
-              show_default = True)
+@click.option('-g', '--gather', 'way', flag_value = 'gather', default = True)
+@click.option('-s', '--spread', 'way', flag_value = 'spread')
 @click.option('-k', '--key', type = click.STRING, default = 'key',
               help = 'Key column')
 @click.option('-v', '--value', type = click.STRING, default = 'value',
