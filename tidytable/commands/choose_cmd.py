@@ -3,8 +3,11 @@ import pandas as pd
 from tidytable.util import processor, selectify
 
 @click.command('choose')
-@click.option('-s', '--selection', 'way', flag_value = 'selection', default = True)
-@click.option('-f', '--filter', 'way', flag_value = 'filter')
+@click.option('-s', '--selection', 'way', flag_value = 'selection',
+              default = True,
+              help = 'Selection-based choosing')
+@click.option('-f', '--filter', 'way', flag_value = 'filter',
+              help = 'Filter-based choosing')
 @click.argument('expression', type = click.STRING)
 @processor
 def cli(dfs, way, expression):

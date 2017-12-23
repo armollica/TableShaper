@@ -31,24 +31,32 @@ CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
              context_settings = CONTEXT_SETTINGS)
 @click.option('-i', '--input', 'infile', default = '-',
               type = click.File('rb'),
-              help = 'Input file.',
+              help = 'Input file or - for stdin.',
               show_default = True)
 @click.option('-o', '--output', 'outfile', default = '-',
               type = click.File('wb'),
-              help = 'Output file.',
+              help = 'Output file or - for stdout.',
               show_default = True)
-@click.option('-j', '--json', is_flag = True,
-              help = 'Read as JSON instead of CSV')
-@click.option('--json-format', default = 'records',
+@click.option('-c', '--csv', 'intype', flag_value = 'csv', default = True,
+              help = 'Read input as CSV', show_default = True)
+@click.option('-t', '--tsv', 'intype', flag_value = 'tsv',
+              help = 'Read input as TSV')
+@click.option('-j', '--json', 'intype', flag_value = 'json',
+              help = 'Read input as JSON')
+@click.option('-f', '--json-format', default = 'records',
               type = click.Choice(['records', 'split', 'index', 'columns', 'values']),
               help = 'JSON string format.',
               show_default = True)
-def cli(infile, outfile, json, json_format):
-    """Tidy your tables"""
+def cli(infile, outfile, intype, json_format):
+    '''
+    Tidy Table
+
+    A pipeline of transformations to tidy your tables
+    '''
     pass
 
 @cli.resultcallback()
-def process_commands(processors, infile, outfile, json, json_format):
+def process_commands(processors, infile, outfile, intype, json_format):
     '''
     This result callback is invoked with an iterable of all the chained
     subcommands.  As in this example each subcommand returns a function
@@ -57,11 +65,12 @@ def process_commands(processors, infile, outfile, json, json_format):
     '''
     # Input the file
     def read_df(file):
-        if json:
+        if intype == 'json':
             return pd.read_json(file, orient = json_format)
-        else:
+        elif intype == 'tsv':
+            return pd.read_csv(file, sep = '\t')    
+        elif intype == 'csv':
             return pd.read_csv(file)
-    
     try:
         df = read_df(infile)
     except Exception as e:

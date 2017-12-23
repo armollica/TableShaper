@@ -7,7 +7,16 @@ from tidytable.util import processor
 @processor
 def cli(dfs, columns):
     '''
-    Sort rows. Order is determined by values in a column (or columns).
+    Sort rows.
+    
+    Order is determined by values in a column (or columns).
+
+    \b
+    Examples:
+    arrange 'mpg'
+    arrange 'mpg:desc'
+    arrange 'mpg, hp:desc'
+
     '''
     column_list = []
     ascending_list = []

@@ -3,8 +3,10 @@ import pandas as pd
 from tidytable.util import processor, parse_key_value
 
 @click.command('rename')
-@click.option('-a', '--assign', 'way', flag_value = 'assign', default = True)
-@click.option('-m', '--map', 'way', flag_value = 'map')
+@click.option('-a', '--assign', 'way', flag_value = 'assign', default = True,
+              help = 'assign-based renaming (default)')
+@click.option('-m', '--map', 'way', flag_value = 'map',
+              help = 'map-based renaming')
 @click.argument('expression', type = click.STRING)
 @processor
 def cli(dfs, way, expression):
@@ -26,9 +28,9 @@ def cli(dfs, way, expression):
 
     \b
     Example:
+    rename -m 'name.upper()'
     rename -m 'name.strip().lower()'
     rename -m "'_'.join(name.split(' ')).strip().lower()"
-
     '''
     for df in dfs:
         if way == 'map':

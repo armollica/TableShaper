@@ -7,7 +7,16 @@ from tidytable.util import processor
 @processor
 def cli(dfs, expression):
     '''
-    Execute python code. The table will be in the name space as `d`.
+    Execute python code.
+    
+    The table will be in the namespace as `d`. Any
+    changes to the `d` dataframe will be passed on.
+
+    \b
+    Examples:
+    exec 'd["pop_per_mil"] = d["pop"] / 1000000'
+    is equivalent to...
+    mutate 'pop_per_mil <- pop / 1000000'
     '''
     for d in dfs:
         exec(expression)

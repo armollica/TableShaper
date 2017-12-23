@@ -14,14 +14,20 @@ def column_mutate_grouped(df, groups, column_name, expression):
     return df.groupby(groups).apply(apply_func).reset_index(drop = True)
 
 @click.command('mutate')
-@click.option('-v', '--vectorized', 'way', flag_value = 'vectorized', default = True)
-@click.option('-r', '--row-wise', 'way', flag_value = 'row-wise')
-@click.option('-g', '--group-by', type = click.STRING)
+@click.option('-v', '--vectorized', 'way', flag_value = 'vectorized',
+              default = True,
+              help = 'Vectorized transformation')
+@click.option('-r', '--row-wise', 'way', flag_value = 'row-wise',
+              help = 'Row-wise transformation')
+@click.option('-g', '--group-by', type = click.STRING,
+              help = 'Column(s) to group rows by')
 @click.argument('mutation', type = click.STRING)
 @processor
 def cli(dfs, way, group_by, mutation):
     '''
-    Create new columns. A new column is created by assigning a new variable in
+    Create new columns.
+    
+    A new column is created by assigning a new variable in
     a python expression. Mutation follow this format:
 
     new_column <- [python expression]
@@ -38,7 +44,7 @@ def cli(dfs, way, group_by, mutation):
     \b
     Examples:
     mutate -r 'id <- "%05d" % id'
-    mutate -r 'state <- id[0:2]' \
+    mutate -r 'state <- id[0:2]'
 
     \b
     -v, --vectorized (default)

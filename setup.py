@@ -8,7 +8,7 @@ setup(
     install_requires=[
         'Click',
         'pandas',
-        'inflection'
+        'inflection',
     ],
     entry_points='''
         [console_scripts]
