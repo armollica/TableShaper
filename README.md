@@ -5,13 +5,17 @@
 ```
 Usage: tt [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
 
-  Tidy your tables
+  Tidy Table
+
+  A pipeline of transformations to tidy your tables
 
 Options:
-  -i, --input FILENAME            Input file.  [default: -]
-  -o, --output FILENAME           Output file.  [default: -]
-  -j, --json                      Read as JSON instead of CSV
-  --json-format [records|split|index|columns|values]
+  -i, --input FILENAME            Input file or - for stdin.  [default: -]
+  -o, --output FILENAME           Output file or - for stdout.  [default: -]
+  -c, --csv                       Read input as CSV  [default: True]
+  -t, --tsv                       Read input as TSV
+  -j, --json                      Read input as JSON
+  -f, --json-format [records|split|index|columns|values]
                                   JSON string format.  [default: records]
   -h, --help                      Show this message and exit.
 
