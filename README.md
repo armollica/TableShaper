@@ -2,6 +2,10 @@
 
 A pipeline of transformations to tidy your tables at the command line.
 
+- <a href="#install">Install</a>
+- <a href="#reference">Reference</a>
+- <a href="#develop">Develop</a>
+
 ## Install
 
 Pull down this repo and install it with `pip`.
