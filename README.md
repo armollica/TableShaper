@@ -10,22 +10,18 @@ git pull https://github.com/armollica/TidyTable.git
 pip install TidyTable/
 ```
 
-## Examples
-
-Add examples...
-
 ## Reference
 
-- `tt`: Tidy Table program
-- `tt aggregate`: Aggregate rows.
-- `tt arrange`: Sort rows.
-- `tt choose`: Subset columns.
-- `tt exec`: Execute python code.
-- `tt filter`: Subset rows.
-- `tt join`: Join tables.
-- `tt mutate`: Create new columns.
-- `tt rename`: Rename columns.
-- `tt reshape`: Reshape table.
+- <a href="#-tt">`tt`</a>: Tidy Table program
+- <a href="#-tt-aggregate">`tt aggregate`</a>: Aggregate rows.
+- <a href="#-tt-arrange">`tt arrange`</a>: Sort rows.
+- <a href="#-tt-choose">`tt choose`</a>: Subset columns.
+- <a href="#-tt-exec">`tt exec`</a>: Execute python code.
+- <a href="#-tt-filter">`tt filter`</a>: Subset rows.
+- <a href="#-tt-join">`tt join`</a>: Join tables.
+- <a href="#-tt-mutate">`tt mutate`</a>: Create new columns.
+- <a href="#-tt-rename">`tt rename`</a>: Rename columns.
+- <a href="#-tt-reshape">`tt reshape`</a>: Reshape table.
 
 ### `> tt`
 
