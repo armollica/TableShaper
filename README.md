@@ -17,17 +17,37 @@ pip install TidyTable/
 ## Reference
 
 - <a href="#-tt">`tt`</a>: Tidy Table program
-- <a href="#-tt-aggregate">`tt aggregate`</a>: Aggregate rows.
-- <a href="#-tt-arrange">`tt arrange`</a>: Sort rows.
 - <a href="#-tt-choose">`tt choose`</a>: Subset columns.
-- <a href="#-tt-exec">`tt exec`</a>: Execute python code.
-- <a href="#-tt-filter">`tt filter`</a>: Subset rows.
-- <a href="#-tt-join">`tt join`</a>: Join tables.
-- <a href="#-tt-mutate">`tt mutate`</a>: Create new columns.
 - <a href="#-tt-rename">`tt rename`</a>: Rename columns.
+- <a href="#-tt-filter">`tt filter`</a>: Subset rows.
+- <a href="#-tt-arrange">`tt arrange`</a>: Sort rows.
+- <a href="#-tt-mutate">`tt mutate`</a>: Create new columns.
+- <a href="#-tt-aggregate">`tt aggregate`</a>: Aggregate rows.
+- <a href="#-tt-join">`tt join`</a>: Join tables.
 - <a href="#-tt-reshape">`tt reshape`</a>: Reshape table.
+- <a href="#-tt-exec">`tt exec`</a>: Execute python code.
 
 ### `> tt`
+
+This is the entry to the program. It is nearly always followed by a series of 
+commands, like `choose`, `filter`, or `mutate`.
+
+It's at this entry point that you specify the input and output file with
+the `-i, --input` and `-o, --output` arguments. By default, the input
+will be `stdin` and the output will be `stdout`.
+
+The input file can be one of several formats. The default format is CSV,
+comma-separated values, set with the `-c, --csv` flag. For tab-delimited files,
+use the `-t, --tsv` flag. For JSON files, use the `--json` flag. A JSON file
+can be formatted several ways and can be set with the `-f, --json-format`
+argument:
+- records: list like [{column -> value}, ... , {column -> value}]
+- split: dict like {index -> [index], columns -> [columns], data -> [values]}
+- index: dict like {index -> {column -> value}}
+- columns: dict like {column -> {index -> value}}
+- values: just the values array
+
+The output file is always a CSV.
 
 ```
 Usage: tt [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
@@ -56,51 +76,6 @@ Commands:
   mutate     Create new columns.
   rename     Rename columns.
   reshape    Reshape table.
-```
-
-### `> tt aggregate`
-
-```
-Usage: tt aggregate [OPTIONS] AGGREGATION
-
-  Aggregate rows.
-
-  Group rows based on values in one or more columns and aggregate these
-  groups of rows into single values using methods like sum(), mean(),
-  count(), max(), min().
-
-  Aggregations follow this format:
-
-  new_column <- [python expression]
-
-  -g, --group-by <columns>
-  Comma-separated list of columns to group by.
-
-  Examples:
-  aggregate -g state 'population_sum <- population.sum()'
-  aggregate -g country_id,station_id 'median_wind_speed <- wind_speed.median()'
-
-Options:
-  -g, --group-by TEXT
-  -h, --help           Show this message and exit.
-```
-
-### `> tt arrange`
-
-```
-Usage: tt arrange [OPTIONS] COLUMNS
-
-  Sort rows.
-
-  Order is determined by values in a column (or columns).
-
-  Examples:
-  arrange 'mpg'
-  arrange 'mpg:desc'
-  arrange 'mpg, hp:desc'
-
-Options:
-  -h, --help  Show this message and exit.
 ```
 
 ### `> tt choose`
@@ -134,23 +109,32 @@ Options:
   -h, --help       Show this message and exit.
 ```
 
-### `> tt exec`
+### `> tt rename`
 
 ```
-Usage: tt exec [OPTIONS] EXPRESSION
+Usage: tt rename [OPTIONS] EXPRESSION
 
-  Execute python code.
+  Rename columns.
 
-  The table will be in the namespace as `d`. Any changes to the `d`
-  dataframe will be passed on.
+  -a, --assign (default)
+  A comma-separated list of column names assignment, i.e.: new <- old
 
-  Examples:
-  exec 'd["pop_per_mil"] = d["pop"] / 1000000'
-  is equivalent to...
-  mutate 'pop_per_mil <- pop / 1000000'
+  Example:
+  rename 'id <- GEOID, fips <- state_fips'
+
+  -m, --map
+  A python expression evaluated on each column name.
+  The column name is loaded in as `name`.
+
+  Example:
+  rename -m 'name.upper()'
+  rename -m 'name.strip().lower()'
+  rename -m "'_'.join(name.split(' ')).strip().lower()"
 
 Options:
-  -h, --help  Show this message and exit.
+  -a, --assign  assign-based renaming (default)
+  -m, --map     map-based renaming
+  -h, --help    Show this message and exit.
 ```
 
 ### `> tt filter`
@@ -185,46 +169,22 @@ Options:
   -h, --help        Show this message and exit.
 ```
 
-### `> tt join`
+### `> tt arrange`
 
 ```
-Usage: tt join [OPTIONS] [RIGHT]
+Usage: tt arrange [OPTIONS] COLUMNS
 
-  Join tables.
+  Sort rows.
 
-  SQL-style joins
-  -l, --left
-  -r, --right
-  -o, --outer
-  -i, --inner
-  Join two tables based on common column values.
+  Order is determined by values in a column (or columns).
 
   Examples:
-  join -k id right.csv
-  join -r -k id right.csv
-  join -o -k 'state_id, county_id' right.csv
-
-  Bind columns or rows
-  -r, --bind-rows
-  -c, --bind-columns
-  Bind rows or columns from two tables together.
-
-  Examples:
-  join -r right.csv
-  join -c right.csv
-
-  -k, --keys
-  Column to join tables with. Only applies to SQL-style joins.
+  arrange 'mpg'
+  arrange 'mpg:desc'
+  arrange 'mpg, hp:desc'
 
 Options:
-  -l, --left          Left join
-  -r, --right         Right join
-  -o, --outer         Outer join
-  -i, --inner         Inner join
-  -r, --bind-rows     Bind rows
-  -c, --bind-columns  Bind columns
-  -k, --keys TEXT     Columns to join tables on
-  -h, --help          Show this message and exit.
+  -h, --help  Show this message and exit.
 ```
 
 ### `> tt mutate`
@@ -272,32 +232,73 @@ Options:
   -h, --help           Show this message and exit.
 ```
 
-### `> tt rename`
+### `> tt aggregate`
 
 ```
-Usage: tt rename [OPTIONS] EXPRESSION
+Usage: tt aggregate [OPTIONS] AGGREGATION
 
-  Rename columns.
+  Aggregate rows.
 
-  -a, --assign (default)
-  A comma-separated list of column names assignment, i.e.: new <- old
+  Group rows based on values in one or more columns and aggregate these
+  groups of rows into single values using methods like sum(), mean(),
+  count(), max(), min().
 
-  Example:
-  rename 'id <- GEOID, fips <- state_fips'
+  Aggregations follow this format:
 
-  -m, --map
-  A python expression evaluated on each column name.
-  The column name is loaded in as `name`.
+  new_column <- [python expression]
 
-  Example:
-  rename -m 'name.upper()'
-  rename -m 'name.strip().lower()'
-  rename -m "'_'.join(name.split(' ')).strip().lower()"
+  -g, --group-by <columns>
+  Comma-separated list of columns to group by.
+
+  Examples:
+  aggregate -g state 'population_sum <- population.sum()'
+  aggregate -g country_id,station_id 'median_wind_speed <- wind_speed.median()'
 
 Options:
-  -a, --assign  assign-based renaming (default)
-  -m, --map     map-based renaming
-  -h, --help    Show this message and exit.
+  -g, --group-by TEXT
+  -h, --help           Show this message and exit.
+```
+
+### `> tt join`
+
+```
+Usage: tt join [OPTIONS] [RIGHT]
+
+  Join tables.
+
+  SQL-style joins
+  -l, --left
+  -r, --right
+  -o, --outer
+  -i, --inner
+  Join two tables based on common column values.
+
+  Examples:
+  join -k id right.csv
+  join -r -k id right.csv
+  join -o -k 'state_id, county_id' right.csv
+
+  Bind columns or rows
+  -r, --bind-rows
+  -c, --bind-columns
+  Bind rows or columns from two tables together.
+
+  Examples:
+  join -r right.csv
+  join -c right.csv
+
+  -k, --keys
+  Column to join tables with. Only applies to SQL-style joins.
+
+Options:
+  -l, --left          Left join
+  -r, --right         Right join
+  -o, --outer         Outer join
+  -i, --inner         Inner join
+  -r, --bind-rows     Bind rows
+  -c, --bind-columns  Bind columns
+  -k, --keys TEXT     Columns to join tables on
+  -h, --help          Show this message and exit.
 ```
 
 ### `> tt reshape`
@@ -326,6 +327,25 @@ Options:
   -v, --value TEXT    Value column
   -c, --columns TEXT  Selection of columns to be gathered
   -h, --help          Show this message and exit.
+```
+
+### `> tt exec`
+
+```
+Usage: tt exec [OPTIONS] EXPRESSION
+
+  Execute python code.
+
+  The table will be in the namespace as `d`. Any changes to the `d`
+  dataframe will be passed on.
+
+  Examples:
+  exec 'd["pop_per_mil"] = d["pop"] / 1000000'
+  is equivalent to...
+  mutate 'pop_per_mil <- pop / 1000000'
+
+Options:
+  -h, --help  Show this message and exit.
 ```
 
 ## Develop
