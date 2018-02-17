@@ -1,17 +1,7 @@
 import click
 import pandas as pd
 from tidytable.util import processor, parse_key_value
-
-def row_mutate(df, column_name, expression):
-    return df.assign(**{ column_name: lambda x: x.apply(lambda y: eval(expression, y.to_dict()), axis = 1)})
-
-def column_mutate(df, column_name, expression):
-    return df.assign(**{ column_name: lambda x: eval(expression, x.to_dict('series')) })
-
-def column_mutate_grouped(df, groups, column_name, expression):
-    def apply_func(df):
-        return column_mutate(df, column_name, expression)
-    return df.groupby(groups).apply(apply_func).reset_index(drop = True)
+from tidytable.operations import row_mutate, column_mutate, column_mutate_grouped
 
 @click.command('mutate')
 @click.option('-v', '--vectorized', 'way', flag_value = 'vectorized',
