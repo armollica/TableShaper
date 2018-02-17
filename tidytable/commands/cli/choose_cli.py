@@ -29,7 +29,8 @@ def cli(dfs, way, expression):
     Provide a comma-separated list of column "selections".
     These can be single column names or sequential ranges of columns
     defined by the first and last column name of the sequence 
-    separated by a colon. The tilde character (~) drops the selection.
+    separated by a colon. The tilde character (~) drops the selection,
+    keeping all other columns.
 
     \b
     Examples:
