@@ -1,6 +1,7 @@
 # Tidy Table
 
-A pipeline of transformations to tidy your tables at the command line.
+Command-line table processor.  A pipeline of transformations to tidy tabular
+data.
 
 - <a href="#install">Install</a>
 - <a href="#reference">Reference</a>
@@ -37,8 +38,10 @@ the `-i, --input` and `-o, --output` arguments. By default, the input
 will be `stdin` and the output will be `stdout`.
 
 The input file can be one of several formats. The default format is CSV,
-comma-separated values, set with the `-c, --csv` flag. For tab-delimited files,
-use the `-t, --tsv` flag. For JSON files, use the `--json` flag. A JSON file
+comma-separated values. It can be explicitly set with the `-c, --csv` flag.
+For tab-delimited files, use the `-t, --tsv` flag.
+
+For JSON files, use the `--json` flag. A JSON file
 can be formatted several ways and can be set with the `-f, --json-format`
 argument:
 - records: list like [{column -> value}, ... , {column -> value}]
@@ -49,6 +52,7 @@ argument:
 
 The output file is always a CSV.
 
+###### Command-line help
 ```
 Usage: tt [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
 

@@ -1,6 +1,7 @@
 import click
 import pandas as pd
-from tidytable.util import processor
+from tidytable.helpers import processor
+from tidytable.commands.filter import filter_dataframe
 
 @click.command('filter')
 @click.option('-v', '--vectorized', 'way', flag_value = 'vectorized',
@@ -38,9 +39,4 @@ def cli(dfs, way, expression):
     filter -s 25:75
     '''
     for df in dfs:
-        if way == 'slice':
-            [start, end] = map(lambda x: int(x.strip()), expression.split(':'))
-            df = df.iloc[start:end]
-        elif way == 'vectorized':
-            df = df[eval(expression, df.to_dict('series'))]
-        yield df
+        yield filter_dataframe(df, way, expression)

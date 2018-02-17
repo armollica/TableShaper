@@ -1,7 +1,6 @@
 import click
-import pandas as pd
-from tidytable.util import processor
-from tidytable.operations import gather, spread
+from tidytable.helpers import processor
+from tidytable.commands.reshape import reshape
 
 @click.command('reshape')
 @click.option('-g', '--gather', 'way', flag_value = 'gather', default = True,
@@ -34,9 +33,5 @@ def cli(dfs, way, key, value, columns):
     Examples:
     reshape -s -k year -v population
     '''
-    for df in dfs:    
-        if way == 'gather':
-            df = gather(df, key, value, columns)
-        elif way == 'spread':
-            df = spread(df, key, value)    
-        yield df
+    for df in dfs:
+        yield reshape(df, way, key, value, columns)

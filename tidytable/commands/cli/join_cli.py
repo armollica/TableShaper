@@ -1,6 +1,7 @@
 import click
 import pandas as pd
-from tidytable.util import processor
+from tidytable.helpers import processor
+from tidytable.commands.join import join
 
 @click.command('join')
 @click.option('-l', '--left', 'way', flag_value = 'left', default = True,
@@ -52,16 +53,5 @@ def cli(dfs, way, keys, right):
     -k, --keys
     Column to join tables with. Only applies to SQL-style joins.
     '''
-    if right == '-':
-        right_df = pd.read_csv(click.get_text_stream('stdin'))
-    else:
-        right_df = pd.read_csv(right)
     for df in dfs:
-        if way == 'bind-rows':
-            df = pd.concat([df, right_df])
-        elif way == 'bind-columns':
-            df = pd.concat([df, right_df], axis = 1)
-        else:
-            keys_list = map(lambda x: x.strip(), keys.split(','))
-            df = df.merge(right_df, on = keys_list, how = way)
-        yield df
+        yield join(df, way, keys, right)

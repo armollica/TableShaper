@@ -1,6 +1,7 @@
 import click
 import pandas as pd
-from tidytable.util import processor
+from tidytable.helpers import processor
+from tidytable.commands.arrange import arrange
 
 @click.command('arrange')
 @click.argument('columns', type = click.STRING)
@@ -18,16 +19,5 @@ def cli(dfs, columns):
     arrange 'mpg, hp:desc'
 
     '''
-    column_list = []
-    ascending_list = []
-    for column in columns.split(','):
-        column = column.strip()
-        ascending = True
-        if column.endswith(':desc'):
-            ascending = False
-            column = column[:-5]
-        column_list.append(column)
-        ascending_list.append(ascending)
     for df in dfs:
-        df = df.sort_values(by = column_list, ascending = ascending_list)
-        yield df
+        yield arrange(df, columns)

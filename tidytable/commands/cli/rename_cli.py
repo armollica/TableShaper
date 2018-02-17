@@ -1,6 +1,7 @@
 import click
 import pandas as pd
-from tidytable.util import processor, parse_key_value
+from tidytable.helpers import processor
+from tidytable.commands.rename import rename
 
 @click.command('rename')
 @click.option('-a', '--assign', 'way', flag_value = 'assign', default = True,
@@ -33,14 +34,4 @@ def cli(dfs, way, expression):
     rename -m "'_'.join(name.split(' ')).strip().lower()"
     '''
     for df in dfs:
-        if way == 'map':
-            df.columns = map(eval('lambda name: ' + expression), df.columns)
-        elif way == 'assign':
-            columns = dict()
-            for chunk in expression.split(','):
-                key_value = parse_key_value(chunk.strip())
-                new_name = key_value['key'].strip()
-                old_name = key_value['value'].strip()
-                columns[old_name] = new_name
-            df = df.rename(columns = columns)
-        yield df
+        yield rename(df, way, expression)

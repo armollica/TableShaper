@@ -1,5 +1,6 @@
+import click
 import pandas as pd
-from tidytable.util import selectify
+from tidytable.helpers import selectify
 
 def gather(df, key, value, columns):
     all_column_list = list(df)
@@ -14,4 +15,11 @@ def spread(df, key, value):
     indexes = list(df.columns.drop(value))
     df = df.set_index(indexes).unstack(key).reset_index()
     df.columns = [i[1] if i[0] == value else i[0] for i in df.columns]
+    return df
+
+def reshape(df, way, key, value, columns):
+    if way == 'gather':
+        df = gather(df, key, value, columns)
+    elif way == 'spread':
+        df = spread(df, key, value)    
     return df

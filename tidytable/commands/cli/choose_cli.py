@@ -1,6 +1,7 @@
 import click
 import pandas as pd
-from tidytable.util import processor, selectify
+from tidytable.helpers import processor
+from tidytable.commands.choose import choose
 
 @click.command('choose')
 @click.option('-s', '--selection', 'way', flag_value = 'selection',
@@ -38,10 +39,4 @@ def cli(dfs, way, expression):
     choose '~junk_column_1:junk_column_20'
     '''
     for df in dfs:
-        if way == 'filter':
-            column_list = filter(eval('lambda name: ' + expression), list(df))
-            df = df[column_list]
-        elif way == 'selection':
-            column_list = selectify(list(df), expression)
-            df = df[column_list]
-        yield df
+        yield choose(df, way, expression)
