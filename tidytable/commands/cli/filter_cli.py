@@ -31,8 +31,11 @@ def cli(dfs, way, expression):
 
     \b
     -s, --slice
-    Specify a range of indices following this format: start:end
-
+    Specify a range of indices following this format: start:end.
+    It's a one-based index; the first row starts at one, not zero. Indexes are
+    inclusive. The start row, the end row and all rows in-between will be
+    included.
+    
     \b
     Examples:
     filter -s 1:5

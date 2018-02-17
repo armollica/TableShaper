@@ -6,6 +6,7 @@ class TestMutate(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        print 'Mutate'
         cls.table_1 = pd.read_csv('tests/data/table1.csv')
         cls.table_2 = pd.read_csv('tests/data/table2.csv')
         cls.table_3 = pd.read_csv('tests/data/table3.csv')
