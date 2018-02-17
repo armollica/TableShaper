@@ -3,27 +3,28 @@ import sys
 import click
 import pandas as pd
 
-cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'commands'))
+commands_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'commands/cli'))
 
-class CLI(click.MultiCommand):
-
+class CLI(click.MultiCommand): 
+    
     def list_commands(self, ctx):
-        rv = []
-        for filename in os.listdir(cmd_folder):
-            if filename.endswith('_cmd.py'):
-                rv.append(filename[0:-7])
-        rv.sort()
-        return rv
+        commands = []
+        for filename in os.listdir(commands_folder):
+            if filename.endswith('_cli.py'):
+                commands.append(filename[0:-7])
+        commands.sort()
+        return commands
 
     def get_command(self, ctx, name):
         try:
             if sys.version_info[0] == 2:
                 name = name.encode('ascii', 'replace')
-            mod = __import__('tidytable.commands.' + name + '_cmd',
-                             None, None, ['cli'])
+            module_name = 'tidytable.commands.cli.' + name + '_cli'
+            import_list = ['cli']
+            module = __import__(module_name, None, None, import_list)
         except ImportError:
             return
-        return mod.cli
+        return module.cli
 
 CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
 

@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.operations import row_mutate, column_mutate, column_mutate_grouped
+from tidytable.commands.mutate import mutate
 
 class TestMutate(unittest.TestCase):
 
@@ -14,13 +14,16 @@ class TestMutate(unittest.TestCase):
         cls.table_5 = pd.read_csv('tests/data/table5.csv')
 
     def test_row_mutate(self):
+        
         # Note that we need to add the decimal to the one million in
         # denominator. Without it, we would be doing division with two integers
         # which throws away the remainder in standard Python evaluation. Integer
-        # division with pandas objects doesn't do this.
-        actual = row_mutate(self.table_1, 'population_in_millions', 'population / 1000000.0')
+        # division with pandas objects doesn't do this. 
+        actual = mutate(self.table_1, 'row-wise', None, 'population_in_millions <- population / 1000000.0')
+
         expect = self.table_1.copy()
         expect['population_in_millions'] = expect['population'] / 1000000
+
         self.assertTrue(expect.equals(actual))
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 import click
-from tidytable.helpers import processor, parse_key_value
-from tidytable.operations import aggregate, grouped_aggregate
+from tidytable.helpers import processor
+from tidytable.commands.aggregate import aggregate
 
 @click.command('aggregate')
 @click.option('-g', '--group-by', type = click.STRING)
@@ -28,13 +28,6 @@ def cli(dfs, group_by, aggregation):
     aggregate -g country_id,station_id 'median_wind_speed <- wind_speed.median()'
 
     '''
-    key_value = parse_key_value(aggregation.strip())
-    name = key_value['key']
-    expression = key_value['value']
     for df in dfs:
-        if group_by is not None:     
-            groups = map(lambda x: x.strip(), group_by.split(','))
-            df = grouped_aggregate(df, groups, name, expression)
-        else:
-            df = aggregate(df, name, expression)
-        yield df
+        yield aggregate(df, group_by, aggregation)
+

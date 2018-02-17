@@ -1,7 +1,7 @@
 import click
 import pandas as pd
-from tidytable.util import processor, parse_key_value
-from tidytable.operations import row_mutate, column_mutate, column_mutate_grouped
+from tidytable.helpers import processor
+from tidytable.commands.mutate import mutate
 
 @click.command('mutate')
 @click.option('-v', '--vectorized', 'way', flag_value = 'vectorized',
@@ -53,16 +53,5 @@ def cli(dfs, way, group_by, mutation):
     Comma-separated list of columns to group by. Only applies when 
     `-v, --vectorized` flag is active (which it is by default).
     '''
-    key_value = parse_key_value(mutation.strip())
-    name = key_value['key']
-    expression = key_value['value']
     for df in dfs:
-        if way == 'row-wise':
-            df = row_mutate(df, name, expression)
-        elif way == 'vectorized':    
-            if group_by is not None:     
-                groups = map(lambda x: x.strip(), group_by.split(','))
-                df = column_mutate_grouped(df, groups, name, expression)
-            else:
-                df = column_mutate(df, name, expression)
-        yield df
+        yield mutate(df, way, group_by, mutation)
