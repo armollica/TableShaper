@@ -1,11 +1,37 @@
 # Tidy Table
 
-Command-line table processor.  A pipeline of transformations to tidy tabular
-data.
+Command-line table processor. 
 
+- <a href="#examples">Examples</a>
 - <a href="#install">Install</a>
 - <a href="#reference">Reference</a>
 - <a href="#develop">Develop</a>
+- <a href="#credits">Credits</a>
+
+## Examples
+
+Grab a subset of columns from a table.
+```bash
+tt < table.csv choose 'country, continent, pop1990:pop2000`
+```
+
+Drop rows you don't need.
+```bash
+tt < table.csv filter 'continent == "South America"'
+```
+
+Reshape the table.
+```bash
+tt < table.csv reshape --gather -k year -v population --columns pop1990:pop2000
+```
+
+Do it all in one command.
+```bash
+tt < table.csv \
+  choose 'country, continent, pop1990:pop2000' \
+  filter 'continent == "South America"' \
+  reshaper --gather -k year -v population --columns pop1990:pop2000
+```
 
 ## Install
 
@@ -420,3 +446,17 @@ changes to the source code will automatically affect the CLI program.
 ```bash
 pip install --editable .
 ```
+
+## Credits
+
+Much love to the people who made the [pandas](https://pandas.pydata.org/)
+and [click](http://click.pocoo.org/5/) packages. This tool could have been a
+pain to develop, but these two packages made it a breeze.
+
+Also much love to the people behind these tools. You've saved me loads of time
+and headache. Wouldn't have made this tool without you all.
+- [tidyverse](https://www.tidyverse.org/): R packages that make cleaning data intuitive. I stole many ideas from the `dplyr` and `tidyr` packages, in particular. Love the micro domain-specific languages in these packages, each tailored for specific tasks.
+- [mapshaper](https://github.com/mbloch/mapshaper/wiki/Command-Reference): A command-line tool for editing geographic data (vector-based). I mimicked the command-line interface of this in many ways, especially the command chaining. The viewer is also great.
+- [csvkit](http://csvkit.rtfd.org/): Great tool for processing tabular data. Does many of the same things this tool does. Also does many thing this tool doesn't do, like pretty print and parse Excel files.
+- [jq](https://stedolan.github.io/jq/): A command-line JSON processor. Really simple and powerful.
+- [ndjson-cli](https://github.com/mbostock/ndjson-cli): A command-line tool for processing newline-delimited JSON files.
