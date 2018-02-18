@@ -66,11 +66,17 @@ pip install TidyTable/
 ### `> tt`
 
 This is the entry to the program. It is nearly always followed by a series of 
-commands, like `choose`, `filter`, or `mutate`.
+commands, like `choose`, `filter`, or `mutate`. Here you specify the input and
+output file with the `-i, --input` and `-o, --output` arguments. By default, the
+input will be `stdin` and the output will be `stdout`.
 
-It's at this entry point that you specify the input and output file with
-the `-i, --input` and `-o, --output` arguments. By default, the input
-will be `stdin` and the output will be `stdout`.
+```bash
+# Read CSV data from stdin and output to stdout ...
+tt < input.csv choose 'column1:column10' filter 'column1 > 20'
+
+# ... or read and write to and from files
+tt -i input.csv -o output.csv choose 'column1:column10' filter 'column1 > 20'
+```
 
 The input file can be one of several formats. The default format is CSV,
 comma-separated values. It can be explicitly set with the `-c, --csv` flag.
@@ -122,6 +128,43 @@ Commands:
 <br/>
 
 ### `> tt choose`
+
+Subset columns.
+
+There are two ways to choose columns, the "selection" method and the "filter"
+method.
+
+The "selection" method is the default method (the `-s, --selection` flag sets it
+explicitly). With this method you give a comma-separated list of column names
+or ranges of column names. A range is specified by the starting and ending
+columns separated by a colon: `start:end`. You can exclude a column or a range
+by putting a tilde (~) before it.
+
+```bash
+# Assume we have a table with columns A, B, C, etc.
+
+# Keep columns A and D through G 
+choose 'A, D:G'
+
+# Drop columns C and F
+choose '~C, ~F'
+
+# Drop columns B through G, add column E back in
+choose '~B:G, E`
+```
+
+The "filter" method is set with the `-f, --filter` flag. With this method you
+give a Python expression that evaluates to true or false. The column name is 
+loaded in as `name`.
+
+```bash
+# Keep columns that start with "population"
+choose -f 'name.startswith("population")'
+
+# Keep columns that are numeric
+choose -f 'name.isnumeric()'
+```
+
 ```
 Usage: tt choose [OPTIONS] EXPRESSION
 
