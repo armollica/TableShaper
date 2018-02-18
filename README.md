@@ -36,7 +36,6 @@ pip install TidyTable/
 </table>
 
 <br/>
-<br/>
 
 ### `> tt`
 
@@ -92,9 +91,8 @@ Commands:
   reshape    Reshape table.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt choose`
@@ -128,9 +126,8 @@ Options:
   -h, --help       Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt rename`
@@ -161,9 +158,8 @@ Options:
   -h, --help    Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt filter`
@@ -198,9 +194,8 @@ Options:
   -h, --help        Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt arrange`
@@ -221,9 +216,8 @@ Options:
   -h, --help  Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt mutate`
@@ -271,9 +265,8 @@ Options:
   -h, --help           Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt aggregate`
@@ -303,9 +296,8 @@ Options:
   -h, --help           Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt join`
@@ -350,9 +342,8 @@ Options:
   -h, --help          Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt reshape`
@@ -383,9 +374,8 @@ Options:
   -h, --help          Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ### `> tt exec`
@@ -407,9 +397,8 @@ Options:
   -h, --help  Show this message and exit.
 ```
 
-[↑ Back to top](#reference)
+[↑ To table of contents](#reference)
 
-<br/>
 <br/>
 
 ## Develop
