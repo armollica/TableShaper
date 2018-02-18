@@ -47,5 +47,21 @@ class TestMutate(unittest.TestCase):
         expect['x'] = expect['population'] + expect['cases']
         self.assertTrue(expect.equals(actual))
 
+    def test_mutate_grouped(self):
+        
+        # Summation
+        actual = mutate(self.table_1, 'vectorized', 'country', 'cases_sum <- cases.sum()')
+        expect = self.table_1.copy()
+        aggregated = (
+            expect
+                .groupby('country')
+                .apply(lambda df: df.sum())[['cases']]
+                .reset_index()
+                .rename(columns = { 'cases': 'cases_sum' })
+        )
+        expect = expect.merge(aggregated, 'left', 'country')
+        self.assertTrue(expect.equals(actual))
+
+
 if __name__ == '__main__':
     unittest.main()
