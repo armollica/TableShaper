@@ -84,6 +84,8 @@ Commands:
   reshape    Reshape table.
 ```
 
+[↑ Back to top](#reference)
+
 ### `> tt choose`
 ```
 Usage: tt choose [OPTIONS] EXPRESSION
