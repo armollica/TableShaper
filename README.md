@@ -117,6 +117,8 @@ Options:
   -h, --help       Show this message and exit.
 ```
 
+[↑ Back to top](#reference)
+
 ### `> tt rename`
 
 ```
@@ -144,6 +146,8 @@ Options:
   -m, --map     map-based renaming
   -h, --help    Show this message and exit.
 ```
+
+[↑ Back to top](#reference)
 
 ### `> tt filter`
 
@@ -177,6 +181,8 @@ Options:
   -h, --help        Show this message and exit.
 ```
 
+[↑ Back to top](#reference)
+
 ### `> tt arrange`
 
 ```
@@ -194,6 +200,8 @@ Usage: tt arrange [OPTIONS] COLUMNS
 Options:
   -h, --help  Show this message and exit.
 ```
+
+[↑ Back to top](#reference)
 
 ### `> tt mutate`
 
@@ -240,6 +248,8 @@ Options:
   -h, --help           Show this message and exit.
 ```
 
+[↑ Back to top](#reference)
+
 ### `> tt aggregate`
 
 ```
@@ -266,6 +276,8 @@ Options:
   -g, --group-by TEXT
   -h, --help           Show this message and exit.
 ```
+
+[↑ Back to top](#reference)
 
 ### `> tt join`
 
@@ -309,6 +321,8 @@ Options:
   -h, --help          Show this message and exit.
 ```
 
+[↑ Back to top](#reference)
+
 ### `> tt reshape`
 
 ```
@@ -337,6 +351,8 @@ Options:
   -h, --help          Show this message and exit.
 ```
 
+[↑ Back to top](#reference)
+
 ### `> tt exec`
 
 ```
@@ -355,6 +371,8 @@ Usage: tt exec [OPTIONS] EXPRESSION
 Options:
   -h, --help  Show this message and exit.
 ```
+
+[↑ Back to top](#reference)
 
 ## Develop
 
