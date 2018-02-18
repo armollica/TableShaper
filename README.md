@@ -18,16 +18,21 @@ pip install TidyTable/
 ## Reference
 
 <table>
-  <tr><td><a href="#-tt"><code>> tt</code></a></td><td>Tidy Table program</td></tr>
-  <tr><td><a href="#-tt-choose"><code>> tt choose</code></a></td><td>Subset columns.</td></tr>
-  <tr><td><a href="#-tt-rename"><code>> tt rename</code></a></td><td>Rename columns.</td></tr>
-  <tr><td><a href="#-tt-filter"><code>> tt filter</code></a></td><td>Subset rows.</td></tr>
-  <tr><td><a href="#-tt-arrange"><code>> tt arrange</code></a></td><td>Sort rows.</td></tr>
-  <tr><td><a href="#-tt-mutate"><code>> tt mutate</code></a></td><td>Create new columns.</td></tr>
-  <tr><td><a href="#-tt-aggregate"><code>> tt aggregate</code></a></td><td>Aggregate rows.</td></tr>
-  <tr><td><a href="#-tt-join"><code>> tt join</code></a></td><td>Join tables.</td></tr>
-  <tr><td><a href="#-tt-reshape"><code>> tt reshape</code></a></td><td>Reshape table.</td></tr>
-  <tr><td><a href="#-tt-exec"><code>> tt exec</code></a></td><td>Execute python code.</td></tr>
+  <thead>
+    <tr><th colspan="2">Table of contents</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><a href="#-tt"><code>> tt</code></a></td><td>Tidy Table program</td></tr>
+    <tr><td><a href="#-tt-choose"><code>> tt choose</code></a></td><td>Subset columns.</td></tr>
+    <tr><td><a href="#-tt-rename"><code>> tt rename</code></a></td><td>Rename columns.</td></tr>
+    <tr><td><a href="#-tt-filter"><code>> tt filter</code></a></td><td>Subset rows.</td></tr>
+    <tr><td><a href="#-tt-arrange"><code>> tt arrange</code></a></td><td>Sort rows.</td></tr>
+    <tr><td><a href="#-tt-mutate"><code>> tt mutate</code></a></td><td>Create new columns.</td></tr>
+    <tr><td><a href="#-tt-aggregate"><code>> tt aggregate</code></a></td><td>Aggregate rows.</td></tr>
+    <tr><td><a href="#-tt-join"><code>> tt join</code></a></td><td>Join tables.</td></tr>
+    <tr><td><a href="#-tt-reshape"><code>> tt reshape</code></a></td><td>Reshape table.</td></tr>
+    <tr><td><a href="#-tt-exec"><code>> tt exec</code></a></td><td>Execute python code.</td></tr>
+  <tbody>
 </table>
 
 <br/>
