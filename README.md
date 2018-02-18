@@ -30,6 +30,9 @@ pip install TidyTable/
   <tr><td><a href="#-tt-exec"><code>> tt exec</code></a></td><td>Execute python code.</td></tr>
 </table>
 
+<br/>
+<br/>
+
 ### `> tt`
 
 This is the entry to the program. It is nearly always followed by a series of 
@@ -86,6 +89,9 @@ Commands:
 
 [↑ Back to top](#reference)
 
+<br/>
+<br/>
+
 ### `> tt choose`
 ```
 Usage: tt choose [OPTIONS] EXPRESSION
@@ -119,6 +125,9 @@ Options:
 
 [↑ Back to top](#reference)
 
+<br/>
+<br/>
+
 ### `> tt rename`
 
 ```
@@ -148,6 +157,9 @@ Options:
 ```
 
 [↑ Back to top](#reference)
+
+<br/>
+<br/>
 
 ### `> tt filter`
 
@@ -183,6 +195,9 @@ Options:
 
 [↑ Back to top](#reference)
 
+<br/>
+<br/>
+
 ### `> tt arrange`
 
 ```
@@ -202,6 +217,9 @@ Options:
 ```
 
 [↑ Back to top](#reference)
+
+<br/>
+<br/>
 
 ### `> tt mutate`
 
@@ -250,6 +268,9 @@ Options:
 
 [↑ Back to top](#reference)
 
+<br/>
+<br/>
+
 ### `> tt aggregate`
 
 ```
@@ -278,6 +299,9 @@ Options:
 ```
 
 [↑ Back to top](#reference)
+
+<br/>
+<br/>
 
 ### `> tt join`
 
@@ -323,6 +347,9 @@ Options:
 
 [↑ Back to top](#reference)
 
+<br/>
+<br/>
+
 ### `> tt reshape`
 
 ```
@@ -353,6 +380,9 @@ Options:
 
 [↑ Back to top](#reference)
 
+<br/>
+<br/>
+
 ### `> tt exec`
 
 ```
@@ -373,6 +403,9 @@ Options:
 ```
 
 [↑ Back to top](#reference)
+
+<br/>
+<br/>
 
 ## Develop
 
