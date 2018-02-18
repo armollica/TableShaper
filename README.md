@@ -17,16 +17,18 @@ pip install TidyTable/
 
 ## Reference
 
-- <a href="#-tt">`tt`</a>: Tidy Table program
-- <a href="#-tt-choose">`tt choose`</a>: Subset columns.
-- <a href="#-tt-rename">`tt rename`</a>: Rename columns.
-- <a href="#-tt-filter">`tt filter`</a>: Subset rows.
-- <a href="#-tt-arrange">`tt arrange`</a>: Sort rows.
-- <a href="#-tt-mutate">`tt mutate`</a>: Create new columns.
-- <a href="#-tt-aggregate">`tt aggregate`</a>: Aggregate rows.
-- <a href="#-tt-join">`tt join`</a>: Join tables.
-- <a href="#-tt-reshape">`tt reshape`</a>: Reshape table.
-- <a href="#-tt-exec">`tt exec`</a>: Execute python code.
+<table>
+  <tr><td><a href="#-tt"><code>> tt</code></a></td><td>Tidy Table program</td></tr>
+  <tr><td><a href="#-tt-choose"><code>> tt choose</code></a></td><td>Subset columns.</td></tr>
+  <tr><td><a href="#-tt-rename"><code>> tt rename</code></a></td><td>Rename columns.</td></tr>
+  <tr><td><a href="#-tt-filter"><code>> tt filter</code></a></td><td>Subset rows.</td></tr>
+  <tr><td><a href="#-tt-arrange"><code>> tt arrange</code></a></td><td>Sort rows.</td></tr>
+  <tr><td><a href="#-tt-mutate"><code>> tt mutate</code></a></td><td>Create new columns.</td></tr>
+  <tr><td><a href="#-tt-aggregate"><code>> tt aggregate</code></a></td><td>Aggregate rows.</td></tr>
+  <tr><td><a href="#-tt-join"><code>> tt join</code></a></td><td>Join tables.</td></tr>
+  <tr><td><a href="#-tt-reshape"><code>> tt reshape</code></a></td><td>Reshape table.</td></tr>
+  <tr><td><a href="#-tt-exec"><code>> tt exec</code></a></td><td>Execute python code.</td></tr>
+</table>
 
 ### `> tt`
 
