@@ -14,17 +14,37 @@ class TestMutate(unittest.TestCase):
         cls.table_4b = pd.read_csv('tests/data/table4b.csv')
         cls.table_5 = pd.read_csv('tests/data/table5.csv')
 
-    def test_row_mutate(self):
+    def test_mutate_rowwise(self):
         
-        # Note that we need to add the decimal to the one million in
+        # Division
+        actual = mutate(self.table_1, 'row-wise', None, 'population_in_millions <- population / 1000000.0')
+        expect = self.table_1.copy()
+        expect['population_in_millions'] = expect['population'] / 1000000
+        self.assertTrue(expect.equals(actual))
+
+        # Note that we needed to add the decimal to the one million in
         # denominator. Without it, we would be doing division with two integers
         # which throws away the remainder in standard Python evaluation. Integer
         # division with pandas objects doesn't do this. 
-        actual = mutate(self.table_1, 'row-wise', None, 'population_in_millions <- population / 1000000.0')
 
+        # Number formatting
+        actual = mutate(self.table_1, 'row-wise', None, 'cases <- "{:0>9.2f}".format(cases)')
+        expect = self.table_1.copy()
+        expect = expect.assign(cases = lambda df: df.cases.apply(lambda d: '{:0>9.2f}'.format(d)))
+        self.assertTrue(expect.equals(actual))
+
+    def test_mutate_vectorized(self):
+        
+        # Division
+        actual = mutate(self.table_1, 'vectorized', None, 'population_in_millions <- population / 1000000')
         expect = self.table_1.copy()
         expect['population_in_millions'] = expect['population'] / 1000000
+        self.assertTrue(expect.equals(actual))
 
+        # Addition
+        actual = mutate(self.table_1, 'vectorized', None, 'x <- population + cases')
+        expect = self.table_1.copy()
+        expect['x'] = expect['population'] + expect['cases']
         self.assertTrue(expect.equals(actual))
 
 if __name__ == '__main__':
