@@ -8,11 +8,6 @@ class TestChoose(unittest.TestCase):
     def setUpClass(cls):
         print 'Choose'
         cls.table_1 = pd.read_csv('tests/data/table1.csv')
-        cls.table_2 = pd.read_csv('tests/data/table2.csv')
-        cls.table_3 = pd.read_csv('tests/data/table3.csv')
-        cls.table_4a = pd.read_csv('tests/data/table4a.csv')
-        cls.table_4b = pd.read_csv('tests/data/table4b.csv')
-        cls.table_5 = pd.read_csv('tests/data/table5.csv')
 
     def test_choose_filter(self):
 
