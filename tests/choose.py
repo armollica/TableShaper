@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.commands.choose import choose
+from tableshaper.commands.choose import choose
 
 class TestChoose(unittest.TestCase):
 

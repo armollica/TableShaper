@@ -1,7 +1,7 @@
 import click
 import pandas as pd
-from tidytable.helpers import processor
-from tidytable.commands.join import join
+from tableshaper.helpers import processor
+from tableshaper.commands.join import join
 
 @click.command('join')
 @click.option('-l', '--left', 'way', flag_value = 'left', default = True,

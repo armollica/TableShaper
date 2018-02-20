@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.commands.mutate import mutate
+from tableshaper.commands.mutate import mutate
 
 class TestMutate(unittest.TestCase):
 

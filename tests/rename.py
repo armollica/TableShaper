@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.commands.rename import rename
+from tableshaper.commands.rename import rename
 
 class TestRename(unittest.TestCase):
 

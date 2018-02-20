@@ -1,6 +1,6 @@
 import click
 import pandas as pd
-from tidytable.helpers import processor
+from tableshaper.helpers import processor
 
 @click.command('exec')
 @click.argument('expression', type = click.STRING)

@@ -1,6 +1,6 @@
 import click
-from tidytable.helpers import processor
-from tidytable.commands.aggregate import aggregate
+from tableshaper.helpers import processor
+from tableshaper.commands.aggregate import aggregate
 
 @click.command('aggregate')
 @click.option('-g', '--group-by', type = click.STRING)

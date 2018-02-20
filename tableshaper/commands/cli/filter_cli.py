@@ -1,7 +1,7 @@
 import click
 import pandas as pd
-from tidytable.helpers import processor
-from tidytable.commands.filter import filter_dataframe
+from tableshaper.helpers import processor
+from tableshaper.commands.filter import filter_dataframe
 
 @click.command('filter')
 @click.option('-v', '--vectorized', 'way', flag_value = 'vectorized',

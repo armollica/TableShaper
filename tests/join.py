@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.commands.join import join
+from tableshaper.commands.join import join
 
 class TestJoin(unittest.TestCase):
 

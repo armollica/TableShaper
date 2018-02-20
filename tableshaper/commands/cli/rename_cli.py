@@ -1,7 +1,7 @@
 import click
 import pandas as pd
-from tidytable.helpers import processor
-from tidytable.commands.rename import rename
+from tableshaper.helpers import processor
+from tableshaper.commands.rename import rename
 
 @click.command('rename')
 @click.option('-a', '--assign', 'way', flag_value = 'assign', default = True,

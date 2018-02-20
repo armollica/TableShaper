@@ -1,7 +1,7 @@
 import click
 import pandas as pd
-from tidytable.helpers import processor
-from tidytable.commands.choose import choose
+from tableshaper.helpers import processor
+from tableshaper.commands.choose import choose
 
 @click.command('choose')
 @click.option('-s', '--selection', 'way', flag_value = 'selection',

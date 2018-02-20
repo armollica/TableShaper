@@ -1,5 +1,5 @@
 import pandas as pd
-from tidytable.helpers import parse_key_value
+from tableshaper.helpers import parse_key_value
 
 def rename(df, way, expression):
     if way == 'map':

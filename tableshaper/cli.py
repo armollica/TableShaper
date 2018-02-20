@@ -19,7 +19,7 @@ class CLI(click.MultiCommand):
         try:
             if sys.version_info[0] == 2:
                 name = name.encode('ascii', 'replace')
-            module_name = 'tidytable.commands.cli.' + name + '_cli'
+            module_name = 'tableshaper.commands.cli.' + name + '_cli'
             import_list = ['cli']
             module = __import__(module_name, None, None, import_list)
         except ImportError:
@@ -50,9 +50,9 @@ CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
               show_default = True)
 def cli(infile, outfile, intype, json_format):
     '''
-    Tidy Table
+    TableShaper
 
-    A pipeline of transformations to tidy your tables
+    A pipeline of transformations to get your tables into shape.
     '''
     pass
 

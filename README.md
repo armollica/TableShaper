@@ -1,6 +1,6 @@
-# Tidy Table
+# TableShaper
 
-Command-line table processor. 
+A command-line table processor. 
 
 - <a href="#examples">Examples</a>
 - <a href="#install">Install</a>
@@ -12,22 +12,22 @@ Command-line table processor.
 
 Grab a subset of columns from a table.
 ```bash
-tt < table.csv choose 'country, continent, pop1990:pop2000`
+tableshaper < table.csv choose 'country, continent, pop1990:pop2000`
 ```
 
 Drop rows you don't need.
 ```bash
-tt < table.csv filter 'continent == "South America"'
+tableshaper < table.csv filter 'continent == "South America"'
 ```
 
 Reshape the table.
 ```bash
-tt < table.csv reshape --gather -k year -v population --columns pop1990:pop2000
+tableshaper < table.csv reshape --gather -k year -v population --columns pop1990:pop2000
 ```
 
 Do it all in one command.
 ```bash
-tt < table.csv \
+tableshaper < table.csv \
   choose 'country, continent, pop1990:pop2000' \
   filter 'continent == "South America"' \
   reshaper --gather -k year -v population --columns pop1990:pop2000
@@ -37,8 +37,8 @@ tt < table.csv \
 
 Pull down this repo and install it with `pip`.
 ```bash
-git pull https://github.com/armollica/TidyTable.git
-pip install TidyTable/
+git pull https://github.com/armollica/tableshaper.git
+pip install tableshaper/
 ```
 
 ## Reference
@@ -48,22 +48,22 @@ pip install TidyTable/
     <tr><th colspan="2">Table of contents</th></tr>
   </thead>
   <tbody>
-    <tr><td><a href="#-tt"><code>> tt</code></a></td><td>Tidy Table program</td></tr>
-    <tr><td><a href="#-tt-choose"><code>> tt choose</code></a></td><td>Subset columns.</td></tr>
-    <tr><td><a href="#-tt-rename"><code>> tt rename</code></a></td><td>Rename columns.</td></tr>
-    <tr><td><a href="#-tt-filter"><code>> tt filter</code></a></td><td>Subset rows.</td></tr>
-    <tr><td><a href="#-tt-arrange"><code>> tt arrange</code></a></td><td>Sort rows.</td></tr>
-    <tr><td><a href="#-tt-mutate"><code>> tt mutate</code></a></td><td>Create new columns.</td></tr>
-    <tr><td><a href="#-tt-aggregate"><code>> tt aggregate</code></a></td><td>Aggregate rows.</td></tr>
-    <tr><td><a href="#-tt-join"><code>> tt join</code></a></td><td>Join tables.</td></tr>
-    <tr><td><a href="#-tt-reshape"><code>> tt reshape</code></a></td><td>Reshape table.</td></tr>
-    <tr><td><a href="#-tt-exec"><code>> tt exec</code></a></td><td>Execute python code.</td></tr>
+    <tr><td><a href="#-tableshaper"><code>> tableshaper</code></a></td><td>Tidy Table program</td></tr>
+    <tr><td><a href="#-tableshaper-choose"><code>> tableshaper choose</code></a></td><td>Subset columns.</td></tr>
+    <tr><td><a href="#-tableshaper-rename"><code>> tableshaper rename</code></a></td><td>Rename columns.</td></tr>
+    <tr><td><a href="#-tableshaper-filter"><code>> tableshaper filter</code></a></td><td>Subset rows.</td></tr>
+    <tr><td><a href="#-tableshaper-arrange"><code>> tableshaper arrange</code></a></td><td>Sort rows.</td></tr>
+    <tr><td><a href="#-tableshaper-mutate"><code>> tableshaper mutate</code></a></td><td>Create new columns.</td></tr>
+    <tr><td><a href="#-tableshaper-aggregate"><code>> tableshaper aggregate</code></a></td><td>Aggregate rows.</td></tr>
+    <tr><td><a href="#-tableshaper-join"><code>> tableshaper join</code></a></td><td>Join tables.</td></tr>
+    <tr><td><a href="#-tableshaper-reshape"><code>> tableshaper reshape</code></a></td><td>Reshape table.</td></tr>
+    <tr><td><a href="#-tableshaper-exec"><code>> tableshaper exec</code></a></td><td>Execute python code.</td></tr>
   <tbody>
 </table>
 
 <br/>
 
-### `> tt`
+### `> tableshaper`
 
 Entry to the program.
 
@@ -74,10 +74,10 @@ input will be `stdin` and the output will be `stdout`.
 
 ```bash
 # Read CSV data from stdin and output to stdout ...
-tt < input.csv choose 'column1:column10' filter 'column1 > 20'
+tableshaper < input.csv choose 'column1:column10' filter 'column1 > 20'
 
 # ... or read and write to and from files
-tt -i input.csv -o output.csv choose 'column1:column10' filter 'column1 > 20'
+tableshaper -i input.csv -o output.csv choose 'column1:column10' filter 'column1 > 20'
 ```
 
 The input file can be one of several formats. The default format is CSV,
@@ -97,7 +97,7 @@ The output file is always a CSV.
 
 ###### Command-line help
 ```
-Usage: tt [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
+Usage: tableshaper [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
 
   Tidy Table
 
@@ -129,7 +129,7 @@ Commands:
 
 <br/>
 
-### `> tt choose`
+### `> tableshaper choose`
 
 Subset columns.
 
@@ -170,7 +170,7 @@ choose -f 'name.isnumeric()'
 
 ###### Command-line help
 ```
-Usage: tt choose [OPTIONS] EXPRESSION
+Usage: tableshaper choose [OPTIONS] EXPRESSION
 
   Subset columns.
 
@@ -203,7 +203,7 @@ Options:
 
 <br/>
 
-### `> tt rename`
+### `> tablshaper rename`
 
 Rename columns.
 
@@ -234,7 +234,7 @@ rename -m 'name.replace(' ', '_').lower()'
 
 ###### Command-line help
 ```
-Usage: tt rename [OPTIONS] EXPRESSION
+Usage: tableshaper rename [OPTIONS] EXPRESSION
 
   Rename columns.
 
@@ -263,7 +263,7 @@ Options:
 
 <br/>
 
-### `> tt filter`
+### `> tableshaper filter`
 
 Subset rows.
 
@@ -297,7 +297,7 @@ filter -s 1:5
 
 ###### Command-line help
 ```
-Usage: tt filter [OPTIONS] EXPRESSION
+Usage: tableshaper filter [OPTIONS] EXPRESSION
 
   Subset rows.
 
@@ -330,11 +330,11 @@ Options:
 
 <br/>
 
-### `> tt arrange`
+### `> tableshaper arrange`
 
 ###### Command-line help
 ```
-Usage: tt arrange [OPTIONS] COLUMNS
+Usage: tableshaper arrange [OPTIONS] COLUMNS
 
   Sort rows.
 
@@ -353,11 +353,11 @@ Options:
 
 <br/>
 
-### `> tt mutate`
+### `> tableshaper mutate`
 
 ###### Command-line help
 ```
-Usage: tt mutate [OPTIONS] MUTATION
+Usage: tableshaper mutate [OPTIONS] MUTATION
 
   Create new columns.
 
@@ -403,11 +403,11 @@ Options:
 
 <br/>
 
-### `> tt aggregate`
+### `> tableshaper aggregate`
 
 ###### Command-line help
 ```
-Usage: tt aggregate [OPTIONS] AGGREGATION
+Usage: tableshaper aggregate [OPTIONS] AGGREGATION
 
   Aggregate rows.
 
@@ -435,11 +435,11 @@ Options:
 
 <br/>
 
-### `> tt join`
+### `> tableshaper join`
 
 ###### Command-line help
 ```
-Usage: tt join [OPTIONS] [RIGHT]
+Usage: tableshaper join [OPTIONS] [RIGHT]
 
   Join tables.
 
@@ -482,11 +482,11 @@ Options:
 
 <br/>
 
-### `> tt reshape`
+### `> tableshaper reshape`
 
 ###### Command-line help
 ```
-Usage: tt reshape [OPTIONS]
+Usage: tableshaper reshape [OPTIONS]
 
   Reshape table.
 
@@ -515,11 +515,11 @@ Options:
 
 <br/>
 
-### `> tt exec`
+### `> tableshaper exec`
 
 ###### Command-line help
 ```
-Usage: tt exec [OPTIONS] EXPRESSION
+Usage: tableshaper exec [OPTIONS] EXPRESSION
 
   Execute python code.
 
@@ -543,8 +543,8 @@ Options:
 
 Pull down this repo and move into the directory.
 ```bash
-git pull https://github.com/armollica/TidyTable.git
-cd TidyTable/
+git pull https://github.com/armollica/TableShaper.git
+cd tableshaper/
 ```
 
 Create a virtual environment and activate it.

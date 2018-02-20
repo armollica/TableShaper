@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.commands.aggregate import aggregate
+from tableshaper.commands.aggregate import aggregate
 
 # country  population
 # Afghanistan    40582431

@@ -1,5 +1,5 @@
 import pandas as pd
-from tidytable.helpers import processor, parse_key_value
+from tableshaper.helpers import processor, parse_key_value
 
 def row_mutate(df, column_name, expression):
     return df.assign(**{ column_name: lambda x: x.apply(lambda y: eval(expression, y.to_dict()), axis = 1)})

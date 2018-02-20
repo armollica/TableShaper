@@ -1,6 +1,6 @@
 import click
-from tidytable.helpers import processor
-from tidytable.commands.reshape import reshape
+from tableshaper.helpers import processor
+from tableshaper.commands.reshape import reshape
 
 @click.command('reshape')
 @click.option('-g', '--gather', 'way', flag_value = 'gather', default = True,

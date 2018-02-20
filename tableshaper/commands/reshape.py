@@ -1,6 +1,6 @@
 import click
 import pandas as pd
-from tidytable.helpers import selectify
+from tableshaper.helpers import selectify
 
 def gather(df, key, value, columns):
     all_column_list = list(df)

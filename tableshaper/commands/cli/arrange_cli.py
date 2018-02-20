@@ -1,7 +1,7 @@
 import click
 import pandas as pd
-from tidytable.helpers import processor
-from tidytable.commands.arrange import arrange
+from tableshaper.helpers import processor
+from tableshaper.commands.arrange import arrange
 
 @click.command('arrange')
 @click.argument('columns', type = click.STRING)

@@ -1,5 +1,5 @@
 import pandas as pd
-from tidytable.helpers import processor, selectify
+from tableshaper.helpers import processor, selectify
 
 def choose(df, way, expression):
     if way == 'filter':

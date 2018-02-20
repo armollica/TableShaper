@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.commands.filter import filter_dataframe
+from tableshaper.commands.filter import filter_dataframe
 
 class TestFilter(unittest.TestCase):
 

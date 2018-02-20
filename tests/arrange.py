@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.commands.arrange import arrange
+from tableshaper.commands.arrange import arrange
 
 class TestArrange(unittest.TestCase):
 

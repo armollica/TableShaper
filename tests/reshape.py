@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from tidytable.commands.reshape import reshape
+from tableshaper.commands.reshape import reshape
 
 class TestReshape(unittest.TestCase):
 

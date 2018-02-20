@@ -1,7 +1,7 @@
 import click
 import pandas as pd
-from tidytable.helpers import processor
-from tidytable.commands.mutate import mutate
+from tableshaper.helpers import processor
+from tableshaper.commands.mutate import mutate
 
 @click.command('mutate')
 @click.option('-v', '--vectorized', 'way', flag_value = 'vectorized',

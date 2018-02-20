@@ -1,5 +1,5 @@
 import pandas as pd
-from tidytable.helpers import parse_key_value
+from tableshaper.helpers import parse_key_value
 
 def grouped_aggregate(df, groups, column_name, expression):
     return df.groupby(groups).apply(lambda df: eval(expression, df.to_dict('series'))).reset_index().rename(columns = { 0: column_name })
