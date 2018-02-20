@@ -3,15 +3,15 @@ import sys
 import click
 import pandas as pd
 
-commands_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'commands/cli'))
+commands_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'commands'))
 
 class CLI(click.MultiCommand): 
     
     def list_commands(self, ctx):
         commands = []
         for filename in os.listdir(commands_folder):
-            if filename.endswith('_cli.py'):
-                commands.append(filename[0:-7])
+            if filename.endswith('.py') and not (filename == '__init__.py'):
+                commands.append(filename[0:-3])
         commands.sort()
         return commands
 
@@ -19,7 +19,7 @@ class CLI(click.MultiCommand):
         try:
             if sys.version_info[0] == 2:
                 name = name.encode('ascii', 'replace')
-            module_name = 'tableshaper.commands.cli.' + name + '_cli'
+            module_name = 'tableshaper.commands.' + name
             import_list = ['cli']
             module = __import__(module_name, None, None, import_list)
         except ImportError:
