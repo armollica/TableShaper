@@ -65,7 +65,9 @@ pip install TidyTable/
 
 ### `> tt`
 
-This is the entry to the program. It is nearly always followed by a series of 
+Entry to the program.
+
+This command kicks off the program and is generally followed by a series of 
 commands, like `choose`, `filter`, or `mutate`. Here you specify the input and
 output file with the `-i, --input` and `-o, --output` arguments. By default, the
 input will be `stdin` and the output will be `stdout`.
@@ -153,9 +155,10 @@ choose '~C, ~F'
 choose '~B:G, E`
 ```
 
-The "filter" method is set with the `-f, --filter` flag. With this method you
-give a Python expression that evaluates to true or false. The column name is 
-loaded in as `name`.
+The "filter" method is set with the `-f, --filter` flag. You provide a
+Python expression that is evaluated on each column name. The column
+name is loaded into the namespace as `name`. If the expression evaluates
+to true then the column is kept.
 
 ```bash
 # Keep columns that start with "population"
@@ -165,6 +168,7 @@ choose -f 'name.startswith("population")'
 choose -f 'name.isnumeric()'
 ```
 
+###### Command-line help
 ```
 Usage: tt choose [OPTIONS] EXPRESSION
 
@@ -201,6 +205,34 @@ Options:
 
 ### `> tt rename`
 
+Rename columns.
+
+There are two renaming methods. The default method is to provide a
+comma-separated list of column name assignments of the form: new <- old.
+All other columns are retained. You can explicitly set this method with
+the `-a, --assign` flag.
+
+```bash
+# Rename GEOID to id and STATE_FIPS to fips.
+rename 'id <- GEOID, fips <- STATE_FIPS'
+```
+
+The second method is to provide a Python expression that gets evaluated on each
+column name. The column name is loaded into the namespace as `name`. Whatever
+the expression evaluates to is what the new name will be. This method is set
+with the `-m, --map` flag.
+
+```bash
+# Convert column names to lowercase
+rename -m 'name.lower()'
+
+# Convert column names to snakecase
+rename -m 'name.replace(' ', '_').lower()'
+```
+
+####
+
+###### Command-line help
 ```
 Usage: tt rename [OPTIONS] EXPRESSION
 
@@ -233,6 +265,37 @@ Options:
 
 ### `> tt filter`
 
+Subset rows.
+
+Rows are kept based on a logical expression (true/false) or by a range of
+row indices.
+
+The default method is to keep rows based on a Python expression that evaluates
+to true or false. The columns of the table are put into the namespace as a
+pandas
+[Series](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html)
+object. This method can be set explicitly with the `-v, --vectorized` flag.
+
+```bash
+# Keep all rows where the population column has values greater than 1000
+filter 'population > 1000'
+
+# Keep all rows where the state column has values equal to "55" or "56"
+filter 'state.isin(["55", "56"])'
+```
+
+The second filtering method is to specify a range of row indexes of the
+format: `start:end`. This method is set with the `-s, --slice` flag.
+
+```bash
+# Keep the first five rows
+filter -s 1:5
+
+# Keep rows 25 through 75
+filter -s 1:5
+```
+
+###### Command-line help
 ```
 Usage: tt filter [OPTIONS] EXPRESSION
 
@@ -269,6 +332,7 @@ Options:
 
 ### `> tt arrange`
 
+###### Command-line help
 ```
 Usage: tt arrange [OPTIONS] COLUMNS
 
@@ -291,6 +355,7 @@ Options:
 
 ### `> tt mutate`
 
+###### Command-line help
 ```
 Usage: tt mutate [OPTIONS] MUTATION
 
@@ -340,6 +405,7 @@ Options:
 
 ### `> tt aggregate`
 
+###### Command-line help
 ```
 Usage: tt aggregate [OPTIONS] AGGREGATION
 
@@ -371,6 +437,7 @@ Options:
 
 ### `> tt join`
 
+###### Command-line help
 ```
 Usage: tt join [OPTIONS] [RIGHT]
 
@@ -417,6 +484,7 @@ Options:
 
 ### `> tt reshape`
 
+###### Command-line help
 ```
 Usage: tt reshape [OPTIONS]
 
@@ -449,6 +517,7 @@ Options:
 
 ### `> tt exec`
 
+###### Command-line help
 ```
 Usage: tt exec [OPTIONS] EXPRESSION
 
