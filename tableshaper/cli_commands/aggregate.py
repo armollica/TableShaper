@@ -1,22 +1,13 @@
 import click
 import pandas as pd
+from tableshaper import pipe, group_by, aggregate
 from tableshaper.helpers import processor, parse_key_value
 
-def grouped_aggregate(df, groups, column_name, expression):
-    return df.groupby(groups).apply(lambda df: eval(expression, df.to_dict('series'))).reset_index().rename(columns = { 0: column_name })
-
-def aggregate(df, group_by, aggregation):
-    key_value = parse_key_value(aggregation.strip())
-    name = key_value['key']
-    expression = key_value['value']
-    groups = map(lambda x: x.strip(), group_by.split(','))
-    return grouped_aggregate(df, groups, name, expression)
-
 @click.command('aggregate')
-@click.option('-g', '--group-by', type = click.STRING)
+@click.option('-g', '--group-by', 'group_by_expression', type = click.STRING)
 @click.argument('aggregation', type = click.STRING)
 @processor
-def cli(dfs, group_by, aggregation):
+def cli(dfs, group_by_expression, aggregation):
     '''
     Aggregate rows.
     
@@ -38,5 +29,13 @@ def cli(dfs, group_by, aggregation):
     aggregate -g country_id,station_id 'median_wind_speed <- wind_speed.median()'
 
     '''
+    key_value = parse_key_value(aggregation.strip())
+    name = key_value['key']
+    expression = key_value['value']
+    groups = map(lambda x: x.strip(), group_by_expression.split(','))
     for df in dfs:
-        yield aggregate(df, group_by, aggregation)
+        yield pipe(df)(
+            group_by(*groups)(
+                aggregate(**{ name: expression })
+            )
+        )

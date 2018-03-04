@@ -36,6 +36,9 @@ def parse_key_value(string):
     value = str(match.group(2)).strip()
     return { 'key': key, 'value': value }
 
+def invert_dictionary(dictionary):
+    return { value: key for key, value in dictionary.iteritems() }
+
 def selectify(string_list, selection_string):
     '''
     Perform subsetting and reordering on a list of strings

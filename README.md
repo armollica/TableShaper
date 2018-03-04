@@ -203,7 +203,7 @@ Options:
 
 <br/>
 
-### `> tablshaper rename`
+### `> tableshaper rename`
 
 Rename columns.
 
