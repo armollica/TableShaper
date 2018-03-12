@@ -1,6 +1,7 @@
 import os
 import sys
 import click
+import re
 import pandas as pd
 
 commands_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'cli_commands'))

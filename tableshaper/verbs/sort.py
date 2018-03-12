@@ -1,4 +1,4 @@
-def arrange(*names):
+def sort(*names):
     by = []
     ascending = []
 

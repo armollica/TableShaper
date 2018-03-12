@@ -3,7 +3,7 @@ from tableshaper.verbs.rename import rename
 from tableshaper.verbs.choose import choose
 from tableshaper.verbs.mutate import mutate
 from tableshaper.verbs.sift import sift
-from tableshaper.verbs.arrange import arrange
+from tableshaper.verbs.sort import sort
 from tableshaper.verbs.aggregate import aggregate
 from tableshaper.verbs.group_by import group_by
 from tableshaper.verbs.gather import gather

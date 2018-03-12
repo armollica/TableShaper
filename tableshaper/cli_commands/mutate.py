@@ -37,7 +37,7 @@ def cli(dfs, way, group_by_expression, mutation):
     \b
     Examples:
     mutate 'real_value <- value * (price / 100)'
-    mutate 'touches_lake_mi <- state.isin(['WI', 'MI'])'
+    mutate 'touches_lake_mi <- state.isin(["WI", "MI", "IL", "IN"])'
     mutate --group-by state 'population_share <- pop / pop.sum()'
 
     \b

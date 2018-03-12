@@ -1,8 +1,8 @@
 import click
-from tableshaper import arrange
+from tableshaper import sort
 from tableshaper.helpers import processor
 
-@click.command('arrange')
+@click.command('sort')
 @click.argument('columns', type = click.STRING)
 @processor
 def cli(dfs, columns):
@@ -13,11 +13,11 @@ def cli(dfs, columns):
 
     \b
     Examples:
-    arrange 'mpg'
-    arrange 'mpg:desc'
-    arrange 'mpg, hp:desc'
+    sort 'mpg'
+    sort 'mpg:desc'
+    sort 'mpg, hp:desc'
 
     '''
     for df in dfs:
         column_list = map(lambda x: x.strip(), columns.split(','))
-        yield arrange(*column_list)(df)
+        yield sort(*column_list)(df)
