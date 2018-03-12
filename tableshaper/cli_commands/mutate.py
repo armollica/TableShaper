@@ -1,10 +1,14 @@
 import click
 import pandas as pd
 from tableshaper import mutate, pipe, group_by
-from tableshaper.helpers import processor, parse_key_value
+from tableshaper.helpers import processor, parse_key_value, evaluate
 
 def row_mutate(df, column_name, expression):
-    return df.assign(**{ column_name: lambda x: x.apply(lambda y: eval(expression, y.to_dict()), axis = 1)})
+    def compute(df):
+        application = lambda row: evaluate(expression, row.to_dict())
+        return df.apply(application, axis = 1)
+    assignment = { column_name: compute }
+    return df.assign(**assignment)
 
 @click.command('mutate')
 @click.option('-r', '--row-wise', 'way', flag_value = 'row-wise',

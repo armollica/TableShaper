@@ -1,5 +1,21 @@
-import re
+import re, datetime
 from functools import update_wrapper
+
+# Libraries that will be usable in evaluate() contexts
+default_libraries = {
+    're': re,
+    'datetime': datetime
+}
+
+def merge_dicts(a, b):
+    output = a.copy()
+    output.update(b)
+    return output
+
+# eval() but with some default libraries loaded in
+def evaluate(expression, globals_dict = {}, locals_dict = {}): 
+    new_global_dicts = merge_dicts(default_libraries, globals_dict)
+    return eval(expression, new_global_dicts, locals_dict)
 
 def processor(f):
     '''

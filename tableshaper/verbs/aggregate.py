@@ -1,4 +1,5 @@
 from pandas import merge
+from tableshaper.helpers import evaluate
 
 def aggregate(**expressions):
     
@@ -7,7 +8,7 @@ def aggregate(**expressions):
             def process(df):
                 return (
                     df.groupby(groups)
-                        .apply(lambda df: eval(expression, df.to_dict('series')))
+                        .apply(lambda df: evaluate(expression, df.to_dict('series')))
                         .reset_index()
                         .rename(columns = { 0: name })
                 )

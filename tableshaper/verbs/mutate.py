@@ -1,8 +1,10 @@
+from tableshaper.helpers import evaluate
+
 def mutate(**expressions):
     # Return generator of { name: assignment } dictionaries
     def assignments():
         for name, expression in expressions.iteritems():
-            yield { name: lambda df: eval(expression, df.to_dict('series')) }
+            yield { name: lambda df: evaluate(expression, df.to_dict('series')) }
     
     # Refactor pandas assign() method as a function
     def assign(df, assignment):
