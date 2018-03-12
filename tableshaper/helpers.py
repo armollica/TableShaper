@@ -45,9 +45,9 @@ def parse_key_value(string):
     '''
     Parse key-value pair from a string formatted: key <- value
     '''
-    match = re.match('^(\w+)\s*<-(.+)', string)
+    match = re.match('^(\w+)\s*=(.+)', string)
     if match is None:
-        raise Exception('Key-value not in correct format: key <- value')
+        raise Exception('Key-value not in correct format: key = value')
     key = str(match.group(1))
     value = str(match.group(2)).strip()
     return { 'key': key, 'value': value }

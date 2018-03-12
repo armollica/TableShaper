@@ -10,11 +10,16 @@ def cli(dfs, way, expression):
     '''
     Rename columns.
     
-    Provide a comma-separated list of column names assignment, i.e.: new <- old
+    Provide a comma-separated list of column names assignment that follow
+    this format:
+
+    new = old
+
+    Where the "old" column name is changed to whatever "new" is.
     
     \b
     Example:
-    rename 'id <- GEOID, fips <- state_fips'
+    rename 'id = GEOID, fips = state_fips'
 
     \b
     -m, --map

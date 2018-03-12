@@ -16,7 +16,7 @@ def cli(dfs, expression):
     Examples:
     exec 'd["pop_per_mil"] = d["pop"] / 1000000'
     is equivalent to...
-    mutate 'pop_per_mil <- pop / 1000000'
+    mutate 'pop_per_mil = pop / 1000000'
     '''
     for d in dfs:
         exec(expression)

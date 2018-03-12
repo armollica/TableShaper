@@ -17,7 +17,12 @@ def cli(dfs, group_by_expression, aggregation):
 
     Aggregations follow this format:
 
-    new_column <- [python expression]
+    name = expression
+
+    Multiple mutations can be done at once. Mutations are separated
+    by a semicolon like this:
+
+    name = [expression]; name = expression; and so on ...
 
     \b
     -g, --group-by <columns>
@@ -25,8 +30,8 @@ def cli(dfs, group_by_expression, aggregation):
 
     \b
     Examples:
-    aggregate -g state 'population_sum <- population.sum()'
-    aggregate -g country_id,station_id 'median_wind_speed <- wind_speed.median()'
+    aggregate -g state 'population_sum = population.sum()'
+    aggregate -g country_id,station_id 'median_wind_speed = wind_speed.median()'
 
     '''
     key_value = parse_key_value(aggregation.strip())
