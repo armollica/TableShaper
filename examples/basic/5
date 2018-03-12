@@ -1,1 +1,0 @@
-[u'name2 <- re.sub(r"\\w{3}", "poo", name)', u'shit <- re.sub("Merc", "SHIT", name)']

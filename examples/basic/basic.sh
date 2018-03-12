@@ -17,3 +17,4 @@ csv2json cars.csv \
         choose 'name,mpg,cyl,disp,hp' \
         sort 'mpg, hp:desc' \
         sift '(mpg > 25) | (mpg < 15)'
+
