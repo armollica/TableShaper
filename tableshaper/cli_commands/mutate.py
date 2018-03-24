@@ -51,7 +51,7 @@ def cli(dfs, way, group_by_expression, mutations):
     mutate --group-by state 'population_share = pop / pop.sum()'
 
     \b
-    -r, --row-wise
+    -r, --row
     Perform row-wise mutation. Each row is evaluated individually. This
     will often be slower than vectorized mutation, but is more flexible in
     some cases. Grouped mutations are not possible; the --group-by option
