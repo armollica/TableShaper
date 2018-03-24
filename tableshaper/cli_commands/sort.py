@@ -9,7 +9,10 @@ def cli(dfs, columns):
     '''
     Sort rows.
     
-    Order is determined by values in a column (or columns).
+    Order is determined by values in a column. Sort on multiple columns by
+    passing in a comma-separated list of column names. Rows are sorted in
+    ascending order, by default. To sort in descending order, put `:desc` after
+    the column name.
 
     \b
     Examples:

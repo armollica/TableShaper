@@ -12,25 +12,25 @@ A command-line table processor.
 
 Grab a subset of columns from a table.
 ```bash
-tableshaper < table.csv pick 'country, continent, pop1990:pop2000`
+ts < table.csv pick 'country, continent, pop1990:pop2000`
 ```
 
 Drop rows you don't need.
 ```bash
-tableshaper < table.csv filter 'continent == "South America"'
+ts < table.csv sift 'continent == "South America"'
 ```
 
 Reshape the table.
 ```bash
-tableshaper < table.csv reshape --gather -k year -v population --columns pop1990:pop2000
+ts < table.csv reshape --gather -k year -v population --columns pop1990:pop2000
 ```
 
 Do it all in one command.
 ```bash
-tableshaper < table.csv \
+ts < table.csv \
   pick 'country, continent, pop1990:pop2000' \
-  filter 'continent == "South America"' \
-  reshaper --gather -k year -v population --columns pop1990:pop2000
+  sift 'continent == "South America"' \
+  reshape --gather -k year -v population --columns pop1990:pop2000
 ```
 
 ## Install
@@ -48,36 +48,35 @@ pip install tableshaper/
     <tr><th colspan="2">Table of contents</th></tr>
   </thead>
   <tbody>
-    <tr><td><a href="#-tableshaper"><code>> tableshaper</code></a></td><td>Tidy Table program</td></tr>
-    <tr><td><a href="#-tableshaper-pick"><code>> tableshaper pick</code></a></td><td>Subset columns.</td></tr>
-    <tr><td><a href="#-tableshaper-rename"><code>> tableshaper rename</code></a></td><td>Rename columns.</td></tr>
-    <tr><td><a href="#-tableshaper-filter"><code>> tableshaper filter</code></a></td><td>Subset rows.</td></tr>
-    <tr><td><a href="#-tableshaper-arrange"><code>> tableshaper arrange</code></a></td><td>Sort rows.</td></tr>
-    <tr><td><a href="#-tableshaper-mutate"><code>> tableshaper mutate</code></a></td><td>Create new columns.</td></tr>
-    <tr><td><a href="#-tableshaper-aggregate"><code>> tableshaper aggregate</code></a></td><td>Aggregate rows.</td></tr>
-    <tr><td><a href="#-tableshaper-join"><code>> tableshaper join</code></a></td><td>Join tables.</td></tr>
-    <tr><td><a href="#-tableshaper-reshape"><code>> tableshaper reshape</code></a></td><td>Reshape table.</td></tr>
-    <tr><td><a href="#-tableshaper-exec"><code>> tableshaper exec</code></a></td><td>Execute python code.</td></tr>
+    <tr><td><a href="#-ts"><code>$ ts</code></a></td><td>Tidy Table program</td></tr>
+    <tr><td><a href="#-ts-pick"><code>$ ts pick</code></a></td><td>Subset columns.</td></tr>
+    <tr><td><a href="#-ts-rename"><code>$ ts rename</code></a></td><td>Rename columns.</td></tr>
+    <tr><td><a href="#-ts-sift"><code>$ ts sift</code></a></td><td>Subset rows.</td></tr>
+    <tr><td><a href="#-ts-sort"><code>$ ts sort</code></a></td><td>Sort rows.</td></tr>
+    <tr><td><a href="#-ts-mutate"><code>$ ts mutate</code></a></td><td>Create new columns.</td></tr>
+    <tr><td><a href="#-ts-aggregate"><code>$ ts aggregate</code></a></td><td>Aggregate rows.</td></tr>
+    <tr><td><a href="#-ts-join"><code>$ ts join</code></a></td><td>Join tables.</td></tr>
+    <tr><td><a href="#-ts-reshape"><code>$ ts reshape</code></a></td><td>Reshape table.</td></tr>
   <tbody>
 </table>
 
 <br/>
 
-### `> tableshaper`
+### `$ ts`
 
 Entry to the program.
 
 This command kicks off the program and is generally followed by a series of 
-commands, like `pick`, `filter`, or `mutate`. Here you specify the input and
+commands, like `pick`, `sift`, or `mutate`. Here you specify the input and
 output file with the `-i, --input` and `-o, --output` arguments. By default, the
 input will be `stdin` and the output will be `stdout`.
 
 ```bash
 # Read CSV data from stdin and output to stdout ...
-tableshaper < input.csv pick 'column1:column10' filter 'column1 > 20'
+ts < input.csv pick 'column1:column10' sift 'column1 > 20'
 
 # ... or read and write to and from files
-tableshaper -i input.csv -o output.csv pick 'column1:column10' filter 'column1 > 20'
+ts -i input.csv -o output.csv pick 'column1:column10' sift 'column1 > 20'
 ```
 
 The input file can be one of several formats. The default format is CSV,
@@ -95,45 +94,15 @@ argument:
 
 The output file is always a CSV.
 
-###### Command-line help
-```
-Usage: tableshaper [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
-
-  Tidy Table
-
-  A pipeline of transformations to tidy your tables
-
-Options:
-  -i, --input FILENAME            Input file or - for stdin.  [default: -]
-  -o, --output FILENAME           Output file or - for stdout.  [default: -]
-  -c, --csv                       Read input as CSV  [default: True]
-  -t, --tsv                       Read input as TSV
-  -j, --json                      Read input as JSON
-  -f, --json-format [records|split|index|columns|values]
-                                  JSON string format.  [default: records]
-  -h, --help                      Show this message and exit.
-
-Commands:
-  aggregate  Aggregate rows.
-  arrange    Sort rows.
-  pick     Subset columns.
-  exec       Execute python code.
-  filter     Subset rows.
-  join       Join tables.
-  mutate     Create new columns.
-  rename     Rename columns.
-  reshape    Reshape table.
-```
-
 [↑ To table of contents](#reference)
 
 <br/>
 
-### `> tableshaper pick`
+### `$ ts pick`
 
 Subset columns.
 
-There are two ways to pick columns, the "selection" method and the "filter"
+There are two ways to pick columns, the "selection" method and the "sift"
 method.
 
 The "selection" method is the default method (the `-s, --selection` flag sets it
@@ -155,7 +124,7 @@ pick '~C, ~F'
 pick '~B:G, E`
 ```
 
-The "filter" method is set with the `-f, --filter` flag. You provide a
+The "sift" method is set with the `-f, --sift` flag. You provide a
 Python expression that is evaluated on each column name. The column
 name is loaded into the namespace as `name`. If the expression evaluates
 to true then the column is kept.
@@ -168,53 +137,22 @@ pick -f 'name.startswith("population")'
 pick -f 'name.isnumeric()'
 ```
 
-###### Command-line help
-```
-Usage: tableshaper pick [OPTIONS] EXPRESSION
-
-  Subset columns.
-
-  -f, --filter
-  A python expression on each column name. If it evaluates to `True`
-  then it's kept. The column name is loaded in as `name`.
-
-  Examples:
-  pick -f '"population" in name'
-
-  -s, --selection (default)
-  Provide a comma-separated list of column "selections".
-  These can be single column names or sequential ranges of columns
-  defined by the first and last column name of the sequence 
-  separated by a colon. The tilde character (~) drops the selection.
-
-  Examples:
-  pick 'date, country, A, B, C, D'
-  pick 'date, country, A:D'
-  pick '~junk_column'
-  pick '~junk_column_1:junk_column_20'
-
-Options:
-  -s, --selection  Selection-based choosing
-  -f, --filter     Filter-based choosing
-  -h, --help       Show this message and exit.
-```
-
 [↑ To table of contents](#reference)
 
 <br/>
 
-### `> tableshaper rename`
+### `$ ts rename`
 
 Rename columns.
 
 There are two renaming methods. The default method is to provide a
-comma-separated list of column name assignments of the form: new <- old.
+comma-separated list of column name assignments of the form: new = old.
 All other columns are retained. You can explicitly set this method with
 the `-a, --assign` flag.
 
 ```bash
 # Rename GEOID to id and STATE_FIPS to fips.
-rename 'id <- GEOID, fips <- STATE_FIPS'
+rename 'id = GEOID, fips = STATE_FIPS'
 ```
 
 The second method is to provide a Python expression that gets evaluated on each
@@ -230,40 +168,11 @@ rename -m 'name.lower()'
 rename -m 'name.replace(' ', '_').lower()'
 ```
 
-####
-
-###### Command-line help
-```
-Usage: tableshaper rename [OPTIONS] EXPRESSION
-
-  Rename columns.
-
-  -a, --assign (default)
-  A comma-separated list of column names assignment, i.e.: new <- old
-
-  Example:
-  rename 'id <- GEOID, fips <- state_fips'
-
-  -m, --map
-  A python expression evaluated on each column name.
-  The column name is loaded in as `name`.
-
-  Example:
-  rename -m 'name.upper()'
-  rename -m 'name.strip().lower()'
-  rename -m "'_'.join(name.split(' ')).strip().lower()"
-
-Options:
-  -a, --assign  assign-based renaming (default)
-  -m, --map     map-based renaming
-  -h, --help    Show this message and exit.
-```
-
 [↑ To table of contents](#reference)
 
 <br/>
 
-### `> tableshaper filter`
+### `$ ts sift`
 
 Subset rows.
 
@@ -278,10 +187,10 @@ object. This method can be set explicitly with the `-v, --vectorized` flag.
 
 ```bash
 # Keep all rows where the population column has values greater than 1000
-filter 'population > 1000'
+sift 'population > 1000'
 
 # Keep all rows where the state column has values equal to "55" or "56"
-filter 'state.isin(["55", "56"])'
+sift 'state.isin(["55", "56"])'
 ```
 
 The second filtering method is to specify a range of row indexes of the
@@ -289,250 +198,188 @@ format: `start:end`. This method is set with the `-s, --slice` flag.
 
 ```bash
 # Keep the first five rows
-filter -s 1:5
+sift -s 1:5
 
 # Keep rows 25 through 75
-filter -s 1:5
+sift -s 1:5
 ```
 
-###### Command-line help
+Ranges can be open-ended. If no start index is provided, it starts from
+the first row. If no end index is provided, it ends at the last row of the
+table.
+
+```bash
+sift -s :5    # is equivalent to 1:5
+sift -s 100:  # 100th to the last row
 ```
-Usage: tableshaper filter [OPTIONS] EXPRESSION
+You can start from the back of the table too. If the start or end index
+begins with a tilde (~), the index will refer to that many places from the
+last row of the table.
 
-  Subset rows.
+```bash
+sift -s ~5:      # last five rows
+sift -s ~10:~5:  # from (n - 10) to (n - 5)
+```
 
-  Rows are kept based on a logical expression (true/false) or by a range of
-  row indices.
+Provide multiple slices. Pass in a comma-separated list of slices and
+you'll get them back in that order. Warning: you can get duplicate rows
+this way.
 
-  -v, --vectorized (default)
-  Rows are kept based on a python expression that evaluates to true or false.
-  The columns of the table are put into the namespace a pandas series.
-
-  Examples:
-  filter 'population > 1000'
-  filter 'state == "55"'
-  filter 'state.isin(["55", "56"])'
-
-  -s, --slice
-  Specify a range of indices following this format: start:end
-
-  Examples:
-  filter -s 1:5
-  filter -s 25:75
-
-Options:
-  -v, --vectorized  Vectorized filtering
-  -s, --slice       Slice-based filtering
-  -h, --help        Show this message and exit.
+```bash
+sift -s '1:5, 10:15'
+sift -s '1:5, ~5:'   # first and last five rows
 ```
 
 [↑ To table of contents](#reference)
 
 <br/>
 
-### `> tableshaper arrange`
+### `$ ts sort`
 
-###### Command-line help
-```
-Usage: tableshaper arrange [OPTIONS] COLUMNS
+Sort rows.
 
-  Sort rows.
+Order is determined by values in a column. Sort on multiple columns by passing
+in a comma-separated list of column names. Rows are sorted in ascending order,
+by default. To sort in descending order, put `:desc` after the column name.
 
-  Order is determined by values in a column (or columns).
-
-  Examples:
-  arrange 'mpg'
-  arrange 'mpg:desc'
-  arrange 'mpg, hp:desc'
-
-Options:
-  -h, --help  Show this message and exit.
+```bash
+sort 'mpg'
+sort 'mpg:desc'
+sort 'mpg, hp:desc'
 ```
 
 [↑ To table of contents](#reference)
 
 <br/>
 
-### `> tableshaper mutate`
+### `$ ts mutate`
 
-###### Command-line help
+Create new columns.
+
+A new column is created by assigning a new variable in a python
+expression. Mutation follow this format:
+
+new_column - [python expression]
+
+Columns with the same name will be overwritten.
+
+The default behavior is to perform vectorized transformation. All columns of the
+table are put in the namespace as a pandas Series. 
+
+```bash
+mutate 'real_value = value * (price / 100)'
+mutate 'touches_lake_mi = state.isin(["WI", "MI"])'
 ```
-Usage: tableshaper mutate [OPTIONS] MUTATION
+Grouped mutations are possible with the `-g, --group-by` option. Pass a
+comma-separated list of column names to group by multiple columns.
 
-  Create new columns.
+Grouped mutations are like aggregations except all original rows are preserved.
 
-  A new column is created by assigning a new variable in a python
-  expression. Mutation follow this format:
+```bash
+mutate -g state 'population_share = pop / pop.sum()'
+```
 
-  new_column <- [python expression]
+Some operations like string manipulation can be difficult to deal with when
+dealing with pandas Series objects. In these cases you way want to perform
+row-based mutations.
 
-  Columns with the same name will be overwritten.
+Activate row-wise mutation with the `-r, --row` flag. Columns in the row are
+put in the namespace as individual values.
 
-  -r, --row-wise
-  Row-wise mutation. Each row is evaluated individually. This will often 
-  be slower than vectorized mutation, but is more flexible in some cases.
-  Grouped mutations are not possible; the --group-by option is ignored.
-  Columns in the row are put in the namespace as an individual value. 
+Grouped mutations are not possible with row-wise mutation.
 
-  Examples:
-  mutate -r 'id <- "%05d" % id'
-  mutate -r 'state <- id[0:2]'
-
-  -v, --vectorized (default)
-  Vector-based mutation. All columns of the table are put in the namespace
-  as a pandas Series. Grouped mutations are possible with the --group-by
-  option
-
-  Examples:
-  mutate 'real_value <- value * (price / 100)'
-  mutate 'touches_lake_mi <- state.isin(['WI', 'MI'])'
-  mutate --group-by state 'population_share <- pop / pop.sum()'
-
-  -g, --group-by <columns>
-  Comma-separated list of columns to group by. Only applies when 
-  `-v, --vectorized` flag is active (which it is by default).
-
-Options:
-  -v, --vectorized     Vectorized transformation
-  -r, --row-wise       Row-wise transformation
-  -g, --group-by TEXT  Column(s) to group rows by
-  -h, --help           Show this message and exit.
+```bash
+mutate -r 'id = "%05d" % id'
+mutate -r 'state = id[0:2]'
 ```
 
 [↑ To table of contents](#reference)
 
 <br/>
 
-### `> tableshaper aggregate`
+### `$ ts aggregate`
 
-###### Command-line help
-```
-Usage: tableshaper aggregate [OPTIONS] AGGREGATION
+Aggregate rows.
 
-  Aggregate rows.
+Group rows based on values in one or more columns and aggregate these
+groups of rows into single values using methods like sum(), mean(),
+count(), max(), min().
 
-  Group rows based on values in one or more columns and aggregate these
-  groups of rows into single values using methods like sum(), mean(),
-  count(), max(), min().
+Aggregations follow this format:
 
-  Aggregations follow this format:
+new_column = [python expression]
 
-  new_column <- [python expression]
+-g, --group-by <columns>
+Comma-separated list of columns to group by.
 
-  -g, --group-by <columns>
-  Comma-separated list of columns to group by.
-
-  Examples:
-  aggregate -g state 'population_sum <- population.sum()'
-  aggregate -g country_id,station_id 'median_wind_speed <- wind_speed.median()'
-
-Options:
-  -g, --group-by TEXT
-  -h, --help           Show this message and exit.
+```bash
+aggregate -g state 'population_sum = population.sum()'
+aggregate -g country_id,station_id 'median_wind_speed = wind_speed.median()'
 ```
 
 [↑ To table of contents](#reference)
 
 <br/>
 
-### `> tableshaper join`
+### `$ ts join`
 
-###### Command-line help
+Join tables.
+
+Perform SQL-style joins with the following flags:
+- Left join: `-l, --left` (default)
+- Right join: `-r, --right`
+- Outer join: `-o, --outer`
+- Inner join: `-i, --inner`
+
+The columns to join on are passed to the `-k, --key` argument.
+
+```bash
+join -k id right.csv
+join -r -k id right.csv
+join -o -k 'state_id, county_id' right.csv
 ```
-Usage: tableshaper join [OPTIONS] [RIGHT]
 
-  Join tables.
+You can also bind rows or columns from two tables together with the
+`--bind-rows` and `--bind-columns` flags.
 
-  SQL-style joins
-  -l, --left
-  -r, --right
-  -o, --outer
-  -i, --inner
-  Join two tables based on common column values.
-
-  Examples:
-  join -k id right.csv
-  join -r -k id right.csv
-  join -o -k 'state_id, county_id' right.csv
-
-  Bind columns or rows
-  -r, --bind-rows
-  -c, --bind-columns
-  Bind rows or columns from two tables together.
-
-  Examples:
-  join -r right.csv
-  join -c right.csv
-
-  -k, --keys
-  Column to join tables with. Only applies to SQL-style joins.
-
-Options:
-  -l, --left          Left join
-  -r, --right         Right join
-  -o, --outer         Outer join
-  -i, --inner         Inner join
-  -r, --bind-rows     Bind rows
-  -c, --bind-columns  Bind columns
-  -k, --keys TEXT     Columns to join tables on
-  -h, --help          Show this message and exit.
+```bash
+join --bind-rows right.csv
+join --bind-columns right.csv
 ```
+
+When binding rows, any columns that exist in one table and not the other will
+be filled with `NaN` values for rows in the table without that column.
 
 [↑ To table of contents](#reference)
 
 <br/>
 
-### `> tableshaper reshape`
+### `$ ts reshape`
 
-###### Command-line help
+Reshape table.
+
+There are two ways to reshape a table. The first is to go from wide to long.
+The gather method takes a collection of columns and converts them
+into two key-value columns.
+
+This is the default method but can be set explicitly
+with the `-g, --gather` flag. The name of the two key-value columns are
+set with the `-k, --key` and `-v, --value` arguments. The columns to collect
+are set with the `-c, --columns` argument which takes a *selection* of 
+columns (see <a href="#-ts-pick"><code>$ ts pick</code></a> for an description
+of *selections*).
+
+```bash
+reshape -k year -v population -c 1995:2013
 ```
-Usage: tableshaper reshape [OPTIONS]
+The second method is to go from long to wide. The spread method (set with the
+`-s, --spread` flag) takes two key-value columns and spreads them out into
+multiple columns where the key column is converted into the column name
+and the rows are filled with the values in the *value* columns. The key-value
+columns names are passed to the `-k, --key` and `-v, --value` arguments.
 
-  Reshape table.
-
-  -g, --gather (default)
-  Go from wide to long. Gather many columns into two key-value columns.
-
-  Examples:
-  reshape -k year -v population -c 1995:2013     
-  
-  -s, --spread
-  Go from long to wide. Spread two key-value columns to multiple columns.
-
-  Examples:
-  reshape -s -k year -v population
-
-Options:
-  -g, --gather        Go from wide to long (default)
-  -s, --spread        Go from long to wide
-  -k, --key TEXT      Key column
-  -v, --value TEXT    Value column
-  -c, --columns TEXT  Selection of columns to be gathered
-  -h, --help          Show this message and exit.
-```
-
-[↑ To table of contents](#reference)
-
-<br/>
-
-### `> tableshaper exec`
-
-###### Command-line help
-```
-Usage: tableshaper exec [OPTIONS] EXPRESSION
-
-  Execute python code.
-
-  The table will be in the namespace as `d`. Any changes to the `d`
-  dataframe will be passed on.
-
-  Examples:
-  exec 'd["pop_per_mil"] = d["pop"] / 1000000'
-  is equivalent to...
-  mutate 'pop_per_mil <- pop / 1000000'
-
-Options:
-  -h, --help  Show this message and exit.
+```bash
+reshape -s -k year -v population
 ```
 
 [↑ To table of contents](#reference)

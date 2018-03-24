@@ -27,9 +27,9 @@ def join(df, way, keys, right):
               help = 'Outer join')
 @click.option('-i', '--inner', 'way', flag_value = 'inner',
               help = 'Inner join')
-@click.option('-r', '--bind-rows', 'way', flag_value = 'bind-rows',
+@click.option('--bind-rows', 'way', flag_value = 'bind-rows',
               help = 'Bind rows')
-@click.option('-c', '--bind-columns', 'way', flag_value = 'bind-columns',
+@click.option('--bind-columns', 'way', flag_value = 'bind-columns',
               help = 'Bind columns')
 @click.option('-k', '--keys', type = click.STRING,
               help = 'Columns to join tables on')
@@ -48,6 +48,10 @@ def cli(dfs, way, keys, right):
     Join two tables based on common column values.
 
     \b
+    -k, --keys
+    Column to join tables with. Only applies to SQL-style joins.
+    
+    \b
     Examples:
     join -k id right.csv
     join -r -k id right.csv
@@ -55,18 +59,15 @@ def cli(dfs, way, keys, right):
 
     \b
     Bind columns or rows
-    -r, --bind-rows
-    -c, --bind-columns
+    --bind-rows
+    --bind-columns
     Bind rows or columns from two tables together.
 
     \b
     Examples:
-    join -r right.csv
-    join -c right.csv
+    join -bind-rows right.csv
+    join -bind-columns right.csv
 
-    \b
-    -k, --keys
-    Column to join tables with. Only applies to SQL-style joins.
     '''
     for df in dfs:
         yield join(df, way, keys, right)
