@@ -1,12 +1,8 @@
-import sys
-import logging
 import pandas as pd
 
 from click.testing import CliRunner
 
 from tableshaper.cli import cli
-
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 joinable_1 = pd.read_csv('tests/data/joinable1.csv')
 joinable_2 = pd.read_csv('tests/data/joinable2.csv')

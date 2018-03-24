@@ -1,12 +1,8 @@
-import sys
-import logging
 import pandas as pd
 
 from click.testing import CliRunner
 
 from tableshaper.cli import cli
-
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 table_2 = pd.read_csv('tests/data/table2.csv')
 table_4a = pd.read_csv('tests/data/table4a.csv')
