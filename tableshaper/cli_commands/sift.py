@@ -34,7 +34,7 @@ def cli(dfs, way, expression):
     sift 'state.isin(["55", "56"])'
     
     \b
-    -r, --row-wise
+    -r, --row
     Perform row-wise sifting. Each row is evaluated individually, not as a
     pandas series. This can be slower than vectorized sifting, but is more
     flexible in some cases. 
@@ -98,7 +98,7 @@ def cli(dfs, way, expression):
                     start = len(df) - int(start.replace('~', ''))            
                 elif (len(start) == 0):
                     # An empty "start" is equivalent to 1
-                    start = 1
+                    start = 0
                 else:
                     # Slice is a one-based index, df.loc[] is zero-based
                     start = int(start) - 1
@@ -114,7 +114,6 @@ def cli(dfs, way, expression):
                 
                 indexes += range(start, end)
 
-            print indexes
             yield df.iloc[indexes]
         elif way == 'row-wise':
             yield row_sift(expression)(df)
