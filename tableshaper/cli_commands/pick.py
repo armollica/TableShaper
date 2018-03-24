@@ -1,9 +1,9 @@
 import click
 import pandas as pd
-from tableshaper import choose
+from tableshaper import pick
 from tableshaper.helpers import processor
 
-@click.command('choose')
+@click.command('pick')
 @click.option('-s', '--sift', 'way', flag_value = 'sift',
               help = 'Sift-based choosing')
 @click.argument('expression', type = click.STRING)
@@ -21,10 +21,10 @@ def cli(dfs, way, expression):
 
     \b
     Examples:
-    choose 'date, country, A, B, C, D'
-    choose 'date, country, A:D'
-    choose '~junk_column'
-    choose '~junk_column_1:junk_column_20'
+    pick 'date, country, A, B, C, D'
+    pick 'date, country, A:D'
+    pick '~junk_column'
+    pick '~junk_column_1:junk_column_20'
 
     \b
     -s, --sift
@@ -36,11 +36,11 @@ def cli(dfs, way, expression):
 
     \b
     Examples:
-    choose -s '"population" in name'
+    pick -s '"population" in name'
     '''
     for df in dfs:
         if way == 'sift':
             column_list = filter(eval('lambda name: ' + expression), list(df))
             yield df[column_list]
         else:
-            yield choose(expression)(df)
+            yield pick(expression)(df)

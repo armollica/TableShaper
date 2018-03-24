@@ -12,7 +12,7 @@ A command-line table processor.
 
 Grab a subset of columns from a table.
 ```bash
-tableshaper < table.csv choose 'country, continent, pop1990:pop2000`
+tableshaper < table.csv pick 'country, continent, pop1990:pop2000`
 ```
 
 Drop rows you don't need.
@@ -28,7 +28,7 @@ tableshaper < table.csv reshape --gather -k year -v population --columns pop1990
 Do it all in one command.
 ```bash
 tableshaper < table.csv \
-  choose 'country, continent, pop1990:pop2000' \
+  pick 'country, continent, pop1990:pop2000' \
   filter 'continent == "South America"' \
   reshaper --gather -k year -v population --columns pop1990:pop2000
 ```
@@ -49,7 +49,7 @@ pip install tableshaper/
   </thead>
   <tbody>
     <tr><td><a href="#-tableshaper"><code>> tableshaper</code></a></td><td>Tidy Table program</td></tr>
-    <tr><td><a href="#-tableshaper-choose"><code>> tableshaper choose</code></a></td><td>Subset columns.</td></tr>
+    <tr><td><a href="#-tableshaper-pick"><code>> tableshaper pick</code></a></td><td>Subset columns.</td></tr>
     <tr><td><a href="#-tableshaper-rename"><code>> tableshaper rename</code></a></td><td>Rename columns.</td></tr>
     <tr><td><a href="#-tableshaper-filter"><code>> tableshaper filter</code></a></td><td>Subset rows.</td></tr>
     <tr><td><a href="#-tableshaper-arrange"><code>> tableshaper arrange</code></a></td><td>Sort rows.</td></tr>
@@ -68,16 +68,16 @@ pip install tableshaper/
 Entry to the program.
 
 This command kicks off the program and is generally followed by a series of 
-commands, like `choose`, `filter`, or `mutate`. Here you specify the input and
+commands, like `pick`, `filter`, or `mutate`. Here you specify the input and
 output file with the `-i, --input` and `-o, --output` arguments. By default, the
 input will be `stdin` and the output will be `stdout`.
 
 ```bash
 # Read CSV data from stdin and output to stdout ...
-tableshaper < input.csv choose 'column1:column10' filter 'column1 > 20'
+tableshaper < input.csv pick 'column1:column10' filter 'column1 > 20'
 
 # ... or read and write to and from files
-tableshaper -i input.csv -o output.csv choose 'column1:column10' filter 'column1 > 20'
+tableshaper -i input.csv -o output.csv pick 'column1:column10' filter 'column1 > 20'
 ```
 
 The input file can be one of several formats. The default format is CSV,
@@ -116,7 +116,7 @@ Options:
 Commands:
   aggregate  Aggregate rows.
   arrange    Sort rows.
-  choose     Subset columns.
+  pick     Subset columns.
   exec       Execute python code.
   filter     Subset rows.
   join       Join tables.
@@ -129,11 +129,11 @@ Commands:
 
 <br/>
 
-### `> tableshaper choose`
+### `> tableshaper pick`
 
 Subset columns.
 
-There are two ways to choose columns, the "selection" method and the "filter"
+There are two ways to pick columns, the "selection" method and the "filter"
 method.
 
 The "selection" method is the default method (the `-s, --selection` flag sets it
@@ -146,13 +146,13 @@ by putting a tilde (~) before it.
 # Assume we have a table with columns A, B, C, etc.
 
 # Keep columns A and D through G 
-choose 'A, D:G'
+pick 'A, D:G'
 
 # Drop columns C and F
-choose '~C, ~F'
+pick '~C, ~F'
 
 # Drop columns B through G, add column E back in
-choose '~B:G, E`
+pick '~B:G, E`
 ```
 
 The "filter" method is set with the `-f, --filter` flag. You provide a
@@ -162,15 +162,15 @@ to true then the column is kept.
 
 ```bash
 # Keep columns that start with "population"
-choose -f 'name.startswith("population")'
+pick -f 'name.startswith("population")'
 
 # Keep columns that are numeric
-choose -f 'name.isnumeric()'
+pick -f 'name.isnumeric()'
 ```
 
 ###### Command-line help
 ```
-Usage: tableshaper choose [OPTIONS] EXPRESSION
+Usage: tableshaper pick [OPTIONS] EXPRESSION
 
   Subset columns.
 
@@ -179,7 +179,7 @@ Usage: tableshaper choose [OPTIONS] EXPRESSION
   then it's kept. The column name is loaded in as `name`.
 
   Examples:
-  choose -f '"population" in name'
+  pick -f '"population" in name'
 
   -s, --selection (default)
   Provide a comma-separated list of column "selections".
@@ -188,10 +188,10 @@ Usage: tableshaper choose [OPTIONS] EXPRESSION
   separated by a colon. The tilde character (~) drops the selection.
 
   Examples:
-  choose 'date, country, A, B, C, D'
-  choose 'date, country, A:D'
-  choose '~junk_column'
-  choose '~junk_column_1:junk_column_20'
+  pick 'date, country, A, B, C, D'
+  pick 'date, country, A:D'
+  pick '~junk_column'
+  pick '~junk_column_1:junk_column_20'
 
 Options:
   -s, --selection  Selection-based choosing

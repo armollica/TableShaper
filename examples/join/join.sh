@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 tableshaper -i cars.csv -o left.csv \
-    choose 'name, mpg'
+    pick 'name, mpg'
 
 tableshaper -i cars.csv -o right.csv \
-    choose 'name, hp'
+    pick 'name, hp'
 
 tableshaper -i left.csv \
     join --keys name right.csv
@@ -12,10 +12,10 @@ tableshaper -i left.csv \
 rm -rf left.csv right.csv
 
 tableshaper -i cars.csv -o left.csv \
-    choose 'name, mpg'
+    pick 'name, mpg'
 
 tableshaper -i cars.csv -o right.csv \
-    choose 'mpg, hp'
+    pick 'mpg, hp'
 
 tableshaper -i left.csv \
     join --bind-columns right.csv 
@@ -23,12 +23,12 @@ tableshaper -i left.csv \
 rm -rf left.csv right.csv
 
 tableshaper -i cars.csv -o top.csv \
-    choose 'name, mpg' \
+    pick 'name, mpg' \
     sift 'mpg > 22' \
     sort 'mpg:desc'
 
 tableshaper -i cars.csv -o bottom.csv \
-    choose 'name, mpg' \
+    pick 'name, mpg' \
     sift 'mpg <= 22' \
     sort 'mpg'
 

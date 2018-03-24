@@ -1,6 +1,6 @@
 from tableshaper.verbs.pipe import pipe
 from tableshaper.verbs.rename import rename
-from tableshaper.verbs.choose import choose
+from tableshaper.verbs.pick import pick
 from tableshaper.verbs.mutate import mutate
 from tableshaper.verbs.sift import sift
 from tableshaper.verbs.sort import sort

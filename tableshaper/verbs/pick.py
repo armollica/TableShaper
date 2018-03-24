@@ -1,6 +1,6 @@
 from tableshaper.helpers import selectify
 
-def choose(*names):
+def pick(*names):
     expression = ','.join(names)
     def process(df):
         column_list = selectify(list(df), expression)
