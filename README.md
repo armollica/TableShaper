@@ -408,14 +408,14 @@ pip install --editable .
 
 ## Credits
 
-Much love to the people who made the [pandas](https://pandas.pydata.org/)
-and [click](http://click.pocoo.org/5/) packages. This tool could have been a
-pain to develop, but these two packages made it a breeze.
+Many thanks to the people who made the [pandas](https://pandas.pydata.org/)
+and [click](http://click.pocoo.org/5/) packages. This tool relies on these
+immensely.
 
-Also much love to the people behind these tools. You've saved me loads of time
-and headache. Wouldn't have made this tool without you all.
+Also many thanks to the people behind these tools. You've saved me loads of time
+and headache.
 - [tidyverse](https://www.tidyverse.org/): R packages that make cleaning data intuitive. I stole many ideas from the `dplyr` and `tidyr` packages, in particular. Love the micro domain-specific languages in these packages, each tailored for specific tasks.
 - [mapshaper](https://github.com/mbloch/mapshaper/wiki/Command-Reference): A command-line tool for editing geographic data (vector-based). I mimicked the command-line interface of this in many ways, especially the command chaining. The viewer is also great.
 - [csvkit](http://csvkit.rtfd.org/): Great tool for processing tabular data. Does many of the same things this tool does. Also does many thing this tool doesn't do, like pretty print and parse Excel files.
-- [jq](https://stedolan.github.io/jq/): A command-line JSON processor. Really simple and powerful.
+- [jq](https://stedolan.github.io/jq/): A command-line JSON processor. Really simple and flexible.
 - [ndjson-cli](https://github.com/mbostock/ndjson-cli): A command-line tool for processing newline-delimited JSON files.
