@@ -1,0 +1,14 @@
+attrs==17.4.0
+click==6.7
+funcsigs==1.0.2
+inflection==0.3.1
+more-itertools==4.1.0
+numpy==1.14.0
+pandas==0.22.0
+pluggy==0.6.0
+py==1.5.3
+pytest==3.5.0
+python-dateutil==2.6.1
+pytz==2018.3
+six==1.11.0
+-e git+https://github.com/armollica/TableShaper.git@0e07f1212d2432917e5ecd3070d70c01414d1aa6#egg=tableshaper
