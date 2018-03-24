@@ -48,7 +48,7 @@ def test_rowwise_number():
     assert expect.to_csv(index=False) == result.output
 
 # Row-wise with string comparator
-def test_rowwise_number():
+def test_rowwise_string():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['--input', 'tests/data/table1.csv'] +

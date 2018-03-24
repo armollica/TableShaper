@@ -6,7 +6,7 @@ from click.testing import CliRunner
 
 from tableshaper.cli import cli
 
-# logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 table_1 = pd.read_csv('tests/data/table1.csv')
 
