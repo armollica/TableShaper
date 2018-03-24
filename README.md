@@ -22,7 +22,7 @@ ts < table.csv sift 'continent == "South America"'
 
 Reshape the table.
 ```bash
-ts < table.csv reshape --gather -k year -v population --columns pop1990:pop2000
+ts < table.csv reshape -k year -v population --columns pop1990:pop2000
 ```
 
 Do it all in one command.
@@ -30,7 +30,7 @@ Do it all in one command.
 ts < table.csv \
   pick 'country, continent, pop1990:pop2000' \
   sift 'continent == "South America"' \
-  reshape --gather -k year -v population --columns pop1990:pop2000
+  reshape -k year -v population --columns pop1990:pop2000
 ```
 
 ## Install
@@ -48,7 +48,7 @@ pip install tableshaper/
     <tr><th colspan="2">Table of contents</th></tr>
   </thead>
   <tbody>
-    <tr><td><a href="#-ts"><code>$ ts</code></a></td><td>Tidy Table program</td></tr>
+    <tr><td><a href="#-ts"><code>$ ts</code></a></td><td>TableShaper program</td></tr>
     <tr><td><a href="#-ts-pick"><code>$ ts pick</code></a></td><td>Subset columns.</td></tr>
     <tr><td><a href="#-ts-rename"><code>$ ts rename</code></a></td><td>Rename columns.</td></tr>
     <tr><td><a href="#-ts-sift"><code>$ ts sift</code></a></td><td>Subset rows.</td></tr>
@@ -64,18 +64,18 @@ pip install tableshaper/
 
 ### `$ ts`
 
-Entry to the program.
+The TableShaper program.
 
-This command kicks off the program and is generally followed by a series of 
+`ts` command kicks off the program and is generally followed by a series of 
 commands, like `pick`, `sift`, or `mutate`. Here you specify the input and
 output file with the `-i, --input` and `-o, --output` arguments. By default, the
 input will be `stdin` and the output will be `stdout`.
 
 ```bash
-# Read CSV data from stdin and output to stdout ...
+# Read CSV data from stdin, perform a few transformations and output to stdout
 ts < input.csv pick 'column1:column10' sift 'column1 > 20'
 
-# ... or read and write to and from files
+# The same, but reading and writing from a file.
 ts -i input.csv -o output.csv pick 'column1:column10' sift 'column1 > 20'
 ```
 
@@ -124,17 +124,17 @@ pick '~C, ~F'
 pick '~B:G, E`
 ```
 
-The "sift" method is set with the `-f, --sift` flag. You provide a
+The "sift" method is set with the `-s, --sift` flag. You provide a
 Python expression that is evaluated on each column name. The column
 name is loaded into the namespace as `name`. If the expression evaluates
 to true then the column is kept.
 
 ```bash
 # Keep columns that start with "population"
-pick -f 'name.startswith("population")'
+pick -s 'name.startswith("population")'
 
 # Keep columns that are numeric
-pick -f 'name.isnumeric()'
+pick -s 'name.isnumeric()'
 ```
 
 [↑ To table of contents](#reference)
