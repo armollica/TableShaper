@@ -92,6 +92,10 @@ argument:
 - columns: dict like {column -> {index -> value}}
 - values: just the values array
 
+Data types for columns will be inferred automatically. To prevent this and
+read everything in as strings, use the `-r, --raw` flag. You can then set
+the data types explicitly in a `mutate` command.
+
 The output file is always a CSV.
 
 [↑ To table of contents](#reference)
@@ -264,12 +268,22 @@ new_column - [python expression]
 Columns with the same name will be overwritten.
 
 The default behavior is to perform vectorized transformation. All columns of the
-table are put in the namespace as a pandas Series. 
+table are put in the namespace as a pandas Series.
 
 ```bash
 mutate 'real_value = value * (price / 100)'
 mutate 'touches_lake_mi = state.isin(["WI", "MI"])'
 ```
+
+Multiple mutations can be made in one go by separating mutations with a
+semicolon (;). The order of these mutations is not guaranteed to be consistent
+with the order to provided them. Run separate `mutate` commands if the order
+matters.
+
+```bash
+mutate 'price = price / 100; pop = pop * 1000'
+```
+
 Grouped mutations are possible with the `-g, --group-by` option. Pass a
 comma-separated list of column names to group by multiple columns.
 
@@ -417,5 +431,6 @@ and headache.
 - [tidyverse](https://www.tidyverse.org/): R packages that make cleaning data intuitive. I stole many ideas from the `dplyr` and `tidyr` packages, in particular. Love the micro domain-specific languages in these packages, each tailored for specific tasks.
 - [mapshaper](https://github.com/mbloch/mapshaper/wiki/Command-Reference): A command-line tool for editing geographic data (vector-based). I mimicked the command-line interface of this in many ways, especially the command chaining. The viewer is also great.
 - [csvkit](http://csvkit.rtfd.org/): Great tool for processing tabular data. Does many of the same things this tool does. Also does many thing this tool doesn't do, like pretty print and parse Excel files.
+- [visidata](http://visidata.org/): Tool to viewing and exploring tabular data at the command line.
 - [jq](https://stedolan.github.io/jq/): A command-line JSON processor. Really simple and flexible.
 - [ndjson-cli](https://github.com/mbostock/ndjson-cli): A command-line tool for processing newline-delimited JSON files.

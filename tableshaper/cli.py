@@ -48,7 +48,9 @@ CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
               type = click.Choice(['records', 'split', 'index', 'columns', 'values']),
               help = 'JSON string format.',
               show_default = True)
-def cli(infile, outfile, intype, json_format):
+@click.option('-r', '--raw', 'raw', flag_value = 'raw',
+              help = "Read all columns in as strings")
+def cli(infile, outfile, intype, json_format, raw):
     '''
     TableShaper
 
@@ -57,7 +59,7 @@ def cli(infile, outfile, intype, json_format):
     pass
 
 @cli.resultcallback()
-def process_commands(processors, infile, outfile, intype, json_format):
+def process_commands(processors, infile, outfile, intype, json_format, raw):
     '''
     This result callback is invoked with an iterable of all the chained
     subcommands.  As in this example each subcommand returns a function
@@ -65,13 +67,17 @@ def process_commands(processors, infile, outfile, intype, json_format):
     a pipe on unix works.
     '''
     # Input the file
+    dtype = None
+    if raw:
+        dtype = str
+    
     def read_df(file):
         if intype == 'json':
-            return pd.read_json(file, orient = json_format)
+            return pd.read_json(file, orient=json_format, dtype=dtype)
         elif intype == 'tsv':
-            return pd.read_csv(file, sep = '\t')    
+            return pd.read_csv(file, sep='\t', dtype=dtype)    
         elif intype == 'csv':
-            return pd.read_csv(file)
+            return pd.read_csv(file, dtype=dtype)
     try:
         df = read_df(infile)
     except Exception as e:
