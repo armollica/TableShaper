@@ -109,11 +109,10 @@ Subset columns.
 There are two ways to pick columns, the "selection" method and the "sift"
 method.
 
-The "selection" method is the default method (the `-s, --selection` flag sets it
-explicitly). With this method you give a comma-separated list of column names
-or ranges of column names. A range is specified by the starting and ending
-columns separated by a colon: `start:end`. You can exclude a column or a range
-by putting a tilde (~) before it.
+The "selection" method is the default method. With this method you give a
+comma-separated list of column names or ranges of column names. A range is
+specified by the starting and ending columns separated by a colon: `start:end`.
+You can exclude a column or a range by putting a tilde (~) before it.
 
 ```bash
 # Assume we have a table with columns A, B, C, etc.
@@ -151,8 +150,7 @@ Rename columns.
 
 There are two renaming methods. The default method is to provide a
 comma-separated list of column name assignments of the form: new = old.
-All other columns are retained. You can explicitly set this method with
-the `-a, --assign` flag.
+All other columns are retained.
 
 ```bash
 # Rename GEOID to id and STATE_FIPS to fips.
@@ -187,7 +185,7 @@ The default method is to keep rows based on a Python expression that evaluates
 to true or false. The columns of the table are put into the namespace as a
 pandas
 [Series](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html)
-object. This method can be set explicitly with the `-v, --vectorized` flag.
+object.
 
 ```bash
 # Keep all rows where the population column has values greater than 1000
@@ -195,6 +193,15 @@ sift 'population > 1000'
 
 # Keep all rows where the state column has values equal to "55" or "56"
 sift 'state.isin(["55", "56"])'
+```
+
+If you use the `-r, --row` flag, you can perform the same type of filtering
+on rows individually, instead of on pandas Series as a whole. This can be more
+flexible, especially when dealing with strings.
+
+```bash
+  sift -r 'state in ["55", "56"]'
+  sift -r 're.match("^(M|m)azda", name) is not None'
 ```
 
 The second filtering method is to specify a range of row indexes of the
@@ -263,7 +270,7 @@ Create new columns.
 A new column is created by assigning a new variable in a python
 expression. Mutation follow this format:
 
-new_column - [python expression]
+new_column = [python expression]
 
 Columns with the same name will be overwritten.
 
@@ -345,7 +352,7 @@ Perform SQL-style joins with the following flags:
 - Outer join: `-o, --outer`
 - Inner join: `-i, --inner`
 
-The columns to join on are passed to the `-k, --key` argument.
+Pass the columns to join to the `-k, --key` argument.
 
 ```bash
 join -k id right.csv
