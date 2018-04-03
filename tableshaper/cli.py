@@ -86,11 +86,7 @@ def process_commands(processors, infile, outfile, intype, json_format, raw):
     # Start with an iterable dataframe.
     stream = (df,)
 
-    # Pipe it through all stream processors.
-    for processor in processors:
-        stream = processor(stream)
-    
-    # Output the file
+    # Output table to CSV
     def output_cmd(dfs):
         try:
             for df in dfs:
@@ -100,8 +96,21 @@ def process_commands(processors, infile, outfile, intype, json_format, raw):
             click.echo('Could not write "%s": %s' %
                         (file, e), err = True)
 
-    stream = output_cmd(stream)
+    def output_to_csv(stream):
+        stream = output_cmd(stream)
 
-    # Evaluate the stream and throw away the items.
-    for _ in stream:
-        pass
+        # Evaluate the stream and throw away the items.
+        for _ in stream:
+            pass
+    
+    # Pipe it through all stream processors.
+    for processor in processors:
+        try:
+            stream = processor(stream)
+        except StopIteration:
+            # The `view` command stops the data flow and logs information about
+            # the table. We don't want to move on to outputting to CSV
+            pass
+        else:
+            output_to_csv(stream)
+

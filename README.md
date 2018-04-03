@@ -49,6 +49,7 @@ pip install tableshaper/
   </thead>
   <tbody>
     <tr><td><a href="#-ts"><code>$ ts</code></a></td><td>TableShaper program</td></tr>
+    <tr><td><a href="#-ts-view"><code>$ ts view</code></a></td><td>View table.</td></tr>
     <tr><td><a href="#-ts-pick"><code>$ ts pick</code></a></td><td>Subset columns.</td></tr>
     <tr><td><a href="#-ts-rename"><code>$ ts rename</code></a></td><td>Rename columns.</td></tr>
     <tr><td><a href="#-ts-sift"><code>$ ts sift</code></a></td><td>Subset rows.</td></tr>
@@ -97,6 +98,38 @@ read everything in as strings, use the `-r, --raw` flag. You can then set
 the data types explicitly in a `mutate` command.
 
 The output file is always a CSV.
+
+[↑ To table of contents](#reference)
+
+<br/>
+
+### `$ ts view`
+
+View table.
+
+Display table in a human-readable format. Or print summary information
+about the table.
+
+Calling `view` by itself will print the first and last 30 rows of the table.
+
+You can limit what's display to the top `n` rows with the `-n, --top` option.
+```bash
+view -n 5  # show the top 5 rows
+```
+
+Use the `-i, --info` flag to display a summary of the table. This includes the
+number of rows and columns as well as each column's name, its data type and the
+number of non-null values it has. Also displays the memory usage of the table.
+
+Use the `-s, --stats` flag to display summary statistics on the columns in the
+table.
+
+For numbers this will includes the count, mean, standard deviation, minimum,
+maximum, 25th percentile, median and 75th percentile.
+
+For strings and timestamps it will include the count, the number of unique
+values, the most common value and the number of times it occurs.
+Timestamps also include the first and last items.
 
 [↑ To table of contents](#reference)
 
