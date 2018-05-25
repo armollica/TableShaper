@@ -1,14 +1,13 @@
 import click
 import pandas as pd
 from tableshaper import pick
-from tableshaper.helpers import processor
 
 @click.command('pick')
 @click.option('-s', '--sift', 'way', flag_value = 'sift',
               help = 'Sift-based choosing')
 @click.argument('expression', type = click.STRING)
-@processor
-def cli(dfs, way, expression):
+@click.pass_context
+def cli(context, way, expression):
     '''
     Subset columns.
     
@@ -38,9 +37,12 @@ def cli(dfs, way, expression):
     Examples:
     pick -s '"population" in name'
     '''
-    for df in dfs:
-        if way == 'sift':
-            column_list = filter(eval('lambda name: ' + expression), list(df))
-            yield df[column_list]
-        else:
-            yield pick(expression)(df)
+    table = context.obj['get_target']()
+    
+    if way == 'sift':
+        column_list = filter(eval('lambda name: ' + expression), list(df))
+        table = table[column_list]
+    else:
+        table = pick(expression)(table)
+    
+    context.obj['update_target'](table)

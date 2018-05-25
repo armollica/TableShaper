@@ -1,6 +1,6 @@
 import click
 from tableshaper import gather, spread
-from tableshaper.helpers import processor, selectify
+from tableshaper.helpers import selectify
 
 @click.command('reshape')
 @click.option('-g', '--gather', 'way', flag_value = 'gather', default = True,
@@ -12,8 +12,8 @@ from tableshaper.helpers import processor, selectify
 @click.option('-v', '--value', type = click.STRING, default = 'value',
               help = 'Value column')
 @click.option('-c', '--columns', type = click.STRING, help = 'Selection of columns to be gathered')
-@processor
-def cli(dfs, way, key, value, columns):
+@click.pass_context
+def cli(context, way, key, value, columns):
     '''
     Reshape table.
 
@@ -33,8 +33,11 @@ def cli(dfs, way, key, value, columns):
     Examples:
     reshape -s -k year -v population
     '''
-    for df in dfs:
-        if way == 'gather':
-            yield gather(key, value, columns)(df)
-        elif way == 'spread':
-            yield spread(key, value)(df)
+    table = context.obj['get_target']()
+
+    if way == 'gather':
+        table = gather(key, value, columns)(table)
+    elif way == 'spread':
+        table = spread(key, value)(table)
+    
+    context.obj['update_target'](table)

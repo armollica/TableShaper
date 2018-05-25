@@ -1,13 +1,13 @@
 import click
 import pandas as pd
 from tableshaper import pipe, group_by, aggregate
-from tableshaper.helpers import processor, parse_key_value
+from tableshaper.helpers import parse_key_value
 
 @click.command('aggregate')
 @click.option('-g', '--group-by', 'group_by_expression', type = click.STRING)
 @click.argument('aggregation', type = click.STRING)
-@processor
-def cli(dfs, group_by_expression, aggregation):
+@click.pass_context
+def cli(context, group_by_expression, aggregation):
     '''
     Aggregate rows.
     
@@ -34,13 +34,12 @@ def cli(dfs, group_by_expression, aggregation):
     aggregate -g country_id,station_id 'median_wind_speed = wind_speed.median()'
 
     '''
+    table = context.obj['get_target']()
+
     key_value = parse_key_value(aggregation.strip())
     name = key_value['key']
     expression = key_value['value']
     groups = map(lambda x: x.strip(), group_by_expression.split(','))
-    for df in dfs:
-        yield pipe(df)(
-            group_by(*groups)(
-                aggregate(**{ name: expression })
-            )
-        )
+    table = pipe(table)(group_by(*groups)(aggregate(**{name: expression})))
+    
+    context.obj['update_target'](table)

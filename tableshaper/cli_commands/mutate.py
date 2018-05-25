@@ -1,7 +1,7 @@
 import click
 import pandas as pd
 from tableshaper import mutate, pipe, group_by
-from tableshaper.helpers import processor, parse_key_value, evaluate
+from tableshaper.helpers import parse_key_value, evaluate
 
 def row_mutate(column_name, expression):
     def compute(df):
@@ -17,8 +17,8 @@ def row_mutate(column_name, expression):
 @click.option('-g', '--group-by', 'group_by_expression', type = click.STRING,
               help = 'Column(s) to group rows by')
 @click.argument('mutations', type = click.STRING)
-@processor
-def cli(dfs, way, group_by_expression, mutations):
+@click.pass_context
+def cli(context, way, group_by_expression, mutations):
     '''
     Create new columns.
     
@@ -64,27 +64,26 @@ def cli(dfs, way, group_by_expression, mutations):
     mutate -r 'state = id[0:2]'
 
     '''
-    for df in dfs:
-        mutations = map(lambda x: x.strip(), mutations.split(';'))
-        operations = {}
-        for mutation in mutations:
-            key_value = parse_key_value(mutation.strip())
-            name = key_value['key']
-            expression = key_value['value']
-            operations.update({ name: expression })
+    table = context.obj['get_target']()
 
-        if way == 'row-wise':
-            row_mutations = []
-            for name, expression in operations.iteritems():
-                row_mutations.append(row_mutate(name, expression))
-            yield pipe(df)(*row_mutations)
+    mutations = map(lambda x: x.strip(), mutations.split(';'))
+    operations = {}
+    for mutation in mutations:
+        key_value = parse_key_value(mutation.strip())
+        name = key_value['key']
+        expression = key_value['value']
+        operations.update({ name: expression })
+
+    if way == 'row-wise':
+        row_mutations = []
+        for name, expression in operations.iteritems():
+            row_mutations.append(row_mutate(name, expression))
+        table = pipe(table)(*row_mutations)
+    else:
+        if group_by_expression is not None:  
+            groups = map(lambda x: x.strip(), group_by_expression.split(','))
+            table = pipe(table)(group_by(*groups)(mutate(**operations)))
         else:
-            if group_by_expression is not None:  
-                groups = map(lambda x: x.strip(), group_by_expression.split(','))
-                yield pipe(df)(
-                    group_by(*groups)(
-                        mutate(**operations)
-                    )
-                )
-            else:
-                yield mutate(**operations)(df)
+            table = mutate(**operations)(table)
+    
+    context.obj['update_target'](table)

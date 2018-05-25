@@ -1,11 +1,10 @@
 import click
 from tableshaper import sort
-from tableshaper.helpers import processor
 
 @click.command('sort')
 @click.argument('columns', type = click.STRING)
-@processor
-def cli(dfs, columns):
+@click.pass_context
+def cli(context, columns):
     '''
     Sort rows.
     
@@ -21,6 +20,9 @@ def cli(dfs, columns):
     sort 'mpg, hp:desc'
 
     '''
-    for df in dfs:
-        column_list = map(lambda x: x.strip(), columns.split(','))
-        yield sort(*column_list)(df)
+    table = context.obj['get_target']()
+
+    column_list = map(lambda x: x.strip(), columns.split(','))
+    table = sort(*column_list)(table)
+
+    context.obj['update_target'](table)

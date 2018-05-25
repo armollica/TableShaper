@@ -1,6 +1,5 @@
 import click
 import pandas as pd
-from tableshaper.helpers import processor
 
 def join(df, way, keys, right):
     if right == '-':
@@ -34,8 +33,8 @@ def join(df, way, keys, right):
 @click.option('-k', '--keys', type = click.STRING,
               help = 'Columns to join tables on')
 @click.argument('right', default = '-', type = click.Path())
-@processor
-def cli(dfs, way, keys, right):
+@click.pass_context
+def cli(context, way, keys, right):
     '''
     Join tables.
 
@@ -69,5 +68,8 @@ def cli(dfs, way, keys, right):
     join -bind-columns right.csv
 
     '''
-    for df in dfs:
-        yield join(df, way, keys, right)
+    table = context.obj['get_target']()
+
+    table = join(table, way, keys, right)
+    
+    context.obj['update_target'](table)

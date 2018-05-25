@@ -1,6 +1,6 @@
 import click
 from tableshaper import sift
-from tableshaper.helpers import processor, evaluate
+from tableshaper.helpers import evaluate
 
 def row_sift(expression):
     def application(row):
@@ -15,8 +15,8 @@ def row_sift(expression):
 @click.option('-s', '--slice', 'way', flag_value = 'slice',
               help = 'Slice-based sifting')
 @click.argument('expression', type = click.STRING)
-@processor
-def cli(dfs, way, expression):
+@click.pass_context
+def cli(context, way, expression):
     '''
     Subset rows.
     
@@ -86,36 +86,39 @@ def cli(dfs, way, expression):
     sift -s '1:5, 10:15'
     sift -s '1:5, ~5:'   # first and last five rows
     '''
-    for df in dfs:
-        if way == 'slice':
-            expressions = map(lambda x: x.strip(), expression.split(','))
-            indexes = []
-            for expression in expressions:
-                [start, end] = map(lambda x: x.strip(), expression.split(':'))
+    table = context.obj['get_target']()
+    
+    if way == 'slice':
+        expressions = map(lambda x: x.strip(), expression.split(','))
+        indexes = []
+        for expression in expressions:
+            [start, end] = map(lambda x: x.strip(), expression.split(':'))
 
-                if (start.startswith('~')):
-                    # If it starts with tilde (~), index from the back of the table
-                    start = len(df) - int(start.replace('~', ''))            
-                elif (len(start) == 0):
-                    # An empty "start" is equivalent to 1
-                    start = 0
-                else:
-                    # Slice is a one-based index, df.loc[] is zero-based
-                    start = int(start) - 1
+            if (start.startswith('~')):
+                # If it starts with tilde (~), index from the back of the table
+                start = len(table) - int(start.replace('~', ''))            
+            elif (len(start) == 0):
+                # An empty "start" is equivalent to 1
+                start = 0
+            else:
+                # Slice is a one-based index, df.loc[] is zero-based
+                start = int(start) - 1
 
-                if (end.startswith('~')):
-                    # If it starts with tilde (~), index from the back of the table
-                    end = len(df) - int(end.replace('~', ''))
-                elif (len(end) == 0):
-                    # An empty "end" is equivalent to the end of the 
-                    end = len(df)
-                else:
-                    end = int(end)
-                
-                indexes += range(start, end)
+            if (end.startswith('~')):
+                # If it starts with tilde (~), index from the back of the table
+                end = len(table) - int(end.replace('~', ''))
+            elif (len(end) == 0):
+                # An empty "end" is equivalent to the end of the 
+                end = len(table)
+            else:
+                end = int(end)
+            
+            indexes += range(start, end)
 
-            yield df.iloc[indexes]
-        elif way == 'row-wise':
-            yield row_sift(expression)(df)
-        else:
-            yield sift(expression)(df)
+        table = table.iloc[indexes]
+    elif way == 'row-wise':
+        table = row_sift(expression)(table)
+    else:
+        table = sift(expression)(table)
+    
+    context.obj['update_target'](table)
