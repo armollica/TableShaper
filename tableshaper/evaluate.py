@@ -55,7 +55,7 @@ eval_dict.update({
 })
 
 # ______________________________________________________________________________
-# extract_text() function
+# Regex functions
 
 def extract_text(string, regex):
     match = re.search(regex, string)
@@ -63,8 +63,23 @@ def extract_text(string, regex):
         return match.group(1)
     return None
 
+def text_matches(string, regex):
+    match = re.search(regex, string)
+    if match:
+        return True
+    return False
+
+def starts_with(string, starter):
+    return text_matches(string, r'^{}'.format(starter))
+
+def ends_with(string, ender):
+    return text_matches(string, r'{}$'.format(ender))
+
 eval_dict.update({
-    'extract_text': seriesify(extract_text)
+    'extract_text': seriesify(extract_text),
+    'text_matches': seriesify(text_matches),
+    'starts_with': seriesify(starts_with),
+    'ends_with': seriesify(ends_with)
 })
 
 # ______________________________________________________________________________
