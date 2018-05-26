@@ -31,4 +31,3 @@ def cli(context, name, type, file):
         write_table(table, file)
     except Exception as e:
         click.echo('Could not write "{}": {}'.format(file.name, e), err=True)
-
