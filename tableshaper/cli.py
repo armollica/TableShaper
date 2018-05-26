@@ -15,16 +15,30 @@ class CLI(click.MultiCommand):
         commands.sort()
         return commands
     
-    def get_command(self, ctx, name):
-        try:
-            if sys.version_info[0] == 2:
-                name = name.encode('ascii', 'replace')
-            module_name = 'tableshaper.cli_commands.' + name
+    def get_command(self, context, command_name):
+        
+        def get_module(command_name):
+            module_name = 'tableshaper.cli_commands.' + command_name
             import_list = ['cli']
             module = __import__(module_name, None, None, import_list)
-        except ImportError:
-            return
-        return module.cli
+            return module
+        
+        command_names = self.list_commands(context)
+    
+        if sys.version_info[0] == 2:
+            command_name = command_name.encode('ascii', 'replace')
+        
+        # When we get a direct match
+        if command_name in command_names:
+            return get_module(command_name).cli
+
+        # Look for alias: try to find a command that starts with the string
+        matches = [x for x in command_names if x.startswith(command_name)]
+        if not matches:
+            return None
+        elif len(matches) == 1:
+            return get_module(matches[0]).cli
+        context.fail('Too many matches: %s' % ', '.join(sorted(matches)))
 
 CONTEXT_SETTINGS = dict(help_option_names = ['-h', '--help'])
 
@@ -39,6 +53,7 @@ def cli(context):
     context.obj = {}
     context.obj['tables'] = {}
     context.obj['target'] = None
+    context.obj['output_called'] = False
 
     def add_table(name, table):
         context.obj['tables'].update({ name: table })
@@ -62,4 +77,6 @@ def cli(context):
 @cli.resultcallback()
 @click.pass_context
 def finish(context, processors):
-    print context.obj['get_target']()
+    output_called = context.obj['output_called']
+    if not output_called:
+        print context.obj['get_target']()
