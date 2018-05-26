@@ -83,9 +83,45 @@ eval_dict.update({
 })
 
 # ______________________________________________________________________________
+# Parsing functions (string -> another data type)
+
+def parse_datetime(string, format_string):
+    return datetime.datetime.strptime(string, format_string)
+
+def parse_int(string):
+    return int(string)
+
+def parse_float(string):
+    return float(string)
+
+def parse_logical(string):
+    return string.lower() in ['true', '1', 't', 'y', 'yes']
+
+eval_dict.update({
+    'parse_datetime': seriesify(parse_datetime),
+    'parse_int': seriesify(parse_int),
+    'parse_float': seriesify(parse_float),
+    'parse_logical': seriesify(parse_logical)
+})
+
+# ______________________________________________________________________________
+# format_text()
+
+def get_format_text(namespace):
+    def format_text(string):
+        return string.format(**namespace)
+    return format_text
+
+# ______________________________________________________________________________
 # evaluate()
 #
 # Basically eval() but with some default functions loaded in
 def evaluate(expression, globals_dict = {}, locals_dict = {}): 
     new_global_dicts = merge_dicts(eval_dict, globals_dict)
+
+    # Add format_text() function (requires namespace)
+    format_namespace = merge_dicts(new_global_dicts, locals_dict)
+    format_text = get_format_text(format_namespace)
+    new_global_dicts.update({ 'format_text': format_text })
+
     return eval(expression, new_global_dicts, locals_dict)
