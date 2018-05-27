@@ -4,11 +4,11 @@ import pandas as table
 
 @click.command('output')
 @click.option('-n', '--name', 'name', type=click.STRING)
-@click.option('-t', '--type', 'type', default='csv',
+@click.option('-f', '--format', 'format', default='csv',
               type=click.Choice(['csv', 'tsv', 'json']))
 @click.argument('file', type=click.File('wb'))
 @click.pass_context
-def cli(context, name, type, file):
+def cli(context, name, format, file):
     '''
     Output a table.
     '''
@@ -21,11 +21,11 @@ def cli(context, name, type, file):
         table = context.obj['get_target']()
     
     def write_table(table, file):
-        if type == 'json':
+        if format == 'json':
             return table.to_json(file, orient='records')
-        elif type == 'tsv':
+        elif format == 'tsv':
             return table.to_csv(file, sep='\t', index=False)    
-        elif type == 'csv':
+        elif format == 'csv':
             return table.to_csv(file, index=False)
     try:
         write_table(table, file)

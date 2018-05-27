@@ -7,17 +7,19 @@ def filename_to_tablename(filename):
 
 @click.command('input')
 @click.option('-n', '--name', 'name', type=click.STRING)
-@click.option('-t', '--type', 'type', default='csv',
+@click.option('-f', '--format', 'format', default='csv',
               type=click.Choice(['csv', 'tsv', 'json']))
+@click.option('-j', '--json-format', 'json_format', default='records',
+              type=click.Choice(['split', 'records', 'index', 'columns', 'values']))
 @click.option('-r', '--raw', 'raw', flag_value='raw',
               help = "Don't guess data types")
 @click.argument('file', type=click.STRING)
 @click.pass_context
-def cli(context, name, type, raw, file):
+def cli(context, name, format, json_format, raw, file):
     '''
     Read in a table.
     '''
-
+    
     # Should we guess at the data types of columns?
     dtype = None
     if raw:
@@ -26,11 +28,11 @@ def cli(context, name, type, raw, file):
     # Read the table
     def read_table(file):
         try:
-            if type == 'json':
-                return pd.read_json(file, orient='records')
-            elif type == 'tsv':
+            if format == 'json':
+                return pd.read_json(file, orient=json_format)
+            elif format == 'tsv':
                 return pd.read_csv(file, sep='\t', dtype=dtype)    
-            elif type == 'csv':
+            elif format == 'csv':
                 return pd.read_csv(file, dtype=dtype)
         except Exception as e:
             click.echo('Could not read "{}": {}'.format(file, e), err=True)
