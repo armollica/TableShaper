@@ -1,21 +1,5 @@
-import click
+import fnmatch, click
 import pandas as pd
-
-def join(df, way, keys, right):
-    if right == '-':
-        right_df = pd.read_csv(click.get_text_stream('stdin'))
-    else:
-        right_df = pd.read_csv(right)
-    
-    if way == 'bind-rows':
-        df = pd.concat([df, right_df])
-    elif way == 'bind-columns':
-        df = pd.concat([df, right_df], axis = 1)
-    else:
-        keys_list = map(lambda x: x.strip(), keys.split(','))
-        df = df.merge(right_df, on = keys_list, how = way)
-    
-    return df
 
 @click.command('join')
 @click.option('-l', '--left', 'way', flag_value = 'left', default = True,
@@ -32,7 +16,7 @@ def join(df, way, keys, right):
               help = 'Bind columns')
 @click.option('-k', '--keys', type = click.STRING,
               help = 'Columns to join tables on')
-@click.argument('right', default = '-', type = click.Path())
+@click.argument('right', default = '-', type = click.STRING)
 @click.pass_context
 def cli(context, way, keys, right):
     '''
@@ -69,7 +53,21 @@ def cli(context, way, keys, right):
 
     '''
     table = context.obj['get_target']()
+    tables = context.obj['tables']
 
-    table = join(table, way, keys, right)
+    if way in ['bind-rows', 'bind-columns']:    
+        table_names = list(tables.keys())
+        right_names = fnmatch.filter(table_names, right)
+        right_tables = []
+        for right_name in right_names:
+            right_tables.append(tables[right_name])
+        if way == 'bind-rows':
+            table = pd.concat([table] + right_tables)
+        elif way == 'bind-columns':
+            table = pd.concat([table] + right_tables, axis = 1)
+    else:
+        keys_list = map(lambda x: x.strip(), keys.split(','))
+        right_table = tables[right]
+        table = table.merge(right_table, on = keys_list, how = way)
     
     context.obj['update_target'](table)
