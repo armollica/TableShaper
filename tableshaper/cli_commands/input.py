@@ -1,5 +1,6 @@
 import os, sys, glob, json, click
 import pandas as pd
+import geopandas as gpd
 
 def filename_to_tablename(filename):
     basename = os.path.basename(filename)
@@ -17,7 +18,7 @@ def read_other_json(file):
 @click.command('input')
 @click.option('-n', '--name', 'name', type=click.STRING)
 @click.option('-f', '--format', 'format', default='csv',
-              type=click.Choice(['csv', 'tsv', 'json']))
+              type=click.Choice(['csv', 'tsv', 'json', 'geojson', 'topojson', 'shp']))
 @click.option('-j', '--json-format', 'json_format', default='records',
               type=click.Choice(['split', 'records', 'index', 'columns', 'values', 'other']))
 @click.option('-r', '--raw', 'raw', flag_value='raw',
@@ -45,6 +46,12 @@ def cli(context, name, format, json_format, raw, file):
                 if json_format != 'other':
                     return pd.read_json(file, orient=json_format)
                 return read_other_json(file)
+            elif format == 'geojson':
+                return gpd.read_file(file, driver='GeoJSON')
+            elif format == 'topojson':
+                return gpd.read_file(file, driver='TopoJSON')
+            elif format == 'shp':
+                return gpd.read_file(file, driver='ESRI Shapefile')
         except Exception as e:
             click.echo('Could not read "{}": {}'.format(file, e), err=True)
 

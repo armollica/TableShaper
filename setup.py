@@ -8,6 +8,9 @@ setup(
     install_requires=[
         'Click',
         'pandas',
+        'fiona==1.7.11',
+        'geopandas',
+        'inflection'
     ],
     entry_points='''
         [console_scripts]

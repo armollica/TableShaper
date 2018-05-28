@@ -4,22 +4,24 @@ import pandas as pd
 @click.command('output')
 @click.option('-t', '--tables', 'tables', type=click.STRING)
 @click.option('-f', '--format', 'format', default='csv',
-              type=click.Choice(['csv', 'tsv', 'json']))
+              type=click.Choice(['csv', 'tsv', 'json', 'geojson', 'shp']))
 @click.option('-d', '--dir', 'directory', default='.', type=click.STRING)
 @click.argument('file_name', type=click.STRING)
 @click.pass_context
 def cli(context, tables, format, directory, file_name):
     '''
-    Output a table.
+    Write out a table.
     '''
 
     context.obj['printed'] = True
     table_names = list(context.obj['tables'].keys())
-    output_names = fnmatch.filter(table_names, tables)
 
+    output_names = []
     if tables is None:
         output_names = [context.obj['target']]
-    
+    else:
+        output_names = fnmatch.filter(table_names, tables)
+
     def write_table(table, file):
         if format == 'json':
             return table.to_json(file, orient='records')
@@ -27,6 +29,10 @@ def cli(context, tables, format, directory, file_name):
             return table.to_csv(file, sep='\t', index=False)    
         elif format == 'csv':
             return table.to_csv(file, index=False)
+        elif format == 'geojson':
+            return table.to_file(file, driver='GeoJSON')
+        elif format == 'shp':
+            return table.to_file(file, driver='ESRI Shapefile')
     
     n = len(output_names)
 
