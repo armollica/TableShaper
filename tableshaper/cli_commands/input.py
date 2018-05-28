@@ -15,7 +15,7 @@ def read_other_json(file):
         data = json.loads(f.read())
         return pd.io.json.json_normalize(data, sep='_')
 
-format_choices = ['csv', 'tsv', 'json', 'excel', 'geojson', 'topojson', 'shp',
+format_choices = ['csv', 'tsv', 'dsv', 'json', 'excel', 'geojson', 'topojson', 'shp',
                   'feather', 'parquet', 'stata', 'sas']
 
 json_format_choices = ['split', 'records', 'index', 'columns', 'values',
@@ -29,11 +29,13 @@ json_format_choices = ['split', 'records', 'index', 'columns', 'values',
               type=click.Choice(json_format_choices))
 @click.option('-r', '--raw', 'raw', flag_value='raw',
               help = "Don't guess data types")
+@click.option('-d', '--delim', 'delimiter', 
+              help = "What delimiter to use for parsing DSV file")
 @click.option('-s', '--sheet', 'sheet', 
               help = "What sheet to read from Excel file")
 @click.argument('file', type=click.STRING)
 @click.pass_context
-def cli(context, name, format, json_format, raw, sheet, file):
+def cli(context, name, format, json_format, raw, delimiter, sheet, file):
     '''
     Read in a table.
     '''
@@ -49,7 +51,9 @@ def cli(context, name, format, json_format, raw, sheet, file):
             if format == 'csv':
                 return pd.read_csv(file, dtype=dtype)
             elif format == 'tsv':
-                return pd.read_csv(file, sep='\t', dtype=dtype)    
+                return pd.read_csv(file, sep='\t', dtype=dtype)
+            elif format == 'dsv':
+                return pd.read_csv(file, sep=delimiter, dtype=dtype)
             elif format == 'json':
                 if json_format != 'other':
                     return pd.read_json(file, orient=json_format)
