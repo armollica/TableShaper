@@ -53,7 +53,7 @@ def cli(context):
     context.obj = {}
     context.obj['tables'] = {}
     context.obj['target'] = None
-    context.obj['output_called'] = False
+    context.obj['printed'] = False
 
     def add_table(name, table):
         context.obj['tables'].update({ name: table })
@@ -77,6 +77,5 @@ def cli(context):
 @cli.resultcallback()
 @click.pass_context
 def finish(context, processors):
-    output_called = context.obj['output_called']
-    if not output_called:
+    if not context.obj['printed']:
         print context.obj['get_target']()
