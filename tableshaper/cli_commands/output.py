@@ -2,10 +2,13 @@ import os, sys, fnmatch, click
 import pandas as pd
 from tabulate import tabulate
 
+format_choices = ['csv', 'tsv', 'json',  'geojson', 'shp', 'markdown', 'html',
+                  'feather', 'parquet']
+
 @click.command('output')
 @click.option('-t', '--tables', 'tables', type=click.STRING)
 @click.option('-f', '--format', 'format', default='csv',
-              type=click.Choice(['csv', 'tsv', 'json', 'geojson', 'shp', 'markdown', 'html']))
+              type=click.Choice(format_choices))
 @click.option('-d', '--dir', 'directory', default='.', type=click.STRING)
 @click.argument('file_name', type=click.STRING)
 @click.pass_context
@@ -50,6 +53,10 @@ def cli(context, tables, format, directory, file_name):
             else:
                 with open(file, 'wb') as f:
                     f.write(data)
+        elif format == 'parquet':
+            table.to_parquet(file)
+        elif format == 'feather':
+            table.to_feather(file)
     
     n = len(output_names)
 

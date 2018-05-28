@@ -15,17 +15,25 @@ def read_other_json(file):
         data = json.loads(f.read())
         return pd.io.json.json_normalize(data, sep='_')
 
+format_choices = ['csv', 'tsv', 'json', 'excel', 'geojson', 'topojson', 'shp',
+                  'feather', 'parquet', 'stata', 'sas', 'html']
+
+json_format_choices = ['split', 'records', 'index', 'columns', 'values',
+                       'other']
+
 @click.command('input')
 @click.option('-n', '--name', 'name', type=click.STRING)
 @click.option('-f', '--format', 'format', default='csv',
-              type=click.Choice(['csv', 'tsv', 'json', 'geojson', 'topojson', 'shp']))
+              type=click.Choice(format_choices))
 @click.option('-j', '--json-format', 'json_format', default='records',
-              type=click.Choice(['split', 'records', 'index', 'columns', 'values', 'other']))
+              type=click.Choice(json_format_choices))
 @click.option('-r', '--raw', 'raw', flag_value='raw',
               help = "Don't guess data types")
+@click.option('-s', '--sheet', 'sheet', 
+              help = "What sheet to read from Excel file")
 @click.argument('file', type=click.STRING)
 @click.pass_context
-def cli(context, name, format, json_format, raw, file):
+def cli(context, name, format, json_format, raw, sheet, file):
     '''
     Read in a table.
     '''
@@ -46,6 +54,18 @@ def cli(context, name, format, json_format, raw, file):
                 if json_format != 'other':
                     return pd.read_json(file, orient=json_format)
                 return read_other_json(file)
+            elif format == 'excel':
+                if sheet is None:
+                    click.echo('Must specify a sheet when reading an Excel file.', err=True)
+                return pd.read_excel(file, sheet_name=sheet)
+            elif format == 'feather':
+                return pd.read_feather(file)
+            elif format == 'parquet':
+                return pd.read_parquet(file)
+            elif format == 'stata':
+                return pd.read_stata(file)
+            elif format == 'sas':
+                return pd.read_sas(file)
             elif format == 'geojson':
                 return gpd.read_file(file, driver='GeoJSON')
             elif format == 'topojson':
