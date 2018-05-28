@@ -10,8 +10,9 @@ table_1 = pd.read_csv('tests/data/table1.csv')
 def test_single_ascending():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sort', 'year'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sort', 'year'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy().sort_values('year')
     assert result.exit_code == 0
@@ -21,8 +22,9 @@ def test_single_ascending():
 def test_single_descending():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sort', 'year:desc'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sort', 'year:desc'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy().sort_values('year', ascending=False)
     assert result.exit_code == 0
@@ -32,8 +34,9 @@ def test_single_descending():
 def test_multiple_ascending():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sort', 'year, population'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sort', 'year, population'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy().sort_values(['year', 'population'])
     assert result.exit_code == 0
@@ -43,8 +46,9 @@ def test_multiple_ascending():
 def test_multiple_descending():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sort', 'year:desc, population:desc'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sort', 'year:desc, population:desc'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy().sort_values(['year', 'population'], ascending=False)
     assert result.exit_code == 0
@@ -54,8 +58,9 @@ def test_multiple_descending():
 def test_multiple_mix():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sort', 'year, population:desc'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sort', 'year, population:desc'] + 
+        ['output', '-'],
         catch_exceptions=False)
     expect = (
         table_1

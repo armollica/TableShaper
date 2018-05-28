@@ -10,8 +10,9 @@ table_1 = pd.read_csv('tests/data/table1.csv')
 def test_assign():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['rename', 'n = cases, pop = population'],
+        ['input', 'tests/data/table1.csv'] +
+        ['rename', 'n = cases, pop = population'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = (
         table_1
@@ -25,8 +26,9 @@ def test_assign():
 def test_map():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['rename', '--map', 'name.upper()'],
+        ['input', 'tests/data/table1.csv'] +
+        ['rename', '--map', 'name.upper()'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = (
         table_1

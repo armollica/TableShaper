@@ -14,8 +14,9 @@ def test_rowwise_division():
     # which throws away the remainder in standard Python evaluation. Integer
     # division with pandas objects doesn't do this. 
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['mutate', '--row', 'population_in_millions = population / 1000000.0'],
+        ['input', 'tests/data/table1.csv'] +
+        ['mutate', '--row', 'population_in_millions = population / 1000000.0'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     expect['population_in_millions'] = expect['population'] / 1000000
@@ -26,8 +27,9 @@ def test_rowwise_division():
 def test_rowwise_number_formatting():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['mutate', '--row', 'cases = "{:0>9.2f}".format(cases)'],
+        ['input', 'tests/data/table1.csv'] +
+        ['mutate', '--row', 'cases = "{:0>9.2f}".format(cases)'] +
+        ['output', '-'],
         catch_exceptions=False)
     def assign_cases(df):
         return df.cases.apply(lambda d: '{:0>9.2f}'.format(d))
@@ -43,8 +45,9 @@ def test_rowwise_number_formatting():
 def test_vectorized_division():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['mutate', 'population_in_millions = population / 1000000'],
+        ['input', 'tests/data/table1.csv'] +
+        ['mutate', 'population_in_millions = population / 1000000'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     expect['population_in_millions'] = expect['population'] / 1000000
@@ -55,8 +58,9 @@ def test_vectorized_division():
 def test_vectorized_addition():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['mutate', 'x = population + cases'],
+        ['input', 'tests/data/table1.csv'] +
+        ['mutate', 'x = population + cases'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     expect['x'] = expect['population'] + expect['cases']
@@ -67,8 +71,9 @@ def test_vectorized_addition():
 def test_grouped_summation():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['mutate', '--group-by', 'country', 'cases_sum = cases.sum()'],
+        ['input', 'tests/data/table1.csv'] +
+        ['mutate', '--group-by', 'country', 'cases_sum = cases.sum()'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     aggregated = (

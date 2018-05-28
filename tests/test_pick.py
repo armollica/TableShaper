@@ -10,8 +10,9 @@ table_1 = pd.read_csv('tests/data/table1.csv')
 def test_pick_sift_1():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['pick', '--sift', 'name == "country" or name == "population"'],
+        ['input', 'tests/data/table1.csv'] +
+        ['pick', '--sift', 'name == "country" or name == "population"'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     column_names = filter(lambda name: name == "country" or name == "population", list(expect))
@@ -23,8 +24,9 @@ def test_pick_sift_1():
 def test_pick_sift_2():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['pick', '--sift', 'len(name) < 6'],
+        ['input', 'tests/data/table1.csv'] +
+        ['pick', '--sift', 'len(name) < 6'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     column_names = filter(lambda name: len(name) < 6, list(expect))
@@ -36,8 +38,9 @@ def test_pick_sift_2():
 def test_pick_list():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['pick', 'country, population'],
+        ['input', 'tests/data/table1.csv'] +
+        ['pick', 'country, population'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()[['country', 'population']]
     assert result.exit_code == 0
@@ -47,8 +50,9 @@ def test_pick_list():
 def test_pick_exclude():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['pick', '~population'],
+        ['input', 'tests/data/table1.csv'] +
+        ['pick', '~population'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()[['country', 'year', 'cases']]
     assert result.exit_code == 0
@@ -58,8 +62,9 @@ def test_pick_exclude():
 def test_pick_range():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['pick', 'year:population'],
+        ['input', 'tests/data/table1.csv'] +
+        ['pick', 'year:population'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()[['year', 'cases', 'population']]
     assert result.exit_code == 0
@@ -69,8 +74,9 @@ def test_pick_range():
 def test_pick_range_exclude():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['pick', '~year:cases'],
+        ['input', 'tests/data/table1.csv'] +
+        ['pick', '~year:cases'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()[['country', 'population']]
     assert result.exit_code == 0
@@ -80,8 +86,9 @@ def test_pick_range_exclude():
 def test_pick_range_exclude_add():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['pick', '~year:population, cases'],
+        ['input', 'tests/data/table1.csv'] +
+        ['pick', '~year:population, cases'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()[['country', 'cases']]
     assert result.exit_code == 0

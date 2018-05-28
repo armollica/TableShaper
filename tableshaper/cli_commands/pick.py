@@ -40,7 +40,7 @@ def cli(context, way, expression):
     table = context.obj['get_target']()
     
     if way == 'sift':
-        column_list = filter(eval('lambda name: ' + expression), list(df))
+        column_list = filter(eval('lambda name: ' + expression), list(table))
         table = table[column_list]
     else:
         table = pick(expression)(table)

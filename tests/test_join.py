@@ -11,8 +11,11 @@ joinable_2 = pd.read_csv('tests/data/joinable2.csv')
 def test_left():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/joinable1.csv'] +
-        ['join', '--left', '--keys', 'id', 'tests/data/joinable2.csv'],
+        ['input', 'tests/data/joinable1.csv'] +
+        ['input', 'tests/data/joinable2.csv'] +
+        ['target', 'joinable1'] +
+        ['join', '--left', '--keys', 'id', 'joinable2'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = joinable_1.copy().merge(joinable_2, 'left', 'id')
     assert result.exit_code == 0
@@ -22,8 +25,11 @@ def test_left():
 def test_right():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/joinable1.csv'] +
-        ['join', '--right', '--keys', 'id', 'tests/data/joinable2.csv'],
+        ['input', 'tests/data/joinable1.csv'] +
+        ['input', 'tests/data/joinable2.csv'] +
+        ['target', 'joinable1'] +
+        ['join', '--right', '--keys', 'id', 'joinable2'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = joinable_1.copy().merge(joinable_2, 'right', 'id')
     assert result.exit_code == 0
@@ -33,8 +39,11 @@ def test_right():
 def test_inner():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/joinable1.csv'] +
-        ['join', '--inner', '--keys', 'id', 'tests/data/joinable2.csv'],
+        ['input', 'tests/data/joinable1.csv'] +
+        ['input', 'tests/data/joinable2.csv'] +
+        ['target', 'joinable1'] +
+        ['join', '--inner', '--keys', 'id', 'joinable2'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = joinable_1.copy().merge(joinable_2, 'inner', 'id')
     assert result.exit_code == 0
@@ -44,8 +53,11 @@ def test_inner():
 def test_outer():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/joinable1.csv'] +
-        ['join', '--outer', '--keys', 'id', 'tests/data/joinable2.csv'],
+        ['input', 'tests/data/joinable1.csv'] +
+        ['input', 'tests/data/joinable2.csv'] +
+        ['target', 'joinable1'] +
+        ['join', '--outer', '--keys', 'id', 'joinable2'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = joinable_1.copy().merge(joinable_2, 'outer', 'id')
     assert result.exit_code == 0

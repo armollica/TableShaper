@@ -460,6 +460,9 @@ changes to the source code will automatically affect the CLI program.
 pip install --editable .
 ```
 
+Test ares in the `tests/` folder. To run these, call `pytest` at the command
+line from the root of this project.
+
 ## Credits
 
 Many thanks to the people who made the [pandas](https://pandas.pydata.org/)

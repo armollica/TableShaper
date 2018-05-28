@@ -10,8 +10,9 @@ table_1 = pd.read_csv('tests/data/table1.csv')
 def test_aggregate():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['aggregate', '--group-by', 'country', 'population = population.sum()'],
+        ['input', 'tests/data/table1.csv'] +
+        ['aggregate', '--group-by', 'country', 'population = population.sum()'] + 
+        ['output', '-'],
         catch_exceptions=False)
     expect = (
         table_1

@@ -11,8 +11,9 @@ cars = pd.read_csv('tests/data/cars.csv')
 def test_vectorized_number():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sift', 'population < 173000000'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sift', 'population < 173000000'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     expect = expect[expect.population < 173000000]
@@ -23,8 +24,9 @@ def test_vectorized_number():
 def test_vectorized_string():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sift', 'country.isin(["Afghanistan", "China"])'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sift', 'country.isin(["Afghanistan", "China"])'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     expect = expect[expect.country.isin(["Afghanistan", "China"])]
@@ -35,8 +37,9 @@ def test_vectorized_string():
 def test_rowwise_number():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sift', '--row', 'population > 173000000'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sift', '--row', 'population > 173000000'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     expect = expect[expect.population > 173000000]
@@ -47,8 +50,9 @@ def test_rowwise_number():
 def test_rowwise_string():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table1.csv'] +
-        ['sift', '--row', 'country in ["Afghanistan", "China"]'],
+        ['input', 'tests/data/table1.csv'] +
+        ['sift', '--row', 'country in ["Afghanistan", "China"]'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
     expect = expect[expect.country.isin(["Afghanistan", "China"])]
@@ -59,8 +63,9 @@ def test_rowwise_string():
 def test_slice_first_5():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', ':5'],
+        ['input', 'tests/data/cars.csv'] +
+        ['sift', '--slice', ':5'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy().iloc[0:5]
     assert result.exit_code == 0
@@ -70,8 +75,9 @@ def test_slice_first_5():
 def test_slice_last_5():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', '~5:'],
+        ['input', 'tests/data/cars.csv'] +
+        ['sift', '--slice', '~5:'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy()
     n = len(expect)
@@ -85,8 +91,9 @@ def test_slice_last_5():
 def test_slice_inner_range():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', '3:6'],
+        ['input', 'tests/data/cars.csv'] +
+        ['sift', '--slice', '3:6'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy().iloc[2:6]
     assert result.exit_code == 0
@@ -96,8 +103,9 @@ def test_slice_inner_range():
 def test_slice_inner_range_from_back():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', '~6:~3'],
+        ['input', 'tests/data/cars.csv'] +
+        ['sift', '--slice', '~6:~3'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy()
     n = len(expect)
@@ -111,8 +119,9 @@ def test_slice_inner_range_from_back():
 def test_slice_multiple():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', ':5, 7:9'],
+        ['input', 'tests/data/cars.csv'] +
+        ['sift', '--slice', ':5, 7:9'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy().iloc[range(0, 5) + range(6, 9)]
     assert result.exit_code == 0

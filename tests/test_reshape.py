@@ -11,11 +11,12 @@ table_4a = pd.read_csv('tests/data/table4a.csv')
 def test_gather():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table4a.csv'] +
+        ['input', 'tests/data/table4a.csv'] +
         ['reshape', '--gather'] +
             ['--key', 'year'] +
             ['--value', 'population'] +
-            ['--columns', '1999:2000'],
+            ['--columns', '1999:2000'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = (
         table_4a
@@ -32,10 +33,11 @@ def test_gather():
 def test_spread():
     runner = CliRunner()
     result = runner.invoke(cli,
-        ['--input', 'tests/data/table2.csv'] +
+        ['input', 'tests/data/table2.csv'] +
         ['reshape', '--spread'] +
             ['--key', 'type'] +
-            ['--value', 'count'],
+            ['--value', 'count'] +
+        ['output', '-'],
         catch_exceptions=False)
     expect = (
         table_2
