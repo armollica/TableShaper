@@ -12,7 +12,7 @@ def test_vectorized_number():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/table1.csv'] +
-        ['sift', 'population < 173000000'] +
+        ['filter', 'population < 173000000'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
@@ -25,7 +25,7 @@ def test_vectorized_string():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/table1.csv'] +
-        ['sift', 'country.isin(["Afghanistan", "China"])'] +
+        ['filter', 'country.isin(["Afghanistan", "China"])'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
@@ -38,7 +38,7 @@ def test_rowwise_number():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/table1.csv'] +
-        ['sift', '--row', 'population > 173000000'] +
+        ['filter', '--row', 'population > 173000000'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
@@ -51,7 +51,7 @@ def test_rowwise_string():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/table1.csv'] +
-        ['sift', '--row', 'country in ["Afghanistan", "China"]'] +
+        ['filter', '--row', 'country in ["Afghanistan", "China"]'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
@@ -64,7 +64,7 @@ def test_slice_first_5():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', ':5'] +
+        ['filter', '--slice', ':5'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy().iloc[0:5]
@@ -76,7 +76,7 @@ def test_slice_last_5():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', '~5:'] +
+        ['filter', '--slice', '~5:'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy()
@@ -92,7 +92,7 @@ def test_slice_inner_range():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', '3:6'] +
+        ['filter', '--slice', '3:6'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy().iloc[2:6]
@@ -104,7 +104,7 @@ def test_slice_inner_range_from_back():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', '~6:~3'] +
+        ['filter', '--slice', '~6:~3'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy()
@@ -120,7 +120,7 @@ def test_slice_multiple():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/cars.csv'] +
-        ['sift', '--slice', ':5, 7:9'] +
+        ['filter', '--slice', ':5, 7:9'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = cars.copy().iloc[range(0, 5) + range(6, 9)]

@@ -17,7 +17,7 @@ ts < table.csv pick 'country, continent, pop1990:pop2000`
 
 Drop rows you don't need.
 ```bash
-ts < table.csv sift 'continent == "South America"'
+ts < table.csv filter 'continent == "South America"'
 ```
 
 Reshape the table.
@@ -29,7 +29,7 @@ Do it all in one command.
 ```bash
 ts < table.csv \
   pick 'country, continent, pop1990:pop2000' \
-  sift 'continent == "South America"' \
+  filter 'continent == "South America"' \
   reshape -k year -v population --columns pop1990:pop2000
 ```
 
@@ -52,7 +52,7 @@ pip install tableshaper/
     <tr><td><a href="#-ts-view"><code>$ ts view</code></a></td><td>View table.</td></tr>
     <tr><td><a href="#-ts-pick"><code>$ ts pick</code></a></td><td>Subset columns.</td></tr>
     <tr><td><a href="#-ts-rename"><code>$ ts rename</code></a></td><td>Rename columns.</td></tr>
-    <tr><td><a href="#-ts-sift"><code>$ ts sift</code></a></td><td>Subset rows.</td></tr>
+    <tr><td><a href="#-ts-filter"><code>$ ts filter</code></a></td><td>Subset rows.</td></tr>
     <tr><td><a href="#-ts-sort"><code>$ ts sort</code></a></td><td>Sort rows.</td></tr>
     <tr><td><a href="#-ts-mutate"><code>$ ts mutate</code></a></td><td>Create new columns.</td></tr>
     <tr><td><a href="#-ts-aggregate"><code>$ ts aggregate</code></a></td><td>Aggregate rows.</td></tr>
@@ -68,16 +68,16 @@ pip install tableshaper/
 The TableShaper program.
 
 `ts` command kicks off the program and is generally followed by a series of 
-commands, like `pick`, `sift`, or `mutate`. Here you specify the input and
+commands, like `pick`, `filter`, or `mutate`. Here you specify the input and
 output file with the `-i, --input` and `-o, --output` arguments. By default, the
 input will be `stdin` and the output will be `stdout`.
 
 ```bash
 # Read CSV data from stdin, perform a few transformations and output to stdout
-ts < input.csv pick 'column1:column10' sift 'column1 > 20'
+ts < input.csv pick 'column1:column10' filter 'column1 > 20'
 
 # The same, but reading and writing from a file.
-ts -i input.csv -o output.csv pick 'column1:column10' sift 'column1 > 20'
+ts -i input.csv -o output.csv pick 'column1:column10' filter 'column1 > 20'
 ```
 
 The input file can be one of several formats. The default format is CSV,
@@ -139,7 +139,7 @@ Timestamps also include the first and last items.
 
 Subset columns.
 
-There are two ways to pick columns, the "selection" method and the "sift"
+There are two ways to pick columns, the "selection" method and the "filter"
 method.
 
 The "selection" method is the default method. With this method you give a
@@ -160,7 +160,7 @@ pick '~C, ~F'
 pick '~B:G, E`
 ```
 
-The "sift" method is set with the `-s, --sift` flag. You provide a
+The "filter" method is set with the `-f, --filter` flag. You provide a
 Python expression that is evaluated on each column name. The column
 name is loaded into the namespace as `name`. If the expression evaluates
 to true then the column is kept.
@@ -207,7 +207,7 @@ rename -m 'name.replace(' ', '_').lower()'
 
 <br/>
 
-### `$ ts sift`
+### `$ ts filter`
 
 Subset rows.
 
@@ -222,10 +222,10 @@ object.
 
 ```bash
 # Keep all rows where the population column has values greater than 1000
-sift 'population > 1000'
+filter 'population > 1000'
 
 # Keep all rows where the state column has values equal to "55" or "56"
-sift 'state.isin(["55", "56"])'
+filter 'state.isin(["55", "56"])'
 ```
 
 If you use the `-r, --row` flag, you can perform the same type of filtering
@@ -233,8 +233,8 @@ on rows individually, instead of on pandas Series as a whole. This can be more
 flexible, especially when dealing with strings.
 
 ```bash
-  sift -r 'state in ["55", "56"]'
-  sift -r 're.match("^(M|m)azda", name) is not None'
+  filter -r 'state in ["55", "56"]'
+  filter -r 're.match("^(M|m)azda", name) is not None'
 ```
 
 The second filtering method is to specify a range of row indexes of the
@@ -242,10 +242,10 @@ format: `start:end`. This method is set with the `-s, --slice` flag.
 
 ```bash
 # Keep the first five rows
-sift -s 1:5
+filter -s 1:5
 
 # Keep rows 25 through 75
-sift -s 1:5
+filter -s 1:5
 ```
 
 Ranges can be open-ended. If no start index is provided, it starts from
@@ -253,16 +253,16 @@ the first row. If no end index is provided, it ends at the last row of the
 table.
 
 ```bash
-sift -s :5    # is equivalent to 1:5
-sift -s 100:  # 100th to the last row
+filter -s :5    # is equivalent to 1:5
+filter -s 100:  # 100th to the last row
 ```
 You can start from the back of the table too. If the start or end index
 begins with a tilde (~), the index will refer to that many places from the
 last row of the table.
 
 ```bash
-sift -s ~5:      # last five rows
-sift -s ~10:~5:  # from (n - 10) to (n - 5)
+filter -s ~5:      # last five rows
+filter -s ~10:~5:  # from (n - 10) to (n - 5)
 ```
 
 Provide multiple slices. Pass in a comma-separated list of slices and
@@ -270,8 +270,8 @@ you'll get them back in that order. Warning: you can get duplicate rows
 this way.
 
 ```bash
-sift -s '1:5, 10:15'
-sift -s '1:5, ~5:'   # first and last five rows
+filter -s '1:5, 10:15'
+filter -s '1:5, ~5:'   # first and last five rows
 ```
 
 [↑ To table of contents](#reference)

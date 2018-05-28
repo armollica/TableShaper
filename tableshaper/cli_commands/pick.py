@@ -3,8 +3,8 @@ import pandas as pd
 from tableshaper import pick
 
 @click.command('pick')
-@click.option('-s', '--sift', 'way', flag_value = 'sift',
-              help = 'Sift-based choosing')
+@click.option('-f', '--filter', 'way', flag_value = 'filter',
+              help = 'Filter-based choosing')
 @click.argument('expression', type = click.STRING)
 @click.pass_context
 def cli(context, way, expression):
@@ -26,8 +26,8 @@ def cli(context, way, expression):
     pick '~junk_column_1:junk_column_20'
 
     \b
-    -s, --sift
-    Change the column selection to sift-base mode.
+    -f, --filter
+    Change the column selection to filter-base mode.
 
     \b
     Provide a python expression on each column name. If it evaluates to
@@ -35,11 +35,11 @@ def cli(context, way, expression):
 
     \b
     Examples:
-    pick -s '"population" in name'
+    pick -f '"population" in name'
     '''
     table = context.obj['get_target']()
     
-    if way == 'sift':
+    if way == 'filter':
         column_list = filter(eval('lambda name: ' + expression), list(table))
         table = table[column_list]
     else:

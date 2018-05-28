@@ -11,7 +11,7 @@ def test_pick_sift_1():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/table1.csv'] +
-        ['pick', '--sift', 'name == "country" or name == "population"'] +
+        ['pick', '--filter', 'name == "country" or name == "population"'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
@@ -25,7 +25,7 @@ def test_pick_sift_2():
     runner = CliRunner()
     result = runner.invoke(cli,
         ['input', 'tests/data/table1.csv'] +
-        ['pick', '--sift', 'len(name) < 6'] +
+        ['pick', '--filter', 'len(name) < 6'] +
         ['output', '-'],
         catch_exceptions=False)
     expect = table_1.copy()
