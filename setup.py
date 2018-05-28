@@ -10,7 +10,8 @@ setup(
         'pandas',
         'fiona==1.7.11',
         'geopandas',
-        'inflection'
+        'inflection',
+        'tabulate'
     ],
     entry_points='''
         [console_scripts]

@@ -1,10 +1,11 @@
 import os, sys, fnmatch, click
 import pandas as pd
+from tabulate import tabulate
 
 @click.command('output')
 @click.option('-t', '--tables', 'tables', type=click.STRING)
 @click.option('-f', '--format', 'format', default='csv',
-              type=click.Choice(['csv', 'tsv', 'json', 'geojson', 'shp']))
+              type=click.Choice(['csv', 'tsv', 'json', 'geojson', 'shp', 'markdown', 'html']))
 @click.option('-d', '--dir', 'directory', default='.', type=click.STRING)
 @click.argument('file_name', type=click.STRING)
 @click.pass_context
@@ -24,15 +25,31 @@ def cli(context, tables, format, directory, file_name):
 
     def write_table(table, file):
         if format == 'json':
-            return table.to_json(file, orient='records')
+            table.to_json(file, orient='records')
         elif format == 'tsv':
-            return table.to_csv(file, sep='\t', index=False)    
+            table.to_csv(file, sep='\t', index=False)    
         elif format == 'csv':
-            return table.to_csv(file, index=False)
+            table.to_csv(file, index=False)
         elif format == 'geojson':
-            return table.to_file(file, driver='GeoJSON')
+            table.to_file(file, driver='GeoJSON')
         elif format == 'shp':
-            return table.to_file(file, driver='ESRI Shapefile')
+            table.to_file(file, driver='ESRI Shapefile')
+        elif format == 'markdown':
+            data = tabulate(table.values, list(table), tablefmt='pipe') + '\n'
+            is_stdout = hasattr(file, 'write')
+            if is_stdout:
+                file.write(data)
+            else:
+                with open(file, 'wb') as f:
+                    f.write(data)
+        elif format == 'html':
+            data = tabulate(table.values, list(table), tablefmt='html') + '\n'
+            is_stdout = hasattr(file, 'write')
+            if is_stdout:
+                file.write(data)
+            else:
+                with open(file, 'wb') as f:
+                    f.write(data)
     
     n = len(output_names)
 
