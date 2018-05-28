@@ -16,7 +16,7 @@ def read_other_json(file):
         return pd.io.json.json_normalize(data, sep='_')
 
 format_choices = ['csv', 'tsv', 'json', 'excel', 'geojson', 'topojson', 'shp',
-                  'feather', 'parquet', 'stata', 'sas', 'html']
+                  'feather', 'parquet', 'stata', 'sas']
 
 json_format_choices = ['split', 'records', 'index', 'columns', 'values',
                        'other']
