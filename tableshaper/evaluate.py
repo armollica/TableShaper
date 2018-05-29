@@ -118,7 +118,7 @@ def get_format_text(namespace):
 # Basically eval() but with some default functions loaded in
 def evaluate(expression, globals_dict = {}, locals_dict = {}): 
     new_global_dicts = merge_dicts(eval_dict, globals_dict)
-
+    
     # Add format_text() function (requires namespace)
     format_namespace = merge_dicts(new_global_dicts, locals_dict)
     format_text = get_format_text(format_namespace)

@@ -33,9 +33,10 @@ json_format_choices = ['split', 'records', 'index', 'columns', 'values',
               help = "What delimiter to use for parsing DSV file")
 @click.option('-s', '--sheet', 'sheet', 
               help = "What sheet to read from Excel file")
+@click.option('-c', '--col-names', 'col_names', type=click.STRING)
 @click.argument('file', type=click.STRING)
 @click.pass_context
-def cli(context, name, format, json_format, raw, delimiter, sheet, file):
+def cli(context, name, format, json_format, raw, delimiter, sheet, col_names, file):
     '''
     Read in a table.
     '''
@@ -44,6 +45,15 @@ def cli(context, name, format, json_format, raw, delimiter, sheet, file):
     dtype = None
     if raw:
         dtype = str
+    
+    def update_col_names(table):
+        if col_names:
+            names = map(lambda x: x.strip(), col_names.split(','))
+            n = len(names) 
+            m = len(table.columns)
+            if n != m:
+                click.echo("Number of columns names doesn't match number of columns: {} names provided, {} columns in table.".format(n, m), err=True)
+            table.columns = names
 
     # Read the table
     def read_table(file):
@@ -81,11 +91,12 @@ def cli(context, name, format, json_format, raw, delimiter, sheet, file):
 
     if file == '-':
         table = read_table(sys.stdin)
-
+        update_col_names(table)
+        
         # Determine what to name the table
         tablename = 'table'
         if name:
-            tablename = name    
+            tablename = name
         
         # Add the table to the list and make it the current target
         context.obj['add_table'](tablename, table)
@@ -95,7 +106,8 @@ def cli(context, name, format, json_format, raw, delimiter, sheet, file):
         n = len(filenames)
         for i, filename in enumerate(filenames):
             table = read_table(filename)
-            
+            update_col_names(table)
+                
             # Determine what to name the table
             if name:
                 if n == 1:

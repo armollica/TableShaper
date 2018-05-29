@@ -1,6 +1,13 @@
 import re
 from tableshaper.evaluate import evaluate
 
+def dataframe_to_dict(df):
+    names = df.columns
+    out = {}
+    for name in names:
+        out.update({ name: df[name] })
+    return out
+
 def parse_key_value(string):
     '''
     Parse key-value pair from a string formatted: key <- value
