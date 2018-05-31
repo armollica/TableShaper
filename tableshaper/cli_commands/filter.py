@@ -6,17 +6,17 @@ def row_sift(expression):
     def application(row):
         return evaluate(expression, row.to_dict())
     def compute(df):
-        return df[df.apply(application, axis = 1)]
+        return df[df.apply(application, axis=1)]
     return compute
 
 @click.command('filter')
-@click.option('-r', '--row', 'way', flag_value = 'row-wise',
-              help = 'Row-wise filtering')
-@click.option('-s', '--slice', 'way', flag_value = 'slice',
-              help = 'Slice-based filtering')
-@click.option('-d', '--distinct', 'way', flag_value = 'distinct',
-              help = 'Distinct rows. Provide selection or + for all columns.')
-@click.argument('expression', type = click.STRING)
+@click.option('-r', '--row', 'way', flag_value='row-wise',
+              help='Row-wise filtering')
+@click.option('-s', '--slice', 'way', flag_value='slice',
+              help='Slice-based filtering')
+@click.option('-d', '--distinct', 'way', flag_value='distinct',
+              help='Distinct rows. Provide selection or + for all columns.')
+@click.argument('expression', type=click.STRING)
 @click.pass_context
 def cli(context, way, expression):
     '''
