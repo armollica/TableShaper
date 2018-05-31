@@ -1,6 +1,6 @@
 import click
 from tableshaper import sift
-from tableshaper.helpers import evaluate
+from tableshaper.helpers import evaluate, selectify
 
 def row_sift(expression):
     def application(row):
@@ -11,9 +11,11 @@ def row_sift(expression):
 
 @click.command('filter')
 @click.option('-r', '--row', 'way', flag_value = 'row-wise',
-              help = 'Row-wise sifting')
+              help = 'Row-wise filtering')
 @click.option('-s', '--slice', 'way', flag_value = 'slice',
-              help = 'Slice-based sifting')
+              help = 'Slice-based filtering')
+@click.option('-d', '--distinct', 'way', flag_value = 'distinct',
+              help = 'Distinct rows. Provide selection or + for all columns.')
 @click.argument('expression', type = click.STRING)
 @click.pass_context
 def cli(context, way, expression):
@@ -85,6 +87,18 @@ def cli(context, way, expression):
     Examples:
     filter -s '1:5, 10:15'
     filter -s '1:5, ~5:'   # first and last five rows
+
+    \b
+    -d, --distinct
+    Drop non-unique rows.
+
+    You can provide a selection of columns on which to check to distinctness, or
+    provide + which will look at all columns.
+
+    \b
+    Examples:
+    filter -d +    # Look at the whole table
+    filter -d A:C  # Look at columns A through C for distinctness
     '''
     table = context.obj['get_target']()
     
@@ -118,6 +132,12 @@ def cli(context, way, expression):
         table = table.iloc[indexes]
     elif way == 'row-wise':
         table = row_sift(expression)(table)
+    elif way == 'distinct':
+        if expression == '+':
+            subset = None
+        else:
+            subset = selectify(list(table), expression)
+        table = table.drop_duplicates(subset)
     else:
         table = sift(expression)(table)
     
