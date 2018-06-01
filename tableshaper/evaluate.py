@@ -94,14 +94,14 @@ def parse_int(string):
 def parse_float(string):
     return float(string)
 
-def parse_logical(string):
+def parse_bool(string):
     return string.lower() in ['true', '1', 't', 'y', 'yes']
 
 eval_dict.update({
     'parse_datetime': seriesify(parse_datetime),
     'parse_int': seriesify(parse_int),
     'parse_float': seriesify(parse_float),
-    'parse_logical': seriesify(parse_logical)
+    'parse_bool': seriesify(parse_bool)
 })
 
 # ______________________________________________________________________________
