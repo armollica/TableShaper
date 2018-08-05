@@ -15,6 +15,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        ts=tableshaper.cli:cli
+        tableshaper=tableshaper.cli:cli
     ''',
 )

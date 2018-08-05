@@ -14,7 +14,7 @@ def parse_key_value(string):
     '''
     match = re.match('^(\w+)\s*=(.+)', string)
     if match is None:
-        raise Exception('Key-value not in correct format: key = value')
+        raise ValueError('Key-value not in correct format: key = value')
     key = str(match.group(1))
     value = str(match.group(2)).strip()
     return { 'key': key, 'value': value }
