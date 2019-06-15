@@ -23,27 +23,27 @@ def cli(context, all, way):
     def view(key):
         table = tables[key]
         if way == 'info':
-            print ''
-            print '{table}:'.format(table=key)
+            click.echo('')
+            click.echo('{table}:'.format(table=key))
             table.info(verbose=True, null_counts=True)
-            print ''
+            click.echo('')
         elif way == 'stats':
-            print ''
-            print '{table}:'.format(table=key)
+            click.echo('')
+            click.echo('{table}:'.format(table=key))
             with pd.option_context('display.max_rows', None):
-                print table.describe(include='all').transpose()
-            print ''
+                click.echo(table.describe(include='all').transpose())
+            click.echo('')
     
     if way == 'tables':
-        print ''
-        print 'Available tables:'
+        click.echo('')
+        click.echo('Available tables:')
         for key in tables:
             is_active = target == key
             active = ''
             if is_active:
                 active = '[target]'
-            print '{table} {active}'.format(table=key, active=active)
-        print ''
+            click.echo('{table} {active}'.format(table=key, active=active))
+        click.echo('')
     elif all:
         for key in tables:
             view(key)

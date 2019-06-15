@@ -78,4 +78,4 @@ def cli(context):
 @click.pass_context
 def finish(context, processors):
     if not context.obj['printed']:
-        print context.obj['get_target']()
+        click.echo(context.obj['get_target']())
