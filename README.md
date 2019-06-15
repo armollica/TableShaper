@@ -51,6 +51,8 @@ pip install tableshaper/
   </thead>
   <tbody>
     <tr><td><a href="#-tableshaper"><code>$ tableshaper</code></a></td><td>TableShaper program</td></tr>
+    <tr><td><a href="#-input"><code>$ input</code></a></td><td>Read in a table.</td></tr>
+    <tr><td><a href="#-output"><code>$ output</code></a></td><td>Write out a table.</td></tr>
     <tr><td><a href="#-view"><code>$ view</code></a></td><td>View table.</td></tr>
     <tr><td><a href="#-pick"><code>$ pick</code></a></td><td>Subset columns.</td></tr>
     <tr><td><a href="#-rename"><code>$ rename</code></a></td><td>Rename columns.</td></tr>
@@ -70,36 +72,78 @@ pip install tableshaper/
 The tableshaper program.
 
 `tableshaper` command kicks off the program and is generally followed by a series of 
-commands, like `pick`, `filter`, or `mutate`. Here you specify the input and
-output file with the `-i, --input` and `-o, --output` arguments. By default, the
-input will be `stdin` and the output will be `stdout`.
+commands, like `pick`, `filter`, or `mutate`. The first command in you'll usually run
+is the `input` command and the last command will usually be the `output` command.
+These read and write tables. Here are some short example commands.
 
 ```bash
-# Read CSV data from stdin, perform a few transformations and output to stdout
-tableshaper < input.csv pick 'column1:column10' filter 'column1 > 20'
+# Read CSV data from a file, perform some transformations and output to a new file.
+tableshaper input input.csv pick 'column1:column10' filter 'column1 > 20' output output.csv
 
-# The same, but reading and writing from a file.
-tableshaper -i input.csv -o output.csv pick 'column1:column10' filter 'column1 > 20'
+# Same thing, but reading from stdin and writing to stdout.
+tableshaper input - pick 'column1:column10' filter 'column1 > 20' output - < input.csv > output.csv
 ```
 
-The input file can be one of several formats. The default format is CSV,
-comma-separated values. It can be explicitly set with the `-c, --csv` flag.
-For tab-delimited files, use the `-t, --tsv` flag.
+For examples going forward, the `tableshaper` portion of commands will be omitted
+to keep things concise.
+
+[↑ To table of contents](#reference)
+
+<br/>
+
+### `$ input`
+
+Read in a table.
+
+The input file can be one of several formats. An input file format is specified
+with the `-f, --format` option.
+
+The default format is CSV, comma-separated values. You can be explicitly set it
+by passing `csv` to the format option.
+
+For tab-limited files use the `tsv` format.
+
+For all other delimited files use the `dsv` format. You specify the delimiter
+with the `-d, --delim` option. For example, a semicolon-delimited file named
+`input.txt` could be read like so: `input -f dsv -d ';' input.txt`.
+
+Excel files can be read using the `excel` format. You'll need to specify the
+sheet you want to read with the `-s, --sheet` option.
 
 For JSON files, use the `--json` flag. A JSON file
-can be formatted several ways and can be set with the `-f, --json-format`
-argument:
+can be formatted several ways. The JSON format can be set with
+the `-j, --json-format` option:
 - records: list like [{column -> value}, ... , {column -> value}]
 - split: dict like {index -> [index], columns -> [columns], data -> [values]}
 - index: dict like {index -> {column -> value}}
 - columns: dict like {column -> {index -> value}}
 - values: just the values array
 
-Data types for columns will be inferred automatically. To prevent this and
-read everything in as strings, use the `-r, --raw` flag. You can then set
-the data types explicitly in a `mutate` command.
+Geographic data can also be imported as a table. GeoJSON, TopoJSON and
+ESRI Shapefiles can all be imported as tables. (`tableshaper` uses [GeoPandas]
+for processing geodata). These formats have the following parameters: `geojson`,
+`topojson` and `shp`.
 
-The output file is always a CSV.
+Other supported formats are `feather`, `parquet`, `stata` and `sas`.
+
+When you import a table, data types for columns will be inferred automatically.
+To prevent this and read everything in as text, use the `-r, --raw` flag.
+You can then set the data types explicitly in a `mutate` command.
+
+If you are reading a file without a header row, you can set column names with 
+the `-c, --col-names` option. This takes a comma-separated list of column names.
+
+You can specify the name of the table to be imported using the `-n, --name`
+option. This is useful for when you import multiple tables and need to reference
+one. If you don't give a table a name, it will automatically be given one based
+on the filename. If a table is coming from `stdin`, it will be given the name
+`table`.
+
+[↑ To table of contents](#reference)
+
+<br/>
+
+### `$ output`
 
 [↑ To table of contents](#reference)
 
