@@ -1,4 +1,4 @@
-# TableShaper
+# tableshaper
 
 A command-line table processor. 
 
@@ -471,9 +471,9 @@ immensely.
 
 Also many thanks to the people behind these tools. You've saved me loads of time
 and headache.
-- [tidyverse](https://www.tidyverse.org/): R packages that make cleaning data intuitive. I stole many ideas from the `dplyr` and `tidyr` packages, in particular. Love the micro domain-specific languages in these packages, each tailored for specific tasks.
+- [tidyverse](https://www.tidyverse.org/): I stole many ideas from the `dplyr` and `tidyr` R packages, in particular. Love the micro domain-specific languages in these packages, each tailored for specific tasks.
 - [mapshaper](https://github.com/mbloch/mapshaper/wiki/Command-Reference): A command-line tool for editing geographic data (vector-based). I mimicked the command-line interface of this in many ways, especially the command chaining. The viewer is also great.
-- [csvkit](http://csvkit.rtfd.org/): Great tool for processing tabular data. Does many of the same things this tool does. Also does many thing this tool doesn't do, like pretty print and parse Excel files.
+- [csvkit](http://csvkit.rtfd.org/): Great tool for processing tabular data. Does many of the same things tableshaper does. Also does many thing this tool doesn't do.
 - [visidata](http://visidata.org/): Tool to viewing and exploring tabular data at the command line.
-- [jq](https://stedolan.github.io/jq/): A command-line JSON processor. Really simple and flexible.
+- [jq](https://stedolan.github.io/jq/): A command-line JSON processor.
 - [ndjson-cli](https://github.com/mbostock/ndjson-cli): A command-line tool for processing newline-delimited JSON files.
