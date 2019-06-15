@@ -95,6 +95,9 @@ to keep things concise.
 
 Read in a table.
 
+The `input` command requires a filename argument that points to the file you 
+want to read. If you are reading from `stdin` pass `-` as the filename.
+
 The input file can be one of several formats. An input file format is specified
 with the `-f, --format` option.
 
@@ -120,7 +123,7 @@ the `-j, --json-format` option:
 - values: just the values array
 
 Geographic data can also be imported as a table. GeoJSON, TopoJSON and
-ESRI Shapefiles can all be imported as tables. (`tableshaper` uses [GeoPandas]
+ESRI Shapefiles can all be imported as tables. (`tableshaper` uses [GeoPandas](http://geopandas.org)
 for processing geodata). These formats have the following parameters: `geojson`,
 `topojson` and `shp`.
 
@@ -133,8 +136,11 @@ You can then set the data types explicitly in a `mutate` command.
 If you are reading a file without a header row, you can set column names with 
 the `-c, --col-names` option. This takes a comma-separated list of column names.
 
+Multiple tables can be imported by calling the `input` command mulitple times.
+This useful for when you want to join tables.
+
 You can specify the name of the table to be imported using the `-n, --name`
-option. This is useful for when you import multiple tables and need to reference
+option. This is useful for when working with tables and need to reference
 one. If you don't give a table a name, it will automatically be given one based
 on the filename. If a table is coming from `stdin`, it will be given the name
 `table`.
@@ -144,6 +150,24 @@ on the filename. If a table is coming from `stdin`, it will be given the name
 <br/>
 
 ### `$ output`
+
+Write out a table.
+
+The `output` command requires a filename argument specifying where to write the
+file. If you want to output to `stdout` pass `-` as the filename.
+
+To output multiple tables pass `+` as the filename. You must also provide a 
+comma-separated list of table names to the `-t, --tables` option.
+
+You can specify the directory you want files to be put in using the `-d, --dir`
+option.
+
+You can output a table in a variety of format:
+- `csv` or `tsv` for comma- or tab-delimited files
+- `json` for a records-style JSON files (see [input](#-input))
+- `geojson` or `shp` for GeoJSON and ESRI Shapefiles (for geodata)
+- `feather` or `parquet` for efficient binary data formats
+- `markdown` or `html` for display on in a markdown file or on webpage
 
 [↑ To table of contents](#reference)
 
