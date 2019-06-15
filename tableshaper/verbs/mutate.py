@@ -1,9 +1,10 @@
 from tableshaper.helpers import evaluate, dataframe_to_dict
+from functools import reduce
 
 def mutate(**expressions):
     # Return generator of { name: assignment } dictionaries
     def assignments():
-        for name, expression in expressions.iteritems():
+        for name, expression in expressions.items():
             yield { name: lambda df: evaluate(expression, dataframe_to_dict(df)) }
     
     # Refactor pandas assign() method as a function

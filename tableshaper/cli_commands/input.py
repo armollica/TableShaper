@@ -48,7 +48,7 @@ def cli(context, name, format, json_format, raw, delimiter, sheet, col_names, fi
     
     def update_col_names(table):
         if col_names:
-            names = map(lambda x: x.strip(), col_names.split(','))
+            names = list(map(lambda x: x.strip(), col_names.split(',')))
             n = len(names) 
             m = len(table.columns)
             if n != m:

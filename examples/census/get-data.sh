@@ -18,7 +18,7 @@ if [ ! -e countyp010g.shp ]; then
     tar -xzm -f counties.tar.gz
 fi
 
-ts \
+tableshaper \
     input -f json -j values -n foreign_born \
         -c 'name, population, foreign_born, state, county' raw-data.json \
     filter -s 2: \
@@ -32,5 +32,7 @@ ts \
     filter -r 'fips[2:] != "000"' \
     join --left -k fips foreign_born \
     output -f geojson counties-with-foreign-born.json
+
+mapshaper data/counties-with-foreign-born.json -colorizer name=getColor colors='#f0f9e8,#bae4bc,#7bccc4,#2b8cbe' breaks='0.01,0.02,0.03' -proj albersusa -style fill='getColor(pct_foreign_born)' -o output.svg
 
 cd ..

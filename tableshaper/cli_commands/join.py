@@ -66,7 +66,7 @@ def cli(context, way, keys, right):
         elif way == 'bind-columns':
             table = pd.concat([table] + right_tables, axis = 1)
     else:
-        keys_list = map(lambda x: x.strip(), keys.split(','))
+        keys_list = list(map(lambda x: x.strip(), keys.split(',')))
         right_table = tables[right]
         table = table.merge(right_table, on = keys_list, how = way)
     

@@ -31,7 +31,7 @@ def selectify(string_list, selection_string):
     exclude_chr = '~'
 
     # Split and trim the selection "chunks"
-    chunks = map(lambda x: x.strip(), selection_string.split(','))
+    chunks = list(map(lambda x: x.strip(), selection_string.split(',')))
 
     # If first selection chunk is an exclusion, start with all
     # keys included. Otherwise, state with none.

@@ -113,7 +113,7 @@ def cli(context, way, group_by_expression, mutations):
             operations.update({ name: expression })
         if way == 'row-wise':
             row_mutations = []
-            for name, expression in operations.iteritems():
+            for name, expression in operations.items():
                 row_mutations.append(row_mutate(name, expression))
             table = pipe(table)(*row_mutations)
         else:
