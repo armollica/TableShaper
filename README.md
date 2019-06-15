@@ -12,22 +12,22 @@ A command-line table processor.
 
 Grab a subset of columns from a table.
 ```bash
-ts < table.csv pick 'country, continent, pop1990:pop2000`
+tableshaper < table.csv pick 'country, continent, pop1990:pop2000`
 ```
 
 Drop rows you don't need.
 ```bash
-ts < table.csv filter 'continent == "South America"'
+tableshaper < table.csv filter 'continent == "South America"'
 ```
 
 Reshape the table.
 ```bash
-ts < table.csv reshape -k year -v population --columns pop1990:pop2000
+tableshaper < table.csv reshape -k year -v population --columns pop1990:pop2000
 ```
 
 Do it all in one command.
 ```bash
-ts < table.csv \
+tableshaper < table.csv \
   pick 'country, continent, pop1990:pop2000' \
   filter 'continent == "South America"' \
   reshape -k year -v population --columns pop1990:pop2000
@@ -50,36 +50,36 @@ pip install tableshaper/
     <tr><th colspan="2">Table of contents</th></tr>
   </thead>
   <tbody>
-    <tr><td><a href="#-ts"><code>$ ts</code></a></td><td>TableShaper program</td></tr>
-    <tr><td><a href="#-ts-view"><code>$ ts view</code></a></td><td>View table.</td></tr>
-    <tr><td><a href="#-ts-pick"><code>$ ts pick</code></a></td><td>Subset columns.</td></tr>
-    <tr><td><a href="#-ts-rename"><code>$ ts rename</code></a></td><td>Rename columns.</td></tr>
-    <tr><td><a href="#-ts-filter"><code>$ ts filter</code></a></td><td>Subset rows.</td></tr>
-    <tr><td><a href="#-ts-sort"><code>$ ts sort</code></a></td><td>Sort rows.</td></tr>
-    <tr><td><a href="#-ts-mutate"><code>$ ts mutate</code></a></td><td>Create new columns.</td></tr>
-    <tr><td><a href="#-ts-aggregate"><code>$ ts aggregate</code></a></td><td>Aggregate rows.</td></tr>
-    <tr><td><a href="#-ts-join"><code>$ ts join</code></a></td><td>Join tables.</td></tr>
-    <tr><td><a href="#-ts-reshape"><code>$ ts reshape</code></a></td><td>Reshape table.</td></tr>
+    <tr><td><a href="#-tableshaper"><code>$ tableshaper</code></a></td><td>TableShaper program</td></tr>
+    <tr><td><a href="#-view"><code>$ view</code></a></td><td>View table.</td></tr>
+    <tr><td><a href="#-pick"><code>$ pick</code></a></td><td>Subset columns.</td></tr>
+    <tr><td><a href="#-rename"><code>$ rename</code></a></td><td>Rename columns.</td></tr>
+    <tr><td><a href="#-filter"><code>$ filter</code></a></td><td>Subset rows.</td></tr>
+    <tr><td><a href="#-sort"><code>$ sort</code></a></td><td>Sort rows.</td></tr>
+    <tr><td><a href="#-mutate"><code>$ mutate</code></a></td><td>Create new columns.</td></tr>
+    <tr><td><a href="#-aggregate"><code>$ aggregate</code></a></td><td>Aggregate rows.</td></tr>
+    <tr><td><a href="#-join"><code>$ join</code></a></td><td>Join tables.</td></tr>
+    <tr><td><a href="#-reshape"><code>$ reshape</code></a></td><td>Reshape table.</td></tr>
   <tbody>
 </table>
 
 <br/>
 
-### `$ ts`
+### `$ tableshaper`
 
-The TableShaper program.
+The tableshaper program.
 
-`ts` command kicks off the program and is generally followed by a series of 
+`tableshaper` command kicks off the program and is generally followed by a series of 
 commands, like `pick`, `filter`, or `mutate`. Here you specify the input and
 output file with the `-i, --input` and `-o, --output` arguments. By default, the
 input will be `stdin` and the output will be `stdout`.
 
 ```bash
 # Read CSV data from stdin, perform a few transformations and output to stdout
-ts < input.csv pick 'column1:column10' filter 'column1 > 20'
+tableshaper < input.csv pick 'column1:column10' filter 'column1 > 20'
 
 # The same, but reading and writing from a file.
-ts -i input.csv -o output.csv pick 'column1:column10' filter 'column1 > 20'
+tableshaper -i input.csv -o output.csv pick 'column1:column10' filter 'column1 > 20'
 ```
 
 The input file can be one of several formats. The default format is CSV,
@@ -105,7 +105,7 @@ The output file is always a CSV.
 
 <br/>
 
-### `$ ts view`
+### `$ view`
 
 View table.
 
@@ -137,7 +137,7 @@ Timestamps also include the first and last items.
 
 <br/>
 
-### `$ ts pick`
+### `$ pick`
 
 Subset columns.
 
@@ -179,7 +179,7 @@ pick -s 'name.isnumeric()'
 
 <br/>
 
-### `$ ts rename`
+### `$ rename`
 
 Rename columns.
 
@@ -209,7 +209,7 @@ rename -m 'name.replace(' ', '_').lower()'
 
 <br/>
 
-### `$ ts filter`
+### `$ filter`
 
 Subset rows.
 
@@ -235,8 +235,8 @@ on rows individually, instead of on pandas Series as a whole. This can be more
 flexible, especially when dealing with strings.
 
 ```bash
-  filter -r 'state in ["55", "56"]'
-  filter -r 're.match("^(M|m)azda", name) is not None'
+filter -r 'state in ["55", "56"]'
+filter -r 're.match("^(M|m)azda", name) is not None'
 ```
 
 The second filtering method is to specify a range of row indexes of the
@@ -280,7 +280,7 @@ filter -s '1:5, ~5:'   # first and last five rows
 
 <br/>
 
-### `$ ts sort`
+### `$ sort`
 
 Sort rows.
 
@@ -298,7 +298,7 @@ sort 'mpg, hp:desc'
 
 <br/>
 
-### `$ ts mutate`
+### `$ mutate`
 
 Create new columns.
 
@@ -353,7 +353,7 @@ mutate -r 'state = id[0:2]'
 
 <br/>
 
-### `$ ts aggregate`
+### `$ aggregate`
 
 Aggregate rows.
 
@@ -377,7 +377,7 @@ aggregate -g country_id,station_id 'median_wind_speed = wind_speed.median()'
 
 <br/>
 
-### `$ ts join`
+### `$ join`
 
 Join tables.
 
@@ -410,7 +410,7 @@ be filled with `NaN` values for rows in the table without that column.
 
 <br/>
 
-### `$ ts reshape`
+### `$ reshape`
 
 Reshape table.
 
@@ -422,7 +422,7 @@ This is the default method but can be set explicitly
 with the `-g, --gather` flag. The name of the two key-value columns are
 set with the `-k, --key` and `-v, --value` arguments. The columns to collect
 are set with the `-c, --columns` argument which takes a *selection* of 
-columns (see <a href="#-ts-pick"><code>$ ts pick</code></a> for an description
+columns (see <a href="#-pick"><code>$ pick</code></a> for an description
 of *selections*).
 
 ```bash
