@@ -20,7 +20,7 @@ def mutate(**expressions):
 
         if (hasattr(process, 'groups')):
             return (
-                df.groupby(process.groups)
+                df.groupby(list(process.groups))
                   .apply(call_assignments)
                   .reset_index(drop = True)
             )

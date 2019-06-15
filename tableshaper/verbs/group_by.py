@@ -1,3 +1,5 @@
+from functools import reduce
+
 def group_by(*names):
     def process(*operations):
         

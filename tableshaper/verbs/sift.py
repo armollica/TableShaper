@@ -1,3 +1,5 @@
+from functools import reduce
+
 from tableshaper.helpers import evaluate, dataframe_to_dict
 
 def sift(*expressions):

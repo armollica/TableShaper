@@ -123,6 +123,6 @@ def test_slice_multiple():
         ['filter', '--slice', ':5, 7:9'] +
         ['output', '-'],
         catch_exceptions=False)
-    expect = cars.copy().iloc[range(0, 5) + range(6, 9)]
+    expect = cars.copy().iloc[list(range(0, 5)) + list(range(6, 9))]
     assert result.exit_code == 0
     assert expect.to_csv(index=False) == result.output

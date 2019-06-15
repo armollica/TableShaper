@@ -118,7 +118,7 @@ def cli(context, way, group_by_expression, mutations):
             table = pipe(table)(*row_mutations)
         else:
             if group_by_expression is not None:  
-                groups = map(lambda x: x.strip(), group_by_expression.split(','))
+                groups = list(map(lambda x: x.strip(), group_by_expression.split(',')))
                 table = pipe(table)(group_by(*groups)(mutate(**operations)))
             else:
                 table = mutate(**operations)(table)

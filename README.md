@@ -35,6 +35,8 @@ ts < table.csv \
 
 ## Install
 
+`tableshaper` is meant to be install with Python 3.7+.
+
 Pull down this repo and install it with `pip`.
 ```bash
 git pull https://github.com/armollica/tableshaper.git
@@ -450,7 +452,7 @@ cd tableshaper/
 
 Create a virtual environment and activate it.
 ```bash
-virtualenv venv
+python -m venv venv
 . venv/bin/activate
 ```
 

@@ -39,7 +39,7 @@ def cli(context, group_by_expression, aggregation):
     key_value = parse_key_value(aggregation.strip())
     name = key_value['key']
     expression = key_value['value']
-    groups = map(lambda x: x.strip(), group_by_expression.split(','))
+    groups = list(map(lambda x: x.strip(), group_by_expression.split(',')))
     table = pipe(table)(group_by(*groups)(aggregate(**{name: expression})))
     
     context.obj['update_target'](table)

@@ -1,10 +1,11 @@
 from pandas import merge
+from functools import reduce
 from tableshaper.helpers import evaluate, dataframe_to_dict
 
 def aggregate(**expressions):
     
     def applications(groups):
-        for name, expression in expressions.iteritems():
+        for name, expression in expressions.items():
             def process(df):
                 return (
                     df.groupby(groups)
@@ -24,7 +25,7 @@ def aggregate(**expressions):
         def apply_function(application):
             return application(df)
         
-        dfs = map(apply_function, applications(process.groups))
+        dfs = map(apply_function, applications(list(process.groups)))
 
         return reduce(merge, dfs)
     

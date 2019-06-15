@@ -8,7 +8,7 @@ setup(
     install_requires=[
         'Click',
         'pandas',
-        'fiona==1.7.11',
+        'fiona',
         'geopandas',
         'inflection',
         'tabulate'
