@@ -39,7 +39,7 @@ tableshaper < table.csv \
 
 Pull down this repo and install it with `pip`.
 ```bash
-git pull https://github.com/armollica/tableshaper.git
+git clone https://github.com/armollica/tableshaper.git
 pip install tableshaper/
 ```
 
