@@ -43,7 +43,7 @@ def cli(context, tables, format, directory, file_name):
             if is_stdout:
                 file.write(data)
             else:
-                with open(file, 'wb') as f:
+                with open(file, 'w') as f:
                     f.write(data)
         elif format == 'html':
             data = tabulate(table.values, list(table), tablefmt='html') + '\n'
@@ -51,7 +51,7 @@ def cli(context, tables, format, directory, file_name):
             if is_stdout:
                 file.write(data)
             else:
-                with open(file, 'wb') as f:
+                with open(file, 'w') as f:
                     f.write(data)
         elif format == 'parquet':
             table.to_parquet(file)
