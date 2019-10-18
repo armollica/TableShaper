@@ -1,4 +1,4 @@
-# tableshaper
+# TableShaper
 
 A command-line table processor. 
 
@@ -69,7 +69,7 @@ pip install tableshaper/
 
 ### `$ tableshaper`
 
-The tableshaper program.
+The TableShaper program.
 
 `tableshaper` command kicks off the program and is generally followed by a series of 
 commands, like `pick`, `filter`, or `mutate`. The first command in you'll usually run
