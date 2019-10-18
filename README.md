@@ -12,22 +12,23 @@ A command-line table processor.
 
 Grab a subset of columns from a table.
 ```bash
-tableshaper < table.csv pick 'country, continent, pop1990:pop2000`
+tableshaper input table.csv pick 'country, continent, pop1990:pop2000`
 ```
 
 Drop rows you don't need.
 ```bash
-tableshaper < table.csv filter 'continent == "South America"'
+tableshaper input table.csv filter 'continent == "South America"'
 ```
 
 Reshape the table.
 ```bash
-tableshaper < table.csv reshape -k year -v population --columns pop1990:pop2000
+tableshaper input table.csv reshape -k year -v population --columns pop1990:pop2000
 ```
 
 Do it all in one command.
 ```bash
-tableshaper < table.csv \
+tableshaper \
+  input table.csv \
   pick 'country, continent, pop1990:pop2000' \
   filter 'continent == "South America"' \
   reshape -k year -v population --columns pop1990:pop2000
