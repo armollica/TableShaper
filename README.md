@@ -8,7 +8,7 @@ A command-line table processor.
 - <a href="#develop">Develop</a>
 - <a href="#credits">Credits</a>
 
-## Examples
+## ❯ Examples
 
 Grab a subset of columns from a table.
 ```bash
@@ -33,7 +33,7 @@ tableshaper < table.csv \
   reshape -k year -v population --columns pop1990:pop2000
 ```
 
-## Install
+## ❯ Install
 
 `tableshaper` is meant to be install with Python 3.7+.
 
@@ -43,7 +43,7 @@ git clone https://github.com/armollica/tableshaper.git
 pip install tableshaper/
 ```
 
-## Reference
+## ❯ Reference
 
 <table>
   <thead>
@@ -510,7 +510,7 @@ reshape -s -k year -v population
 
 <br/>
 
-## Develop
+## ❯ Develop
 
 Pull down this repo and move into the directory.
 ```bash
@@ -533,7 +533,7 @@ pip install --editable .
 Test ares in the `tests/` folder. To run these, call `pytest` at the command
 line from the root of this project.
 
-## Credits
+## ❯ Credits
 
 Many thanks to the people who made the [pandas](https://pandas.pydata.org/)
 and [click](http://click.pocoo.org/5/) packages. This tool relies on these
