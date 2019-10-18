@@ -45,28 +45,6 @@ pip install tableshaper/
 
 ## ❯ Reference
 
-<table>
-  <thead>
-    <tr><th colspan="2">Table of contents</th></tr>
-  </thead>
-  <tbody>
-    <tr><td><a href="#-tableshaper"><code>$ tableshaper</code></a></td><td>TableShaper program</td></tr>
-    <tr><td><a href="#-input"><code>$ input</code></a></td><td>Read in a table.</td></tr>
-    <tr><td><a href="#-output"><code>$ output</code></a></td><td>Write out a table.</td></tr>
-    <tr><td><a href="#-view"><code>$ view</code></a></td><td>View table.</td></tr>
-    <tr><td><a href="#-pick"><code>$ pick</code></a></td><td>Subset columns.</td></tr>
-    <tr><td><a href="#-rename"><code>$ rename</code></a></td><td>Rename columns.</td></tr>
-    <tr><td><a href="#-filter"><code>$ filter</code></a></td><td>Subset rows.</td></tr>
-    <tr><td><a href="#-sort"><code>$ sort</code></a></td><td>Sort rows.</td></tr>
-    <tr><td><a href="#-mutate"><code>$ mutate</code></a></td><td>Create new columns.</td></tr>
-    <tr><td><a href="#-aggregate"><code>$ aggregate</code></a></td><td>Aggregate rows.</td></tr>
-    <tr><td><a href="#-join"><code>$ join</code></a></td><td>Join tables.</td></tr>
-    <tr><td><a href="#-reshape"><code>$ reshape</code></a></td><td>Reshape table.</td></tr>
-  <tbody>
-</table>
-
-<br/>
-
 ### `$ tableshaper`
 
 The TableShaper program.
@@ -87,7 +65,24 @@ tableshaper input - pick 'column1:column10' filter 'column1 > 20' output - < inp
 For examples going forward, the `tableshaper` portion of commands will be omitted
 to keep things concise.
 
-[↑ To table of contents](#reference)
+<table>
+  <thead>
+    <tr><th colspan="2">Table of contents</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><a href="#-input"><code>$ input</code></a></td><td>Read in a table.</td></tr>
+    <tr><td><a href="#-output"><code>$ output</code></a></td><td>Write out a table.</td></tr>
+    <tr><td><a href="#-view"><code>$ view</code></a></td><td>View table.</td></tr>
+    <tr><td><a href="#-pick"><code>$ pick</code></a></td><td>Subset columns.</td></tr>
+    <tr><td><a href="#-rename"><code>$ rename</code></a></td><td>Rename columns.</td></tr>
+    <tr><td><a href="#-filter"><code>$ filter</code></a></td><td>Subset rows.</td></tr>
+    <tr><td><a href="#-sort"><code>$ sort</code></a></td><td>Sort rows.</td></tr>
+    <tr><td><a href="#-mutate"><code>$ mutate</code></a></td><td>Create new columns.</td></tr>
+    <tr><td><a href="#-aggregate"><code>$ aggregate</code></a></td><td>Aggregate rows.</td></tr>
+    <tr><td><a href="#-join"><code>$ join</code></a></td><td>Join tables.</td></tr>
+    <tr><td><a href="#-reshape"><code>$ reshape</code></a></td><td>Reshape table.</td></tr>
+  <tbody>
+</table>
 
 <br/>
 
