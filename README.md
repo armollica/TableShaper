@@ -510,7 +510,7 @@ reshape -s -k year -v population
 
 Pull down this repo and move into the directory.
 ```bash
-git pull https://github.com/armollica/tableshaper.git
+git clone https://github.com/armollica/tableshaper.git
 cd tableshaper/
 ```
 
