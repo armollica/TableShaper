@@ -506,6 +506,41 @@ reshape -s -k year -v population
 
 <br/>
 
+### Helper functions
+
+Here are some convenience functions that you can use within commands like `mutate` and `filter`.
+
+**Manipulating text**
+- `format_text(string)`: Template text using data from a table. For example, say you have a column with people's age, then `format_text("{age} years old")` would return "12 years old" for a person who has 12 in the age column.
+- `camelize(string)`: Converts string to CamelCase.
+- `dasherize(string)`: Replace underscores with dashes in the string.
+- `humanize(string)`: Capitalize the first word and turn underscores into spaces and strip a trailing "_id", if any.
+- `ordinalize(number)`: Turn a number into an ordinal string used to denote the position in an ordered sequence such as 1st, 2nd, 3rd, 4th.
+- `ordinal(number)`: Return the suffix that should be added to a number to denote the position in an ordered sequence such as 1st, 2nd, 3rd, 4th.
+- `parameterize(string)`: Replace special characters in a string so that it may be used as part of a "pretty" URL.
+- `pluralize(string)`: Return the plural form of a word.
+- `singularize(string)`: Return the singular form of a word, the reverse of `pluralize()`.
+- `tableize(string)`: Create the name of a table like Rails does for models to table names. This method uses the `pluralize()` method on the last word in the string.
+- `titleize(string)`: Capitalize all the words and replace some characters in the string to create a nicer looking title. 
+- `transliterate(string)`: Replace non-ASCII characters with an ASCII approximation. If no approximation exists, the non-ASCII character is ignored.
+- `underscore(string)`: Make an underscored, lowercase form from the expression in the string.
+
+**Searching text**
+- `extract_text(string, regex)`: Extract part of a string using regex. For example, `extract_text(sentence, "(\w+) ")` will extract the first word in a sentence.
+- `text_matches(string, regex)`: `True` if a string matches the regex.
+- `starts_with(string, starter)`: `True` if a string starts with the starter string.
+- `ends_with(string, ender)`: `True` if a string ends with the ender string.
+
+**Parsing data types**
+- `parse_datetime(string, format_string)`: Convert a string into a date using a datetime format string, e.g., '%Y-%m-%d'.
+- `parse_int(string)`: Converts a string to an integer.
+- `parse_float(string)`: Converts a string to a float.
+- `parse_bool(string)`: Converts a string to `True` or `False`. Strings like "true", "1", "T", "Y" and "yes" are evaluate to `True`. The operation is not case sensitive.
+
+[↑ To table of contents](#-reference)
+
+<br/>
+
 ## ❯ Develop
 
 Pull down this repo and move into the directory.

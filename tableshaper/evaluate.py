@@ -14,12 +14,6 @@ def seriesify(func):
         return func(series, *args, **kwargs)
     return seriesified
 
-# Make a str manipulating function cast the input as unicode first
-def unicodeify(func):
-    def unicodeified(string, *args, **kwargs):
-        return func(unicode(string), *args, **kwargs)
-    return unicodeified
-
 # ______________________________________________________________________________
 # Functions that will be usable in evaluate() contexts
 eval_dict = {}
@@ -31,12 +25,12 @@ dasherize = seriesify(inflection.dasherize)
 humanize = seriesify(inflection.humanize)
 ordinal = seriesify(inflection.ordinal)
 ordinalize = seriesify(inflection.ordinalize)
-parameterize = seriesify(unicodeify(inflection.parameterize))
+parameterize = seriesify(inflection.parameterize)
 pluralize = seriesify(inflection.pluralize)
 singularize = seriesify(inflection.singularize)
 tableize = seriesify(inflection.tableize)
 titleize = seriesify(inflection.titleize)
-transliterate = seriesify(unicodeify(inflection.transliterate))
+transliterate = seriesify(inflection.transliterate)
 underscore = seriesify(inflection.underscore)
 
 eval_dict.update({
