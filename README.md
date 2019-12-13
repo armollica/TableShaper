@@ -141,7 +141,7 @@ one. If you don't give a table a name, it will automatically be given one based
 on the filename. If a table is coming from `stdin`, it will be given the name
 `table`.
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -165,7 +165,7 @@ You can output a table in a variety of format:
 - `feather` or `parquet` for efficient binary data formats
 - `markdown` or `html` for display on in a markdown file or on webpage
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -197,7 +197,7 @@ For strings and timestamps it will include the count, the number of unique
 values, the most common value and the number of times it occurs.
 Timestamps also include the first and last items.
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -239,7 +239,7 @@ pick -s 'name.startswith("population")'
 pick -s 'name.isnumeric()'
 ```
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -269,7 +269,7 @@ rename -m 'name.lower()'
 rename -m 'name.replace(' ', '_').lower()'
 ```
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -340,7 +340,7 @@ filter -s '1:5, 10:15'
 filter -s '1:5, ~5:'   # first and last five rows
 ```
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -358,7 +358,7 @@ sort 'mpg:desc'
 sort 'mpg, hp:desc'
 ```
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -413,7 +413,7 @@ mutate -r 'id = "%05d" % id'
 mutate -r 'state = id[0:2]'
 ```
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -437,7 +437,7 @@ aggregate -g state 'population_sum = population.sum()'
 aggregate -g country_id,station_id 'median_wind_speed = wind_speed.median()'
 ```
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -470,7 +470,7 @@ join --bind-columns right.csv
 When binding rows, any columns that exist in one table and not the other will
 be filled with `NaN` values for rows in the table without that column.
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
@@ -502,7 +502,7 @@ columns names are passed to the `-k, --key` and `-v, --value` arguments.
 reshape -s -k year -v population
 ```
 
-[↑ To table of contents](#reference)
+[↑ To table of contents](#-reference)
 
 <br/>
 
