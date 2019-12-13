@@ -2,11 +2,11 @@
 
 A command-line table processor. 
 
-- <a href="#examples">Examples</a>
-- <a href="#install">Install</a>
-- <a href="#reference">Reference</a>
-- <a href="#develop">Develop</a>
-- <a href="#credits">Credits</a>
+- <a href="#-examples">Examples</a>
+- <a href="#-install">Install</a>
+- <a href="#-reference">Reference</a>
+- <a href="#-develop">Develop</a>
+- <a href="#-credits">Credits</a>
 
 ## ❯ Examples
 
