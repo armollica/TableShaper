@@ -82,6 +82,7 @@ to keep things concise.
     <tr><td><a href="#-aggregate"><code>$ aggregate</code></a></td><td>Aggregate rows.</td></tr>
     <tr><td><a href="#-join"><code>$ join</code></a></td><td>Join tables.</td></tr>
     <tr><td><a href="#-reshape"><code>$ reshape</code></a></td><td>Reshape table.</td></tr>
+    <tr><td><a href="#helper-functions"><code>Helpers</code></a></td><td>Built in convenience functions.</td></tr>
   <tbody>
 </table>
 
