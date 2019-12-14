@@ -1,4 +1,4 @@
-# Mapping census data
+# Mapping Census data
 
 Download, clean up and map data from the U.S. Census Bureau using TablesShaper and [mapshaper](https://mapshaper.org/).
 
@@ -6,7 +6,7 @@ This map shows what share of county's population is foreign born. Darker colors 
 
 ![Map showing the share of county population that's foreign born.](https://github.com/armollica/TableShaper/blob/master/examples/census/map.svg)
 
-Here are the steps.
+Here are the steps to make this.
 
 Download the census data as a JSON file. This file has the total population,
 the foreign born population and an FIPS code that we will use to join the data 
