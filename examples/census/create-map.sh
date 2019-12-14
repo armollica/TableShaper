@@ -31,6 +31,7 @@ tableshaper \
     mutate 'geometry = geometry.simplify(0.01)' \
     pick 'fips, geometry' \
     filter -r 'fips[2:] != "000"' \
+    filter -r 'fips[:2] != "72"' \
     join --left -k fips foreign_born \
     output -f geojson counties-with-foreign-born.json
 
