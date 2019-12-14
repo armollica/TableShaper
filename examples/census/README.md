@@ -6,7 +6,8 @@ This map shows what share of county's population is foreign born. Darker colors 
 
 ![Map showing the share of county population that's foreign born.](https://github.com/armollica/TableShaper/blob/master/examples/census/map.svg)
 
-Here are the steps to make this.
+Here are the steps to make this. Or check out `create-map.sh` for the entire
+process in a bash script.
 
 Download the census data as a JSON file. This file has the total population,
 the foreign born population and an FIPS code that we will use to join the data 
