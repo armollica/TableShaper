@@ -34,6 +34,8 @@ tableshaper \
   reshape -k year -v population --columns pop1990:pop2000
 ```
 
+For more complete examples, check out the [`examples/`](https://github.com/armollica/TableShaper/tree/master/examples) folder in this repo.
+
 ## ❯ Install
 
 `tableshaper` is meant to be install with Python 3.7+.
