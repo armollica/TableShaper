@@ -14,7 +14,7 @@ We'll be filtering rows on this table (only the first four rows shown here).
 
 ### Vectorized filtering
 
-The default behavior of the filter command is to keep rows based whether a Python expression returns `True`. The columsn of the table are put into the namespace as a Pandas series.
+The default behavior of the filter command is to keep rows based whether a Python expression returns `True`. The columns of the table are put into the namespace as a Pandas series.
 
 For example, if you wanted to only keep cars with 6 cylinders you would
 run this command.
@@ -35,7 +35,7 @@ Which returns this.
 | Merc 280C      |  17.8 |     6 |  123 |
 | Ferrari Dino   |  19.7 |     6 |  175 |
 
-### Row-wize filtering
+### Row-wise filtering
 
 Sometimes it's easier to work with individual values instead of Pandas series. You can use the `-r, --row` flag to enable row-wise filtering. This can be slower than the vectorized filtering you get with Pandas series. But it can be more flexible.
 
