@@ -6,6 +6,29 @@ def filename_to_tablename(filename):
     basename = os.path.basename(filename)
     return os.path.splitext(basename)[0]
 
+format_choices = ['csv', 'tsv', 'dsv', 'json', 'excel', 'geojson', 'topojson', 'shp',
+                  'feather', 'parquet', 'stata', 'sas']
+
+json_format_choices = ['split', 'records', 'index', 'columns', 'values',
+                       'other']
+
+def encoding_is_ignored(format, json_format):
+    if format == 'json' and json_format == 'other':
+        return True
+    if format in ['excel', 'feather', 'parquet', 'geojson', 'topojson', 'shp']:
+        return True
+    return False
+
+def read_csv(file, dtype, encoding, **kwargs):
+    table = pd.read_csv(file, dtype=dtype, encoding=encoding)
+    return table
+
+def read_tsv(file, dtype, encoding, **kwargs):
+    return pd.read_csv(file, sep='\t', dtype=dtype, encoding=encoding, engine='python')
+
+def read_dsv(file, dtype, encoding, delimiter, **kwargs):
+    return pd.read_csv(file, sep=delimiter, dtype=dtype, encoding=encoding, engine='python')
+
 def read_other_json(file):
     is_file = hasattr(file, 'read')
     if is_file:
@@ -15,11 +38,67 @@ def read_other_json(file):
         data = json.loads(f.read())
         return pd.io.json.json_normalize(data, sep='_')
 
-format_choices = ['csv', 'tsv', 'dsv', 'json', 'excel', 'geojson', 'topojson', 'shp',
-                  'feather', 'parquet', 'stata', 'sas']
+def read_json(file, json_format, encoding, **kwargs):
+    if json_format != 'other':
+        return pd.read_json(file, orient=json_format, encoding=encoding)
+    return read_other_json(file)
 
-json_format_choices = ['split', 'records', 'index', 'columns', 'values',
-                       'other']
+def read_excel(file, sheet, **kwargs):
+    if sheet is None:
+        click.echo('Must specify a sheet when reading an Excel file.', err=True)
+    return pd.read_excel(file, sheet_name=sheet)
+
+def read_feather(file, **kwargs):
+    return pd.read_feather(file)
+
+def read_parquet(file, **kwargs):
+    return pd.read_parquet(file)
+
+def read_stata(file, encoding, **kwargs):
+    return pd.read_stata(file, encoding=encoding)
+
+def read_sas(file, encoding, **kwargs):
+    return pd.read_sas(file, encoding=encoding)
+
+def read_geojson(file, **kwargs):
+    return gpd.read_file(file, driver='GeoJSON')
+
+def read_topojson(file, **kwargs):
+    return gpd.read_file(file, driver='TopoJSON')
+
+def read_shapefile(file, **kwargs):
+    return gpd.read_file(file, driver='ESRI Shapefile')
+
+def read_table(file, format, dtype, encoding, delimiter, sheet, json, json_format):
+    params = {
+        'file': file,
+        'dtype': dtype,
+        'encoding': encoding,
+        'delimiter': delimiter,
+        'sheet': sheet,
+        'json': json,
+        'json_format': json_format
+    }
+
+    reader = {
+        'csv': read_csv,
+        'tsv': read_tsv,
+        'dsv': read_dsv,
+        'json': read_json,
+        'excel': read_excel,
+        'feather': read_feather,
+        'parquet': read_parquet,
+        'stata': read_stata,
+        'sas': read_sas,
+        'geojson': read_geojson,
+        'topojson': read_topojson,
+        'shp': read_shapefile
+    }[format]
+
+    try:
+        return reader(**params)
+    except Exception as error:
+        click.echo(f'Could not read "{file}": {error}', err=True)
 
 @click.command('input')
 @click.option('-n', '--name', 'name', type=click.STRING)
@@ -29,18 +108,19 @@ json_format_choices = ['split', 'records', 'index', 'columns', 'values',
               type=click.Choice(json_format_choices))
 @click.option('-r', '--raw', 'raw', flag_value='raw',
               help = "Don't guess data types")
-@click.option('-d', '--delim', 'delimiter', 
+@click.option('-d', '--delim', 'delimiter', default=',',
               help = "What delimiter to use for parsing DSV file")
 @click.option('-s', '--sheet', 'sheet', 
               help = "What sheet to read from Excel file")
 @click.option('-c', '--col-names', 'col_names', type=click.STRING)
+@click.option('-e', '--encoding', 'encoding', type=click.STRING, default = None)
 @click.argument('file', type=click.STRING)
 @click.pass_context
-def cli(context, name, format, json_format, raw, delimiter, sheet, col_names, file):
+def cli(context, name, format, json_format, raw, delimiter, sheet, col_names, encoding, file):
     '''
     Read in a table.
     '''
-    
+
     # Should we guess at the data types of columns?
     dtype = None
     if raw:
@@ -52,45 +132,26 @@ def cli(context, name, format, json_format, raw, delimiter, sheet, col_names, fi
             n = len(names) 
             m = len(table.columns)
             if n != m:
-                click.echo("Number of columns names doesn't match number of columns: {} names provided, {} columns in table.".format(n, m), err=True)
+                click.echo(f"Number of columns names doesn't match number of columns: {n} names provided, {m} columns in table.", err=True)
             table.columns = names
 
-    # Read the table
-    def read_table(file):
-        try:
-            if format == 'csv':
-                return pd.read_csv(file, dtype=dtype)
-            elif format == 'tsv':
-                return pd.read_csv(file, sep='\t', dtype=dtype)
-            elif format == 'dsv':
-                return pd.read_csv(file, sep=delimiter, dtype=dtype)
-            elif format == 'json':
-                if json_format != 'other':
-                    return pd.read_json(file, orient=json_format)
-                return read_other_json(file)
-            elif format == 'excel':
-                if sheet is None:
-                    click.echo('Must specify a sheet when reading an Excel file.', err=True)
-                return pd.read_excel(file, sheet_name=sheet)
-            elif format == 'feather':
-                return pd.read_feather(file)
-            elif format == 'parquet':
-                return pd.read_parquet(file)
-            elif format == 'stata':
-                return pd.read_stata(file)
-            elif format == 'sas':
-                return pd.read_sas(file)
-            elif format == 'geojson':
-                return gpd.read_file(file, driver='GeoJSON')
-            elif format == 'topojson':
-                return gpd.read_file(file, driver='TopoJSON')
-            elif format == 'shp':
-                return gpd.read_file(file, driver='ESRI Shapefile')
-        except Exception as e:
-            click.echo('Could not read "{}": {}'.format(file, e), err=True)
+    params = {
+        'format': format,
+        'dtype': dtype,
+        'encoding': encoding,
+        'delimiter': delimiter,
+        'sheet': sheet,
+        'json': json,
+        'json_format': json_format,
+    }
 
+    if encoding is not None:
+        if encoding_is_ignored(**params):
+            click.echo('Encoding parameters is being ignored.')
+    
     if file == '-':
-        table = read_table(sys.stdin)
+        params.update({ 'file': sys.stdin })
+        table = read_table(**params)
         update_col_names(table)
         
         # Determine what to name the table
@@ -104,8 +165,13 @@ def cli(context, name, format, json_format, raw, delimiter, sheet, col_names, fi
     else:
         filenames = glob.glob(file)
         n = len(filenames)
+
+        if n == 0:
+            click.echo(f'Filename `{file}` not found', err=True)
+
         for i, filename in enumerate(filenames):
-            table = read_table(filename)
+            params.update({ 'file': filename })
+            table = read_table(**params)
             update_col_names(table)
                 
             # Determine what to name the table
@@ -113,7 +179,7 @@ def cli(context, name, format, json_format, raw, delimiter, sheet, col_names, fi
                 if n == 1:
                     tablename = name
                 else:
-                    tablename = '{name}-{i}'.format(name=name, i=i)
+                    tablename = f'{name}-{i}'
             else:
                 tablename = filename_to_tablename(filename)
             
