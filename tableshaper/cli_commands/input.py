@@ -12,10 +12,10 @@ format_choices = ['csv', 'tsv', 'dsv', 'json', 'excel', 'geojson', 'topojson', '
 json_format_choices = ['split', 'records', 'index', 'columns', 'values',
                        'other']
 
-def encoding_is_ignored(format, json_format):
+def encoding_is_ignored(format, json_format, **kwargs):
     if format == 'json' and json_format == 'other':
         return True
-    if format in ['excel', 'feather', 'parquet', 'geojson', 'topojson', 'shp']:
+    if format in ['excel', 'feather', 'parquet']:
         return True
     return False
 
@@ -60,14 +60,14 @@ def read_stata(file, encoding, **kwargs):
 def read_sas(file, encoding, **kwargs):
     return pd.read_sas(file, encoding=encoding)
 
-def read_geojson(file, **kwargs):
-    return gpd.read_file(file, driver='GeoJSON')
+def read_geojson(file, encoding, **kwargs):
+    return gpd.read_file(file, driver='GeoJSON', encoding=encoding)
 
-def read_topojson(file, **kwargs):
-    return gpd.read_file(file, driver='TopoJSON')
+def read_topojson(file, encoding, **kwargs):
+    return gpd.read_file(file, driver='TopoJSON', encoding=encoding)
 
-def read_shapefile(file, **kwargs):
-    return gpd.read_file(file, driver='ESRI Shapefile')
+def read_shapefile(file, encoding, **kwargs):
+    return gpd.read_file(file, driver='ESRI Shapefile', encoding=encoding)
 
 def read_table(file, format, dtype, encoding, delimiter, sheet, json, json_format):
     params = {
