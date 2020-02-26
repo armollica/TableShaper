@@ -2,12 +2,13 @@
 
 Download, clean up and map data from the U.S. Census Bureau using TablesShaper and [mapshaper](https://mapshaper.org/).
 
-This map shows what share of county's population is foreign born. Darker colors indicate a higher share of the population is foreign born.
+Here's the map that we'll create.
 
 ![Map showing the share of county population that's foreign born.](https://github.com/armollica/TableShaper/blob/master/examples/census/map.svg)
 
-Here are the steps to make this. Or check out `create-map.sh` for the entire
-process in a bash script.
+This shows the percentage of a county's population that is foreign born. Darker colors indicate a higher share of the population is foreign born.
+
+Here are the steps to make this. You can also check out `create-map.sh` for the entire process in a bash script.
 
 Download the census data as a JSON file. This file has the total population,
 the foreign born population and an FIPS code that we will use to join the data 
@@ -17,18 +18,17 @@ to the county geodata.
 curl -o raw-data.json 'https://api.census.gov/data/2016/acs/acs5?get=NAME,B05002_001E,B05002_013E&for=county:*'
 ```
 
-Now download the county geodata. This data compressed in a tarball that you 
+Download the county geodata. This data compressed in a tarball that you 
 unpack.
 
 ```bash
 curl -o counties.tar.gz 'https://prd-tnm.s3.amazonaws.com/StagedProducts/Small-scale/data/Boundaries/countyp010g.shp_nt00934.tar.gz'
-
 tar -xzm -f counties.tar.gz
 ```
 
-Now use TableShaper to clean up the data and join the two dataset.
+With the all the data downloaded, we can use TableShaper to clean things up and join the two dataset.
 
-First, import the JSON file and give the columns meaningful names.
+First, import the JSON file. This particular JSON file formats the table in the array-of-arrays "values" format. We specify this with the `-j` parameter. The name the table `foreign_born` with the `-n` parameter. Finally, we give the columns meaningful names buy passing a comma-separated list of names to the `-c` parameter.
 
 ```bash
 input -f json -j values -n foreign_born \
@@ -36,7 +36,7 @@ input -f json -j values -n foreign_born \
 ```
 
 The JSON file's first row contains column names that we don't use. Remove that
-first row.
+first row using the filter command's slice parameter `-s`.
 
 ```bash
 filter -s 2:
@@ -63,7 +63,7 @@ that's foreign born.
 pick 'fips, pct_foreign_born'
 ```
 
-Now import the county geodata.
+Now import the county geodata. We names the table `counties`.
 
 ```bash
 input -f shp -n counties countyp010g.shp
@@ -102,7 +102,7 @@ digits of its FIPS code is 72.
 filter -r 'fips[:2] != "72"' \
 ```
 
-Join the census data to the geodata using the FIPS codes.
+Join the census data to the geodata using the FIPS code column. Since the current "target" table is `counties` we need to tell TableShaper that we'll be joining this to the `foreign_born` table we cleaned earlier.
 
 ```bash
 join --left -k fips foreign_born
@@ -134,7 +134,7 @@ tableshaper \
     output -f geojson counties-with-foreign-born.json
 ```
 
-Now we map it. Let's use mapshaper for this.
+Now let's map it. We'll use mapshaper for this.
 
 First, create a colorizer function that takes a list of colors and a list of
 break points. Use this function to color the polygons. Finally, reproject the 
