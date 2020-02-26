@@ -62,7 +62,7 @@ This will return the same table as above.
 
 ### Slicing
 
-Sometimes you know the specific rows you want to remove. You can use slice-based filtering for this.
+Sometimes you know the specific rows you want to keep or remove. You can use slice-based filtering for this.
 
 To do this you specify a range of indexes following this format: `start:end`. It's a one-based index. The first row starts at one, not zero. Indexes are inclusive. The start row, the end row and all rows in-between will be included.
 
