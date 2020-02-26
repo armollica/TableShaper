@@ -28,7 +28,25 @@ tar -xzm -f counties.tar.gz
 
 With the all the data downloaded, we can use TableShaper to clean things up and join the two dataset.
 
-First, import the JSON file. This particular JSON file formats the table in the array-of-arrays "values" format. We specify this with the `-j` parameter. The name the table `foreign_born` with the `-n` parameter. Finally, we give the columns meaningful names buy passing a comma-separated list of names to the `-c` parameter.
+First, import the JSON file. 
+
+This particular JSON file is formatted in the array-of-arrays, "values" format which looks looks like this.
+
+```
+[
+    ["NAME","B05002_001E","B05002_013E","state","county"],
+    ["Carroll County, Arkansas","27690","2289","05","015"],
+    ["Chicot County, Arkansas","11189","286","05","017"],
+    ["Clark County, Arkansas","22684","657","05","019"],
+    ...
+]
+```
+
+We specify that it's formatted this way by passing `values` to the `-j` parameter.
+
+We name the table `foreign_born` with the `-n` parameter. It's helpful to name a table when you're importing and joining multiple tables like we will be in this example.
+
+Finally, we give the columns meaningful names by passing a comma-separated list of names to the `-c` parameter.
 
 ```bash
 input -f json -j values -n foreign_born \
