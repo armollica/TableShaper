@@ -31,8 +31,8 @@ Now use TableShaper to clean up the data and join the two dataset.
 First, import the JSON file and give the columns meaningful names.
 
 ```bash
-    input -f json -j values -n foreign_born \
-        -c 'name, population, foreign_born, state, county' raw-data.json
+input -f json -j values -n foreign_born \
+    -c 'name, population, foreign_born, state, county' raw-data.json
 ```
 
 The JSON file's first row contains column names that we don't use. Remove that
