@@ -46,8 +46,8 @@ For more complete examples, check out the [`examples/`](https://github.com/armol
 
 Pull down this repo and install it with `pip`.
 ```bash
-git clone https://github.com/armollica/tableshaper.git
-pip install tableshaper/
+git clone https://github.com/armollica/TableShaper.git
+python -m pip install TableShaper/
 ```
 
 ## ❯ Reference
@@ -552,7 +552,7 @@ Here are some convenience functions that you can use within commands like `mutat
 
 Pull down this repo and move into the directory.
 ```bash
-git clone https://github.com/armollica/tableshaper.git
+git clone https://github.com/armollica/TableShaper.git
 cd tableshaper/
 ```
 
@@ -565,7 +565,7 @@ python -m venv venv
 Install the package and its dependencies with the `--editable` flag. That way
 changes to the source code will automatically affect the CLI program.
 ```bash
-pip install --editable .
+python -m pip install --editable .
 ```
 
 Test ares in the `tests/` folder. To run these, call `pytest` at the command
