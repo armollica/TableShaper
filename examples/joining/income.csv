@@ -1,0 +1,53 @@
+id,name,median_household_income
+01,Alabama,48486
+02,Alaska,76715
+04,Arizona,56213
+05,Arkansas,45726
+06,California,71228
+08,Colorado,68811
+09,Connecticut,76106
+10,Delaware,65627
+11,District of Columbia,82604
+12,Florida,53267
+13,Georgia,55679
+15,Hawaii,78084
+16,Idaho,53089
+17,Illinois,63575
+18,Indiana,54325
+19,Iowa,58580
+20,Kansas,57422
+21,Kentucky,48392
+22,Louisiana,47942
+23,Maine,55425
+24,Maryland,81868
+25,Massachusetts,77378
+26,Michigan,54938
+27,Minnesota,68411
+28,Mississippi,43567
+29,Missouri,53560
+30,Montana,52559
+31,Nebraska,59116
+32,Nevada,57598
+33,New Hampshire,74057
+34,New Jersey,79363
+35,New Mexico,48059
+36,New York,65323
+37,North Carolina,52413
+38,North Dakota,63473
+39,Ohio,54533
+40,Oklahoma,51424
+41,Oregon,59393
+42,Pennsylvania,59445
+44,Rhode Island,63296
+45,South Carolina,51015
+46,South Dakota,56499
+47,Tennessee,50972
+48,Texas,59570
+49,Utah,68374
+50,Vermont,60076
+51,Virginia,71564
+53,Washington,70116
+54,West Virginia,44921
+55,Wisconsin,59209
+56,Wyoming,62268
+72,Puerto Rico,20166

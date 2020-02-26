@@ -2,7 +2,7 @@ import inflection, click
 from tableshaper.helpers import parse_key_value
 
 def snake_case(x):
-    return inflection.underscore(inflection.parameterize(unicode(x.lower())))
+    return inflection.underscore(inflection.parameterize(x.lower()))
 
 def kebab_case(x):
     return inflection.dasherize(snake_case(x))
