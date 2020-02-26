@@ -13,8 +13,7 @@ setup(
         'inflection',
         'tabulate'
     ],
-    entry_points='''
-        [console_scripts]
-        tableshaper=tableshaper.cli:cli
-    ''',
+    entry_points={
+        'console_scripts': ['tableshaper=tableshaper.cli:cli']
+    },
 )
