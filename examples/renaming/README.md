@@ -19,7 +19,9 @@ The most common method for renaming columns is to provide a comma-separated list
 For example if we wanted to give the columns more descriptive names we could do this.
 
 ```
-rename 'car_name = car, miles_per_gallon = mpg, cylinders = cyl, horse_power = hp'
+tableshaper \
+    input cars.csv \
+    rename 'car_name = car, miles_per_gallon = mpg, cylinders = cyl, horse_power = hp'
 ```
 
 This is what you'll get.
@@ -41,7 +43,9 @@ With map-based renaming you provide a python expression that is evaluated on eve
 For example, if we wanted to uppercase all of the column names we could run this.
 
 ```
-rename -m 'name.upper()'
+tableshaper \
+    input cars.csv \
+    rename -m 'name.upper()'
 ```
 
 And we would get this.
@@ -60,7 +64,9 @@ And we would get this.
 Some of these map-based operations are common enough to justify a shortcut. For example, you might want all of your columns for be in title case, where the first letter of each word is capitalized. In these cases you can use the `-s, --sanitize` parameters to convert all column names using the title case transformation.
 
 ```
-rename -s title
+tableshaper \
+    input cars.csv \
+    rename -s title
 ```
 
 This will give you these column names.

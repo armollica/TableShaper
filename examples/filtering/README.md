@@ -20,7 +20,9 @@ For example, if you wanted to only keep cars with 6 cylinders you would
 run this command.
 
 ```bash
-filter 'cyl == 6'
+tableshaper \
+    input cars.csv \
+    filter 'cyl == 6'
 ```
 
 Which returns this.
@@ -42,7 +44,9 @@ Sometimes it's easier to work with individual values instead of Pandas series. Y
 For example, if you wanted to keep all the Toyotas you could run this.
 
 ```bash
-filter -r '"Toyota" in car'
+tableshaper \
+    input cars.csv \
+    filter -r '"Toyota" in car'
 ```
 
 Which give you this.
@@ -69,28 +73,33 @@ To do this you specify a range of indexes following this format: `start:end`. It
 If you want to keep just the first five rows you can do this.
 
 ```bash
-filter -s 1:5
+tableshaper \
+    input cars.csv \
+    filter -s 1:5
 ```
 
 Ranges can be open-ended. If no start index is provided, it starts from the first row. If no end index is provided, it ends at the last row of the table.
 
 ```bash
-filter -s :5    # is equivalent to 1:5
-filter -s 100:  # 100th to the last row
+tableshaper \
+    input cars.csv \
+    filter -s :5    # is equivalent to 1:5
 ```
 
 You can start from the back of the table too. If the start or end index begins with a tilde (~), the index will refer to that many places from the last row of the table.
 
 ```bash
-filter -s ~5:      # last five rows
-filter -s ~10:~5:  # from (n - 10) to (n - 5)
+tableshaper \
+    input cars.csv \
+    filter -s ~5:      # last five rows
 ```
 
 Provide multiple slices. Pass in a comma-separated list of slices and you'll get them back in that order. Warning: you can get duplicate rows this way.
 
 ```bash
-filter -s '1:5, 10:15'
-filter -s '1:5, ~5:'   # first five rows and last five rows
+tableshaper \
+    input cars.csv \
+    filter -s '1:5, ~5:'   # first five rows and last five rows
 ```
 
 ### Distinct rows
@@ -100,6 +109,11 @@ You can drop duplicate rows using the `-d, --distinct` option.
 You can provide a selection of columns on which to check to distinctness, or use `+` to look at all columns.
 
 ```bash
-filter -d +    # Look at the whole table
-filter -d A:C  # Look at columns A through C for distinctness
+tableshaper \
+    input cars.csv \
+    filter -d +    # Look at the whole table
+
+tableshaper \
+    input cars.csv \
+    filter -d A:C  # Look at columns A through C for distinctness
 ```

@@ -7,4 +7,7 @@ Here are some examples of how to use TableShaper.
 - [Renaming columns](renaming/)
 
 ### Intermediate examples
+- [Working with multiple tables and how to do joins](joining/)
+
+### Advanced examples
 - [Mapping Census data](census/)

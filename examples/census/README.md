@@ -10,6 +10,8 @@ This shows the percentage of a county's population that is foreign born. Darker 
 
 Here are the steps to make this. You can also check out `create-map.sh` for the entire process in a bash script.
 
+### Download the data
+
 Download the census data as a JSON file. This file has the total population,
 the foreign born population and an FIPS code that we will use to join the data 
 to the county geodata.
@@ -26,9 +28,31 @@ curl -o counties.tar.gz 'https://prd-tnm.s3.amazonaws.com/StagedProducts/Small-s
 tar -xzm -f counties.tar.gz
 ```
 
+### Clean the data
+
 With the all the data downloaded, we can use TableShaper to clean things up and join the two dataset.
 
-First, import the JSON file. 
+Here's the full set of commands that we'll run. We'll break this down step-by-step.
+
+```
+tableshaper \
+    input -f json -j values -n foreign_born \
+        -c 'name, population, foreign_born, state, county' raw-data.json \
+    filter -s 2: \
+    mutate -r 'fips = format_text("{state}{county}")' \
+    mutate 'pct_foreign_born = parse_float(foreign_born) / parse_float(population)' \
+    pick 'fips, pct_foreign_born' \
+    input -f shp -n counties countyp010g.shp \
+    rename 'fips = ADMIN_FIPS' \
+    mutate 'geometry = geometry.simplify(0.01)' \
+    pick 'fips, geometry' \
+    filter -r 'fips[2:] != "000"' \
+    filter -r 'fips[:2] != "72"' \
+    join --left -k fips foreign_born \
+    output -f geojson counties-with-foreign-born.json
+```
+
+First, we'll import the JSON file. 
 
 This particular JSON file is formatted in the array-of-arrays, "values" format which looks looks like this.
 
@@ -132,25 +156,7 @@ Export the data as GeoJSON.
 output -f geojson counties-with-foreign-born.json
 ```
 
-Here's what that looks like all together.
-
-```bash
-tableshaper \
-    input -f json -j values -n foreign_born \
-        -c 'name, population, foreign_born, state, county' raw-data.json \
-    filter -s 2: \
-    mutate -r 'fips = format_text("{state}{county}")' \
-    mutate 'pct_foreign_born = parse_float(foreign_born) / parse_float(population)' \
-    pick 'fips, pct_foreign_born' \
-    input -f shp -n counties countyp010g.shp \
-    rename 'fips = ADMIN_FIPS' \
-    mutate 'geometry = geometry.simplify(0.01)' \
-    pick 'fips, geometry' \
-    filter -r 'fips[2:] != "000"' \
-    filter -r 'fips[:2] != "72"' \
-    join --left -k fips foreign_born \
-    output -f geojson counties-with-foreign-born.json
-```
+### Mapping the data
 
 Now let's map it. We'll use mapshaper for this.
 

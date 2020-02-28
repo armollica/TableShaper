@@ -24,6 +24,17 @@ The second is a table with median household income for states.
 |    5 | Arkansas             |                     45726 |
 |  ... | ...                  |                       ... |
 
+We're going to import both tables, create a new column in one of the tables and then join the two tables together. Here's the full set of commands. We'll break this down step-by-step.
+
+```
+tableshaper \
+    input population.csv \
+    input income.csv \
+    target population \
+    mutate 'percent_under_18 = population_under_18 / population' \
+    join -k id,name income \
+    output output.csv
+```
 
 ### Importing multiple tables.
 
@@ -44,13 +55,13 @@ With TableShaper you work on one table at a time. Whenever you import a table, t
 
 You can use the `target` command to change the active table.
 
-For example, this is how we would change the active table to the `population` table.
+This is how we would change the active table to the `population` table.
 
 ```
 target population
 ```
 
-Now we could run commands on the `population` table. For example, we could add a column for the the percent of population under 18.
+Now we could run commands on the this table. For example, we could add a column for the the percent of population under 18.
 
 ```
 mutate 'percent_under_18 = population_under_18 / population'
@@ -70,7 +81,7 @@ That would give us this.
 
 We can use the `join` command to perform SQL-join table joins.
 
-In this case, we want to join the tables based on the two columns they have in common, `id` and `name`. Here's the command we would run.
+In this case, we want to join the tables based on the two columns they have in common, `id` and `name`. Here's the command for that.
 
 ```
 join -k id,name income
@@ -89,26 +100,3 @@ Which gives us this.
 Here we're joining the `income` table to the currently active table, `population`.
 
 By default the `join` command performs a left join, but you can change this to a right, full or outer join using the `--right`, `--outer` and `--inner` flags.
-
-The full set of commands would looks like this.
-
-```
-tableshaper \
-    input population.csv \
-    input income.csv \
-    target population \
-    mutate 'percent_under_18 = population_under_18 / population' \
-    join -k id,name income \
-    output output.csv
-```
-
-Or, if you wanted to skip the `target` step, you could flip the order of your input commands.
-
-```
-tableshaper \
-    input income.csv \
-    input population.csv \
-    mutate 'percent_under_18 = population_under_18 / population' \
-    join -k id,name income \
-    output output.csv
-```
