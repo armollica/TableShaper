@@ -44,7 +44,7 @@ For more complete examples, check out the [`examples/`](https://github.com/armol
 
 ## ❯ Install
 
-`tableshaper` is meant to be install with Python 3.7+.
+`tableshaper` is meant to be installed with Python 3.7 or higher.
 
 Pull down this repo and install it with `pip`.
 ```bash
