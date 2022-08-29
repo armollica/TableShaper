@@ -378,7 +378,7 @@ Create new columns.
 A new column is created by assigning a new variable in a python
 expression. Mutation follow this format:
 
-new_column = [python expression]
+`new_column = [python expression]`
 
 Columns with the same name will be overwritten.
 
@@ -387,7 +387,7 @@ table are put in the namespace as a pandas Series.
 
 ```bash
 mutate 'real_value = value * (price / 100)'
-mutate 'touches_lake_mi = state.isin(["WI", "MI"])'
+mutate 'touches_lake_mi = state.isin(["WI", "MI", "IL", "IN"])'
 ```
 
 Multiple mutations can be made in one go by separating mutations with a
