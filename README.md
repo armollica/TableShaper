@@ -1,6 +1,6 @@
 # TableShaper
 
-A command-line tool manipulating tabular data.
+A command-line tool for manipulating tabular data.
 
 This tool is in early development. For production-level work, please use a different tool (at least for now).
 
