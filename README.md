@@ -2,7 +2,7 @@
 
 A command-line tool for manipulating tabular data.
 
-This tool is in early development. For production-level work, please use a different tool (at least for now).
+This tool is in early development. For production-level work, please use a different tool.
 
 - <a href="#-examples">Examples</a>
 - <a href="#-install">Install</a>
