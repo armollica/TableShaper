@@ -1,6 +1,8 @@
 # TableShaper
 
-A command-line table processor. 
+A command-line tool manipulating tabular data.
+
+This tool is in early development. For production-level work, please use a different tool (at least for now).
 
 - <a href="#-examples">Examples</a>
 - <a href="#-install">Install</a>
